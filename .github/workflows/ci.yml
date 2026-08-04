@@ -106,6 +106,22 @@ jobs:
             || (echo "::error::.skill 与源目录不一致，跑 make skill 重新打包"; exit 1)
           echo "skill 打包一致"
 
+      - name: 插件市场清单必须指向真实存在的 skill
+        # marketplace.json 用 source:"./" + strict:false 直接复用仓库里的
+        # skills/ 目录，不另存一份副本。路径写错的话装插件的人会拿到空插件。
+        run: |
+          python - <<'PY'
+          import json, os, sys
+          m = json.load(open('.claude-plugin/marketplace.json'))
+          assert m.get('name') and m.get('owner', {}).get('name'), 'marketplace 缺 name/owner'
+          for p in m['plugins']:
+              assert p.get('name') and p.get('source'), p
+              for s in p.get('skills', []):
+                  d = s[2:] if s.startswith('./') else s
+                  assert os.path.isfile(os.path.join(d, 'SKILL.md')), f'{s} 下没有 SKILL.md'
+                  print('OK', s)
+          PY
+
   build:
     name: 生成链路可复现
     runs-on: ubuntu-latest

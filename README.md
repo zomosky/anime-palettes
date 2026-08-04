@@ -249,10 +249,23 @@ ap.scatter_guide("eva01")              # 散点四策略对照
 Claude 在做任何画图 / 出报告 / 做幻灯片的任务时会自动按这套规则配色，
 并且**把配色决策显式写进方案**，而不是每张图临时挑颜色。
 
+**三种装法，按你用哪个客户端挑：**
+
 ```bash
-# 安装：把 skills/anime-palettes.skill 拖进 Claude 的技能设置即可
-# 或者 Claude Code / Cowork 里放到 ~/.claude/skills/anime-palettes/
+# ① Claude Code / Cowork —— 从插件市场装（推荐，能自动更新）
+/plugin marketplace add zomosky/anime-palettes
+/plugin install anime-palettes@anime-palettes
+/reload-plugins
+
+# ② 手动放进技能目录（不走插件系统）
+git clone https://github.com/zomosky/anime-palettes.git
+cp -r anime-palettes/skills/anime-palettes ~/.claude/skills/
+
+# ③ Claude 桌面版 / 网页版 —— 下载 skills/anime-palettes.skill，
+#    在技能设置里上传安装
 ```
+
+装完之后 `/plugin marketplace update` 就能拿到新版本。
 
 Skill 里教给 agent 的东西：
 
