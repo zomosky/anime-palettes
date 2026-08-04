@@ -6,10 +6,17 @@ import math
 from colorlib import (hex2lab, lab2hex, delta_e00, simulate_cvd, contrast,
                       sequential, diverging, lch, lab2rgb, hex2rgb,
                       flow, cyclic, uniformize, ramp_stats)
-from data import PALETTES, DIVERGING_OVERRIDE, SIGNATURE_OVERRIDE
-from tuned import TUNED
+from data import (PALETTES, MONO, DIVERGING_OVERRIDE, SIGNATURE_OVERRIDE,
+                  source_fingerprint)
+from tuned import TUNED, SOURCE
 
-MONO = {'noface-ink-gray', '2b-achromatic'}
+# 下面所有产物都由 TUNED 派生，data.py 里的 colors 只作为原始记录留档。
+# 所以改了色值却没重跑 tune 的话，产物一字不变 —— 在这里拦住，别让它静默通过。
+if SOURCE != source_fingerprint():
+    raise SystemExit(
+        "src/tuned.py 与 src/data.py 不同步：data.py 的色值改过，但调优结果还是旧的。\n"
+        "直接派生的话所有产物都不会变化（测试也照样全绿）。先跑 `make tune`（约 40s）。"
+    )
 
 
 def _shift(h, dL, cf=1.0):

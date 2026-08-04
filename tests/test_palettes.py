@@ -70,6 +70,19 @@ def test_palette_count():
     assert len({ap.PALETTES[s]["name_zh"] for s in ALL}) == 36
 
 
+def test_tuned_is_in_sync_with_data():
+    """改了 data.py 的色值却忘了 `make tune`，产物会一字不变地静默通过。
+
+    生成链路里所有东西都从 tuned.py 派生，data.py 的 colors 只是留档，所以
+    这种改动不会引发任何别的测试失败 —— 只有这里能抓到。
+    """
+    import data
+    import tuned
+    assert tuned.SOURCE == data.source_fingerprint(), (
+        "src/tuned.py 与 src/data.py 不同步，跑 `make tune`（约 40s）重新调优"
+    )
+
+
 @pytest.mark.parametrize("slug", ALL)
 def test_structure(slug):
     e = ap.PALETTES[slug]

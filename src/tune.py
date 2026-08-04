@@ -113,8 +113,7 @@ def tune(colors, mono=False, seed=7, iters=340):
 
 
 if __name__ == '__main__':
-    from data import PALETTES
-    MONO = {'noface-ink-gray', '2b-achromatic'}
+    from data import PALETTES, MONO, source_fingerprint
     out = {}
     print('slug                          minΔE  CVDΔE')
     for p in PALETTES:
@@ -122,6 +121,8 @@ if __name__ == '__main__':
         out[p['slug']] = hexes
         print(f"{p['slug']:<28} {wn:6.1f} {wc:6.1f}")
     with open('tuned.py', 'w') as f:
-        f.write('# -*- coding: utf-8 -*-\n# 自动生成：科研可用性微调后的配色\nTUNED = ')
+        f.write('# -*- coding: utf-8 -*-\n# 自动生成：科研可用性微调后的配色\n')
+        f.write('# SOURCE = 生成这份结果时 data.py 的指纹，对不上就说明该重跑 `make tune` 了\n')
+        f.write('SOURCE = %r\n\nTUNED = ' % source_fingerprint())
         f.write(repr(out).replace('], ', '],\n  '))
         f.write('\n')

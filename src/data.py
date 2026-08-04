@@ -6,6 +6,10 @@ tone = 一眼识别的色调标签；family = 检索用色系归类。
 
 FAMILY_ORDER = ["红", "橙", "黄", "绿", "青", "蓝", "紫", "粉", "中性", "撞色"]
 
+# 单色相配色：tune 时放宽 L* 范围，derive 时走单色相分支。
+# 两处都从这里读，避免各存一份走岔。
+MONO = {"noface-ink-gray", "2b-achromatic"}
+
 PALETTES = [
     # ---------------- 红 / 绯 ----------------
     dict(slug="asuka-vermilion", zh="明日香", en="Asuka", tone_zh="朱赤", tone_en="Vermilion Red",
@@ -153,3 +157,18 @@ DIVERGING_OVERRIDE = {
     "zelda-pale-gold": (2, 0),
     "luigi-grass": (3, 0),
 }
+
+
+def source_fingerprint():
+    """tune.py 实际吃进去的那部分数据（slug + 6 原始色 + 是否单色相）的指纹。
+
+    写进 tuned.py，由 derive.py 和测试校验。没有它的话，改了上面的色值却忘了
+    `make tune`，derive 照样读旧的 TUNED，全部产物一字不变、测试全绿 ——
+    改动静默消失，没有任何地方会提示。
+    """
+    import hashlib
+    payload = "\n".join(
+        "{}|{}|{}".format(p["slug"], ",".join(p["colors"]), int(p["slug"] in MONO))
+        for p in PALETTES
+    )
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]

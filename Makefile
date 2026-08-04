@@ -24,8 +24,16 @@ html: derive
 	cd $(SRC) && $(PY) gen_html.py && mv build/anime-palettes.html ../$(OUT)/
 
 ## 5. csv / xlsx / ase / gpl / ppt 主题色 / origin 清单
+##    先删后拷：光靠 cp 覆盖的话，改名或删掉一套配色之后，dist/ 里的旧色板文件
+##    会一直留着；CI 只 diff 那几个确定性文件，抓不到这种孤儿产物。
+##    另外逐项拷贝而不是 `cp -r build/*`，免得 build/ 里的中间文件被顺手带进 dist/。
 files: derive
-	cd $(SRC) && $(PY) gen_files.py && cp -r build/* ../$(OUT)/
+	cd $(SRC) && $(PY) gen_files.py
+	rm -rf $(OUT)/ase $(OUT)/gpl $(OUT)/ppt-theme-colors $(OUT)/origin-hex
+	cp -r $(SRC)/build/ase $(SRC)/build/gpl $(SRC)/build/ppt-theme-colors \
+	      $(SRC)/build/origin-hex $(OUT)/
+	cp $(SRC)/build/anime_palettes.csv $(SRC)/build/anime_palettes.json \
+	   $(SRC)/build/anime_palettes.xlsx $(OUT)/
 
 ## 6. PPT 取色板（需要 node + pptxgenjs）
 pptx: derive
@@ -45,6 +53,9 @@ clean:
 	rm -rf $(SRC)/build $(SRC)/__pycache__ __pycache__ .pytest_cache
 
 ## 8. 打包 Claude Skill（速查表从 library.json 重新生成）
+##    先 rm 再打：zip 对已存在的包是增量更新，删掉 references 里的文件后重打包，
+##    旧条目仍留在 .skill 里 —— CI 的 diff -r 会报错，而 make skill 修不好它。
 skill:
 	$(PY) src/gen_skill_table.py
+	rm -f skills/anime-palettes.skill
 	cd skills && zip -qr anime-palettes.skill anime-palettes -x '*.DS_Store' && echo "wrote skills/anime-palettes.skill"

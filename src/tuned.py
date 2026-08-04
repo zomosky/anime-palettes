@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 # 自动生成：科研可用性微调后的配色
+# SOURCE = 生成这份结果时 data.py 的指纹，对不上就说明该重跑 `make tune` 了
+SOURCE = 'cdc5b37c54051d71'
+
 TUNED = {'asuka-vermilion': ['#E63B2A', '#FF9C88', '#8D1316', '#DF9730', '#3B4760', '#BFB6B0'],
   'hutao-plum': ['#C74E4D', '#DE9476', '#792C3D', '#49435F', '#D5B326', '#BCB6AF'],
   'ponyo-coral': ['#ED3124', '#FDA083', '#A12044', '#2284B1', '#92BFCA', '#8C867E'],
