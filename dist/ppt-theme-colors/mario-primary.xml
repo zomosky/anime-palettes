@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="马力欧 正红蓝">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="502720"/></a:dk2>
+  <a:lt2><a:srgbClr val="FDF3F1"/></a:lt2>
+  <a:accent1><a:srgbClr val="DD5643"/></a:accent1>
+  <a:accent2><a:srgbClr val="2F56B3"/></a:accent2>
+  <a:accent3><a:srgbClr val="DDB300"/></a:accent3>
+  <a:accent4><a:srgbClr val="683D17"/></a:accent4>
+  <a:accent5><a:srgbClr val="C8B3A2"/></a:accent5>
+  <a:accent6><a:srgbClr val="46464D"/></a:accent6>
+  <a:hlink><a:srgbClr val="B02A20"/></a:hlink>
+  <a:folHlink><a:srgbClr val="967E79"/></a:folHlink>
+</a:clrScheme>

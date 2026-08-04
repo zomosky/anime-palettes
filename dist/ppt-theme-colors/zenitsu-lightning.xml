@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="我妻善逸 雷明黄">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="413006"/></a:dk2>
+  <a:lt2><a:srgbClr val="FAF4EC"/></a:lt2>
+  <a:accent1><a:srgbClr val="E8B000"/></a:accent1>
+  <a:accent2><a:srgbClr val="948634"/></a:accent2>
+  <a:accent3><a:srgbClr val="E25A00"/></a:accent3>
+  <a:accent4><a:srgbClr val="A32F1D"/></a:accent4>
+  <a:accent5><a:srgbClr val="69563A"/></a:accent5>
+  <a:accent6><a:srgbClr val="BEB6A3"/></a:accent6>
+  <a:hlink><a:srgbClr val="B78A00"/></a:hlink>
+  <a:folHlink><a:srgbClr val="8F826E"/></a:folHlink>
+</a:clrScheme>

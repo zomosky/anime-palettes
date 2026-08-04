@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="钟离 琥珀岩金">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="422F12"/></a:dk2>
+  <a:lt2><a:srgbClr val="FAF4EE"/></a:lt2>
+  <a:accent1><a:srgbClr val="B37C00"/></a:accent1>
+  <a:accent2><a:srgbClr val="D3B46A"/></a:accent2>
+  <a:accent3><a:srgbClr val="895829"/></a:accent3>
+  <a:accent4><a:srgbClr val="4A4644"/></a:accent4>
+  <a:accent5><a:srgbClr val="6E7F72"/></a:accent5>
+  <a:accent6><a:srgbClr val="BBB6AC"/></a:accent6>
+  <a:hlink><a:srgbClr val="835900"/></a:hlink>
+  <a:folHlink><a:srgbClr val="8E8273"/></a:folHlink>
+</a:clrScheme>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="路易吉 草绿">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="1A391C"/></a:dk2>
+  <a:lt2><a:srgbClr val="F0F7F0"/></a:lt2>
+  <a:accent1><a:srgbClr val="009530"/></a:accent1>
+  <a:accent2><a:srgbClr val="8ACB96"/></a:accent2>
+  <a:accent3><a:srgbClr val="005B2D"/></a:accent3>
+  <a:accent4><a:srgbClr val="2B54B0"/></a:accent4>
+  <a:accent5><a:srgbClr val="DAB32B"/></a:accent5>
+  <a:accent6><a:srgbClr val="8F8C82"/></a:accent6>
+  <a:hlink><a:srgbClr val="006B1E"/></a:hlink>
+  <a:folHlink><a:srgbClr val="798878"/></a:folHlink>
+</a:clrScheme>

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>动漫 / 游戏角色配色库 · 36 套</title>
+<style>
+:root{
+  --bg:#f6f6f4; --card:#ffffff; --fg:#1d1d21; --dim:#6c6c76; --line:#e4e4e0;
+  --accent:#1d1d21; --shadow:0 1px 2px rgba(0,0,0,.05),0 8px 24px rgba(0,0,0,.05);
+}
+html[data-theme="dark"]{
+  --bg:#131316; --card:#1c1c20; --fg:#eeeef0; --dim:#9a9aa4; --line:#2c2c32;
+  --accent:#eeeef0; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Noto Sans SC",
+  "Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+code,.mono{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace}
+header{position:sticky;top:0;z-index:20;background:var(--bg);
+  border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
+.wrap{max-width:1520px;margin:0 auto;padding:0 22px}
+h1{font-size:19px;margin:0;font-weight:650;letter-spacing:.2px}
+.sub{font-size:12.5px;color:var(--dim);margin-top:3px;line-height:1.6}
+.topbar{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:16px 0 12px;flex-wrap:wrap}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding-bottom:12px}
+#theme{margin-left:auto}
+input[type=search]{background:var(--card);border:1px solid var(--line);color:var(--fg);
+  border-radius:8px;padding:7px 11px;font-size:13px;width:210px;outline:none}
+input[type=search]:focus{border-color:var(--dim)}
+.seg{display:flex;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{background:none;border:none;color:var(--dim);padding:7px 11px;font-size:12.5px;
+  cursor:pointer;font-family:inherit;white-space:nowrap}
+.seg button.on{background:var(--accent);color:var(--card)}
+.seg button:hover:not(.on){color:var(--fg)}
+.lbl{font-size:11.5px;color:var(--dim);margin-right:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(430px,1fr));gap:16px;padding:20px 0 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:13px 15px 10px}
+.cname{font-size:15.5px;font-weight:650;letter-spacing:.2px;line-height:1.35}
+.cname .tone{color:var(--dim);font-weight:500}
+.cmeta{font-size:11.5px;color:var(--dim);margin-top:3px}
+.badges{display:flex;gap:5px;flex-shrink:0;align-items:center}
+.badge{font-size:10.5px;padding:2.5px 7px;border-radius:999px;border:1px solid var(--line);
+  color:var(--dim);white-space:nowrap}
+.gA{background:#1f7a4d;color:#fff;border-color:transparent}
+.gB{background:#b07a12;color:#fff;border-color:transparent}
+.gC{background:#9c4040;color:#fff;border-color:transparent}
+.sw{display:grid;grid-template-columns:repeat(6,1fr)}
+.sw .cell{position:relative;cursor:pointer;height:66px;display:flex;align-items:flex-end;
+  justify-content:center;padding-bottom:6px;transition:transform .12s}
+.sw.trip .cell{height:22px;padding:0}
+.sw .cell span{font-size:10px;font-family:ui-monospace,Menlo,monospace;letter-spacing:.2px;
+  opacity:.72;transition:opacity .12s}
+.sw .cell:hover span{opacity:1}
+.sw.trip .cell span{opacity:0}
+.sw.trip .cell:hover span{opacity:1}
+.sw .cell.unsafe::after{content:"";position:absolute;top:5px;right:5px;width:5px;height:5px;
+  border-radius:50%;background:rgba(255,255,255,.75);box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.ramp{height:17px;cursor:pointer;position:relative;transition:transform .12s}
+.ramps:hover .ramp{opacity:.72}
+.ramps .ramp:hover{opacity:1;transform:scaleY(1.45);z-index:3;
+  box-shadow:0 0 0 1px var(--fg)}
+.rlab span{cursor:pointer}
+.rlab span:hover{color:var(--fg)}
+/* ---- 代码面板 ---- */
+#mask{position:fixed;inset:0;background:rgba(0,0,0,.42);backdrop-filter:blur(2px);
+  display:none;z-index:60;align-items:center;justify-content:center;padding:24px}
+#mask.on{display:flex}
+#modal{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  width:min(820px,100%);max-height:88vh;display:flex;flex-direction:column;
+  box-shadow:0 24px 70px rgba(0,0,0,.3);overflow:hidden}
+#modal h3{margin:0;font-size:15.5px;font-weight:650}
+.mhead{padding:15px 18px 11px;border-bottom:1px solid var(--line)}
+.msub{font-size:11.5px;color:var(--dim);margin-top:4px;line-height:1.6}
+.mbar{height:20px;border-radius:5px;margin-top:11px}
+.mtabs{display:flex;gap:5px;flex-wrap:wrap;padding:11px 18px 0}
+.mtabs button{background:none;border:1px solid var(--line);color:var(--dim);
+  border-radius:7px;padding:4.5px 10px;font-size:11.5px;cursor:pointer;font-family:inherit}
+.mtabs button.on{background:var(--accent);color:var(--card);border-color:transparent}
+#code{margin:11px 18px;padding:13px 15px;background:var(--bg);border:1px solid var(--line);
+  border-radius:9px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11.5px;line-height:1.62;white-space:pre;overflow:auto;flex:1 1 auto;
+  min-height:150px;color:var(--fg);tab-size:2}
+.mfoot{display:flex;gap:8px;padding:0 18px 16px;flex-wrap:wrap;align-items:center}
+.mfoot button{border:1px solid var(--line);background:none;color:var(--fg);
+  border-radius:8px;padding:7px 14px;font-size:12.5px;cursor:pointer;font-family:inherit}
+.mfoot button.primary{background:var(--accent);color:var(--card);border-color:transparent}
+.mfoot button:hover{border-color:var(--dim)}
+.mfoot .sp{flex:1 1 auto}
+.mstat{font-size:11px;color:var(--dim);font-family:ui-monospace,Menlo,monospace}
+.chartrow{display:flex;align-items:center;gap:6px;padding:6px 12px 2px;background:var(--card)}
+.wheel{flex:0 0 92px;width:92px;height:92px}
+.chart{flex:1 1 auto;min-width:0}
+.ramps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}
+.rlab{display:grid;grid-template-columns:repeat(4,1fr);font-size:9.5px;color:var(--dim);
+  padding:4px 12px 0;gap:1px}
+.rlab span{text-align:center}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:8px;
+  padding:8px 13px 12px;font-size:11px;color:var(--dim);flex-wrap:wrap}
+.copy{display:flex;gap:5px;flex-wrap:wrap}
+.copy button{background:none;border:1px solid var(--line);color:var(--dim);border-radius:6px;
+  padding:3.5px 8px;font-size:11px;cursor:pointer;font-family:inherit}
+.copy button:hover{color:var(--fg);border-color:var(--dim)}
+.stat{font-family:ui-monospace,Menlo,monospace;font-size:10.5px}
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
+  background:var(--accent);color:var(--card);padding:9px 16px;border-radius:8px;font-size:13px;
+  opacity:0;pointer-events:none;transition:all .18s;z-index:99;max-width:80vw;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.empty{padding:60px 0;text-align:center;color:var(--dim);font-size:14px}
+.note{font-size:11.5px;color:var(--dim);line-height:1.7;padding:0 0 18px;max-width:1000px}
+kbd{border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:11px;
+  font-family:ui-monospace,Menlo,monospace}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <div class="topbar">
+   <div>
+    <h1>动漫 / 游戏角色配色库</h1>
+    <div class="sub">36 套 · 每套 6 主色 + 深/浅变体 + 连续与发散色标 · 面向 PPT 与科研配图 ·
+      点击色块复制 HEX，点击底部色标条取 colormap 代码 · 右上「排序」可切换 4 种排列</div>
+   </div>
+  </div>
+  <div class="controls">
+   <input type="search" id="q" placeholder="搜角色 / 色调 / 作品…">
+   <span class="lbl">色系</span>
+   <div class="seg" id="fam"></div>
+   <span class="lbl">排序</span>
+   <div class="seg" id="order">
+    <button data-o="smooth" class="on" title="相邻色差最小，过渡最顺滑">平滑</button>
+    <button data-o="distinct" title="前几色差异最大，画多系列图表用这个">区分度</button>
+    <button data-o="hue" title="红→橙→黄→绿→青→蓝→紫">色相环</button>
+    <button data-o="light" title="L* 由高到低，也最适合灰度打印">明度</button>
+   </div>
+   <span class="lbl">色盲</span>
+   <div class="seg" id="grade">
+    <button data-g="" class="on">全部</button><button data-g="A">A</button>
+    <button data-g="B">B</button><button data-g="C">C</button>
+   </div>
+   <span class="lbl">模拟</span>
+   <div class="seg" id="cvd">
+    <button data-v="none" class="on">正常</button><button data-v="protan">红色盲</button>
+    <button data-v="deutan">绿色盲</button><button data-v="tritan">蓝色盲</button>
+    <button data-v="gray">灰度</button>
+   </div>
+   <div class="seg" id="view">
+    <button data-w="main" class="on">主色</button><button data-w="trip">含深浅</button>
+   </div>
+   <div class="seg" id="theme"><button id="tbtn">深色界面</button></div>
+  </div>
+ </div>
+</header>
+<div class="wrap">
+ <div class="note" id="note"></div>
+ <div class="grid" id="grid"></div>
+</div>
+<div id="toast"></div>
+<div id="mask">
+ <div id="modal">
+  <div class="mhead">
+   <h3 id="mtitle"></h3>
+   <div class="msub" id="mdesc"></div>
+   <div class="mbar" id="mbar"></div>
+  </div>
+  <div class="mtabs" id="mtabs"></div>
+  <div id="code"></div>
+  <div class="mfoot">
+   <button class="primary" id="mcopy">复制代码</button>
+   <button id="mdl">下载文件</button>
+   <button id="mdlall">下载整套 .py</button>
+   <span class="sp"></span>
+   <span class="mstat" id="mstat"></span>
+   <button id="mclose">关闭</button>
+  </div>
+ </div>
+</div>
+<script>
+const DATA = [{"slug":"asuka-vermilion","zh":"明日香","en":"Asuka","tone":"朱赤","toneEn":"Vermilion Red","nameZh":"明日香 · 朱赤","nameEn":"Asuka · Vermilion Red","fam":"红","src":"新世纪福音战士","kind":"cat","grade":"B","safe":[0,1,2,4],"c":["#E63B2A","#8D1316","#3B4760","#BFB6B0","#FF9C88","#DF9730"],"d":["#B40009","#570000","#18263D","#978E88","#D37461","#B17100"],"l":["#FF8168","#AF5044","#656D82","#EAE3DE","#FFDBD3","#FFC887"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,4,1,5,2,3],"hue":[1,4,0,5,2,3],"light":[3,4,5,0,2,1]},"bg":"#FFF2EF","bg2":"#FBDFD9","ink":"#55231A","muted":"#9A7D76","seq":["#FFF4F2","#FFE9E5","#FFDDD5","#FFD0C5","#FFBFB1","#FFAF9D","#FF9C87","#FB8972","#F6755D","#F05F48","#E94733","#DD3525","#CB271C","#B91713","#A10E0D","#860E0A","#6C0D06"],"div":["#3C4251","#4E566A","#606B84","#768099","#8C96AE","#A7AEC2","#C2C7D5","#DBDDE5","#F3F2F3","#F1D9C2","#EBC08F","#DAA463","#C78937","#AF731F","#965E00","#7A4C02","#5E3A02"],"flw":["#F9E8DD","#FADDCB","#FCD2BA","#FEC3A5","#FFB495","#FCA47A","#F5975F","#EE8C44","#E77D2D","#E56D25","#E35D20","#E04A1D","#DC3C26","#D43B36","#C93C45","#BD3F50","#AC4459","#98495F","#874C61","#764F60","#69505C","#674550","#633A41","#5F3132","#592922"],"cyc":["#E87364","#E07A54","#D68147","#C9883B","#BB8F35","#A99533","#959C37","#7EA241","#5DA755","#29AA6F","#00A988","#00A89E","#00A6B1","#00A4C3","#00A1D9","#1E9CF1","#5F96F2","#828FED","#9C88E5","#B780D8","#CE77C6","#E16FAC","#EB6C90","#EC6E79","#E87364"],"wh":[{"i":0,"L":52.0,"C":80.9,"h":37.6},{"i":1,"L":29.9,"C":58.6,"h":34.0},{"i":2,"L":30.1,"C":16.4,"h":277.6},{"i":3,"L":74.6,"C":4.7,"h":63.1},{"i":4,"L":74.1,"C":43.6,"h":37.0},{"i":5,"L":68.0,"C":64.2,"h":73.1}],"rs":{"seq":{"m":true,"r":75.1,"u":0.68},"div":{"m":false,"r":67.7,"u":0.667},"flow":{"m":true,"r":70.0,"u":0.705},"cyclic":{"m":true,"r":0.5,"u":0.773}},"minde":20.6,"cvd":{"protan":11.5,"deutan":11.5,"tritan":4.8}},{"slug":"hutao-plum","zh":"胡桃","en":"Hu Tao","tone":"绯梅","toneEn":"Plum Crimson","nameZh":"胡桃 · 绯梅","nameEn":"Hu Tao · Plum Crimson","fam":"红","src":"原神","kind":"cat","grade":"B","safe":[0,1,2,3,4,5],"c":["#C74E4D","#792C3D","#49435F","#DE9476","#BCB6AF","#D5B326"],"d":["#9B232B","#52011D","#27223C","#B36D50","#948E87","#A88C00"],"l":["#E7837D","#9A5A65","#706A81","#FFC5AD","#E8E3DD","#FFE083"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,3,1,2,5,4],"hue":[1,0,3,5,2,4],"light":[4,5,3,0,2,1]},"bg":"#FCF3F2","bg2":"#F4E1DF","ink":"#4D2826","muted":"#947F7D","seq":["#FFF4F3","#FDE7E5","#FAD9D6","#F6C8C3","#F2B8B3","#EDA7A2","#E6938D","#DD7F79","#D56C67","#CD5B58","#C24B4A","#B44142","#A73839","#982E31","#84282A","#702324","#601E1E"],"div":["#444050","#585369","#6D6783","#837C98","#9992AD","#B1ABC1","#C9C5D5","#DEDCE5","#F4F2F3","#EADCBE","#DCC686","#C7AD57","#B09423","#977E12","#7F6900","#675500","#504100"],"flw":["#F5E9DB","#F7E3CA","#F9DDB9","#FAD4A1","#FBCB89","#FABF69","#F7B356","#F2A95B","#EC9F60","#E39666","#DA8F6A","#D48263","#D07459","#CD6751","#CA5749","#C2524F","#B55157","#A7505C","#995060","#875061","#785060","#6A4F5C","#61434E","#593941","#4E2E33"],"cyc":["#DE7689","#DD7976","#D97D69","#D2825C","#C98752","#BC8D4B","#AE9348","#9F9848","#8B9D4F","#73A35C","#58A66E","#2FA883","#00A999","#00A7A9","#00A5BA","#00A3CB","#199FDF","#569AE2","#7495E0","#8E8FDC","#A289D4","#B882C7","#CC7CB5","#D877A0","#DE7689"],"wh":[{"i":0,"L":49.7,"C":54.7,"h":28.2},{"i":1,"L":29.9,"C":35.8,"h":11.4},{"i":2,"L":30.1,"C":18.2,"h":300.7},{"i":3,"L":68.0,"C":36.7,"h":48.0},{"i":4,"L":74.3,"C":4.4,"h":78.6},{"i":5,"L":73.9,"C":69.5,"h":90.8}],"rs":{"seq":{"m":true,"r":75.0,"u":0.685},"div":{"m":false,"r":67.6,"u":0.649},"flow":{"m":true,"r":69.9,"u":0.683},"cyclic":{"m":true,"r":0.5,"u":0.749}},"minde":20.0,"cvd":{"protan":12.5,"deutan":12.5,"tritan":8.8}},{"slug":"ponyo-coral","zh":"波妞","en":"Ponyo","tone":"珊瑚","toneEn":"Coral Red","nameZh":"波妞 · 珊瑚","nameEn":"Ponyo · Coral Red","fam":"红","src":"崖上的波妞","kind":"cat","grade":"A","safe":[0,1,2,3,4,5],"c":["#ED3124","#A12044","#FDA083","#8C867E","#92BFCA","#2284B1"],"d":["#B50009","#6D0026","#D1785C","#666059","#6A97A2","#005D82"],"l":["#FF826A","#C05D6E","#FFDDD2","#B5B0AA","#C7EAF3","#72ACD1"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,2,1,5,4,3],"hue":[1,0,2,4,5,3],"light":[2,4,3,0,5,1]},"bg":"#FFF2EF","bg2":"#FCDFD8","ink":"#572218","muted":"#9C7D76","seq":["#FFF4F2","#FFE9E5","#FFDDD5","#FFD0C5","#FFC1B4","#FFB2A2","#FFA08C","#FD8C76","#FA775F","#F66149","#F14532","#E62D21","#D21F18","#BE0C0E","#A50208","#8A0305","#700401"],"div":["#2E464B","#3B5B62","#48717A","#60868F","#779CA5","#96B3BB","#B6CAD0","#D4DFE3","#F1F3F4","#FBD5CD","#FFB5A5","#FF8F79","#FF634A","#E84431","#D11E18","#A71F16","#7F1D13"],"flw":["#FFE6DE","#FFDCC6","#F5D6B8","#E3D2B2","#D2CDAF","#C0C4AA","#BEB79C","#BDAC94","#BAA08C","#BA9481","#C38971","#CF7A5D","#DB6449","#E54A3C","#EE1836","#E61447","#D91E59","#C62C69","#B03973","#974379","#7F4978","#6B4A6E","#693D59","#633245","#592830"],"cyc":["#E47385","#E27671","#DD7B63","#D58155","#CA874A","#BD8E43","#AD9440","#9D9941","#879F49","#6CA459","#4BA76C","#06AA84","#00A89A","#00A7AA","#00A5BD","#00A2CE","#039FE7","#5599E9","#7593E6","#908CE0","#A787D8","#BE7FC9","#D377B4","#DF739D","#E47385"],"wh":[{"i":0,"L":52.2,"C":86.9,"h":37.5},{"i":1,"L":36.0,"C":54.6,"h":12.9},{"i":2,"L":74.6,"C":43.2,"h":43.2},{"i":3,"L":56.2,"C":5.2,"h":81.5},{"i":4,"L":74.6,"C":16.1,"h":220.2},{"i":5,"L":51.9,"C":33.6,"h":249.7}],"rs":{"seq":{"m":true,"r":74.9,"u":0.686},"div":{"m":false,"r":67.8,"u":0.676},"flow":{"m":true,"r":69.9,"u":0.742},"cyclic":{"m":true,"r":0.5,"u":0.759}},"minde":22.1,"cvd":{"protan":16.9,"deutan":17.7,"tritan":17.7}},{"slug":"chihiro-vermilion-fern","zh":"千寻","en":"Chihiro","tone":"朱绿","toneEn":"Vermilion & Fern","nameZh":"千寻 · 朱绿","nameEn":"Chihiro · Vermilion & Fern","fam":"红","src":"千与千寻","kind":"cat","grade":"C","safe":[0,1,5],"c":["#C6402E","#FD9E81","#BBB6AD","#7FA054","#536950","#394855"],"d":["#990A0B","#D1765A","#938E85","#58792E","#30452E","#172733"],"l":["#E77863","#FFDBD0","#E7E3DB","#B0C98C","#7E907C","#626E79"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,1,4,3,5,2],"hue":[0,1,3,4,2,5],"light":[2,1,3,0,4,5]},"bg":"#FDF3F0","bg2":"#F7E1DC","ink":"#50271F","muted":"#977E79","seq":["#FFF4F2","#FEE8E3","#FDDBD3","#FACCC2","#F7BCAF","#F3AC9D","#EF9D8C","#E88A77","#E07864","#D86651","#CF533F","#C43F2D","#B63526","#A52A1D","#922217","#7A1F14","#641B11"],"div":["#394537","#4A5A47","#5B7058","#71856E","#879B84","#A3B3A0","#BFCABD","#D8DFD7","#F2F3F1","#FBD5CB","#FFB5A5","#F69480","#EA735D","#D45944","#BD3F2D","#973526","#732A1F"],"flw":["#F2EADB","#EFE2C8","#EBD8B1","#E6CC98","#E0C17E","#CFBD74","#BBBA6D","#A8B769","#91B467","#77B068","#65A75C","#5F9C41","#5B9123","#578700","#448321","#357F33","#287943","#23724E","#266C56","#316459","#3A5E59","#345456","#314950","#304049","#2F3840"],"cyc":["#D08170","#CA8565","#C28A5D","#B68F57","#AB9355","#9D9856","#8B9D5C","#7BA065","#66A472","#4CA685","#32A795","#05A7A7","#00A5B6","#01A4C6","#389FD1","#599BD5","#7596D5","#8A91D2","#9C8CCC","#AF87C3","#BF82B5","#CD7EA2","#D47C8E","#D47E7F","#D08170"],"wh":[{"i":0,"L":46.8,"C":65.9,"h":37.6},{"i":1,"L":74.1,"C":44.1,"h":42.9},{"i":2,"L":74.2,"C":5.2,"h":88.2},{"i":3,"L":61.9,"C":43.4,"h":124.5},{"i":4,"L":42.0,"C":17.7,"h":139.9},{"i":5,"L":29.8,"C":10.0,"h":256.0}],"rs":{"seq":{"m":true,"r":74.9,"u":0.682},"div":{"m":false,"r":67.9,"u":0.689},"flow":{"m":true,"r":69.9,"u":0.689},"cyclic":{"m":true,"r":0.5,"u":0.678}},"minde":22.2,"cvd":{"protan":8.9,"deutan":10.5,"tritan":10.4}},{"slug":"mitsuha-twilight","zh":"三叶","en":"Mitsuha","tone":"暮橙","toneEn":"Twilight Orange","nameZh":"三叶 · 暮橙","nameEn":"Mitsuha · Twilight Orange","fam":"橙","src":"你的名字","kind":"cat","grade":"A","safe":[0,1,2,3,4,5],"c":["#CB5C21","#F4A665","#BDB5AD","#8093D4","#474B89","#C75681"],"d":["#9C3600","#C87E3E","#958D85","#576DAC","#1E2A64","#9D2B5C"],"l":["#EE8E5F","#FFDEC5","#E8E2DB","#B2BEF3","#7473A7","#E68BAA"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,1,5,4,3,2],"hue":[0,1,3,4,5,2],"light":[1,2,3,0,5,4]},"bg":"#FDF3EF","bg2":"#F5E1D9","ink":"#4C2A18","muted":"#957F76","seq":["#FFF4EF","#FEE8DE","#FCDACB","#F9CCB7","#F6BDA3","#F1AC8B","#EB9C75","#E28A5E","#DB7948","#D26932","#C7591F","#B84F16","#AA450D","#983902","#853103","#712A02","#5E2200"],"div":["#374163","#465482","#5568A3","#6D7EB7","#8594CB","#A2ADD9","#BFC6E7","#D9DCF0","#F3F2F7","#F0D9CB","#EABF9E","#DAA378","#C88854","#B1713A","#9A5B21","#7C4A1D","#5F3918"],"flw":["#FFE6D5","#FFDAC0","#F6CEB6","#E4C4B2","#DBBBAD","#DEB1A7","#E0A7A6","#E09DA7","#DC94AD","#D48CB6","#CC86BC","#D375AC","#D96599","#DD5686","#DE4770","#DB3A60","#CB3A68","#B83B6D","#A53D71","#8F3F71","#7B3F6F","#663E6A","#533C62","#43395A","#35344E"],"cyc":["#D78054","#CC8649","#C08C41","#B0933D","#A0983E","#8B9E45","#70A454","#50A767","#17AA7F","#00A997","#00A7A8","#00A5BA","#00A2CE","#049FE4","#5099EB","#7293E8","#8D8DE3","#A687DA","#BD7FCD","#D277B8","#E072A1","#E67188","#E57472","#E07963","#D78054"],"wh":[{"i":0,"L":52.4,"C":66.2,"h":51.8},{"i":1,"L":74.5,"C":50.1,"h":63.6},{"i":2,"L":74.1,"C":5.3,"h":74.4},{"i":3,"L":61.8,"C":36.7,"h":285.0},{"i":4,"L":34.3,"C":38.7,"h":294.5},{"i":5,"L":52.3,"C":49.4,"h":358.2}],"rs":{"seq":{"m":true,"r":74.9,"u":0.712},"div":{"m":false,"r":67.8,"u":0.711},"flow":{"m":true,"r":70.0,"u":0.698},"cyclic":{"m":true,"r":0.5,"u":0.763}},"minde":20.3,"cvd":{"protan":15.5,"deutan":15.7,"tritan":5.6}},{"slug":"naruto-orange-indigo","zh":"鸣人","en":"Naruto","tone":"橙靛","toneEn":"Orange & Indigo","nameZh":"鸣人 · 橙靛","nameEn":"Naruto · Orange & Indigo","fam":"橙","src":"火影忍者","kind":"cat","grade":"A","safe":[0,1,2,3,4,5],"c":["#D16409","#DCB300","#D4A986","#7A94C9","#324D90","#46464C"],"d":["#9B4400","#AD8C00","#AA815F","#516EA1","#002C67","#25252B"],"l":["#F59656","#FFE198","#FBD7BA","#ADBFEA","#6774AC","#6C6C71"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,2,4,1,3,5],"hue":[0,2,1,3,4,5],"light":[1,2,3,0,4,5]},"bg":"#FDF3EE","bg2":"#F6E1D6","ink":"#4C2A13","muted":"#957F73","seq":["#FFF4EE","#FFE9DD","#FEDCC8","#FCCEB2","#F8BD99","#F3AC7F","#EC9A65","#E5894C","#DC7831","#D36813","#C35C06","#B25203","#A14801","#8F3F01","#7D3602","#6B2D02","#5A2500"],"div":["#533E2C","#6D5038","#876345","#9D795B","#B38F72","#C7A991","#DAC3B1","#E9DBD1","#F6F2EF","#FBD6C0","#FBB98F","#EF9A64","#DF7C39","#C76520","#AE4E00","#8C4003","#6C3204"],"flw":["#FFE9B9","#FFD99F","#F8CB9C","#E9BE9F","#E7B49D","#E6AA9E","#E39FA1","#DD97A7","#D18FAF","#CC84AF","#D573A0","#DD5F8A","#E24C72","#E43B5B","#DE3056","#D43165","#C43674","#AF3E7F","#994586","#814A87","#6C4D85","#574A77","#484362","#3E3C51","#363640"],"cyc":["#D4824C","#C88842","#BC8E3C","#AB9539","#9A9A3C","#82A046","#64A658","#3DA96D","#00AA87","#00A89D","#00A6AD","#00A4C0","#00A2D7","#1D9DED","#5D97ED","#7A91EA","#978BE3","#B083D8","#C67BC7","#DB73B0","#E57097","#E8717F","#E5756A","#DE7B5A","#D4824C"],"wh":[{"i":0,"L":54.8,"C":72.7,"h":57.7},{"i":1,"L":74.5,"C":76.8,"h":88.9},{"i":2,"L":72.3,"C":26.4,"h":65.5},{"i":3,"L":61.2,"C":30.5,"h":278.0},{"i":4,"L":34.0,"C":42.1,"h":287.3},{"i":5,"L":29.9,"C":3.8,"h":290.9}],"rs":{"seq":{"m":true,"r":74.9,"u":0.69},"div":{"m":false,"r":67.7,"u":0.737},"flow":{"m":true,"r":70.1,"u":0.733},"cyclic":{"m":true,"r":0.5,"u":0.753}},"minde":19.6,"cvd":{"protan":16.6,"deutan":14.4,"tritan":4.6}},{"slug":"zhongli-amber","zh":"钟离","en":"Zhongli","tone":"琥珀岩金","toneEn":"Amber Geo","nameZh":"钟离 · 琥珀岩金","nameEn":"Zhongli · Amber Geo","fam":"橙","src":"原神","kind":"cat","grade":"A","safe":[0,1,2,3,4,5],"c":["#B37C00","#D3B46A","#BBB6AC","#6E7F72","#4A4644","#895829"],"d":["#835900","#A88C43","#938E84","#4A5A4D","#292523","#613504"],"l":["#DBA857","#FDE1A6","#E7E3DA","#9AA89D","#706C6B","#AF825C"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,1,5,4,3,2],"hue":[5,0,1,2,3,4],"light":[1,2,0,3,5,4]},"bg":"#FAF4EE","bg2":"#EFE4D6","ink":"#422F12","muted":"#8E8273","seq":["#FEF5EA","#F9E8D4","#F2DABC","#EBCBA3","#E2BC87","#D8AB6C","#CE9D51","#C28D32","#B57E0A","#A67300","#986800","#8A5D00","#7C5300","#6C4901","#5F3F02","#533701","#493000"],"div":["#5A3D01","#744F01","#8F6200","#A8771E","#C08D35","#D4A762","#E6C18E","#F1DABD","#F7F2EC","#D0E0E8","#A4CCE4","#7BB6D5","#4C9FC6","#2F89AF","#017398","#025D7C","#034860"],"flw":["#FEE9BF","#F0DCB9","#E2D1B3","#D2C4AC","#D1BC9C","#D1B587","#D2AD6E","#D2A354","#D29733","#C79027","#B78F31","#A78C3D","#988749","#8D8352","#837F5A","#7C795E","#7A7051","#786745","#78603D","#775633","#754D2D","#66462E","#583F2F","#4C392F","#40352F"],"cyc":["#C28A58","#B88F53","#AC9451","#9D9852","#8E9C57","#79A162","#60A472","#46A783","#21A897","#00A7A8","#00A6B7","#00A3C8","#329FD6","#599BD9","#7595D8","#8A91D5","#9F8CCF","#B385C4","#C480B5","#D17BA0","#D77B8E","#D77C7B","#D3806D","#CC8561","#C28A58"],"wh":[{"i":0,"L":56.1,"C":63.4,"h":78.2},{"i":1,"L":74.5,"C":41.7,"h":87.6},{"i":2,"L":74.2,"C":5.7,"h":90.1},{"i":3,"L":51.5,"C":10.2,"h":150.9},{"i":4,"L":30.0,"C":2.2,"h":55.1},{"i":5,"L":41.9,"C":38.1,"h":65.8}],"rs":{"seq":{"m":true,"r":74.9,"u":0.727},"div":{"m":false,"r":67.6,"u":0.725},"flow":{"m":true,"r":69.9,"u":0.705},"cyclic":{"m":true,"r":0.5,"u":0.732}},"minde":17.4,"cvd":{"protan":15.6,"deutan":15.4,"tritan":14.3}},{"slug":"nausicaa-sky-gold","zh":"娜乌西卡","en":"Nausicaä","tone":"天青金","toneEn":"Sky & Gold","nameZh":"娜乌西卡 · 天青金","nameEn":"Nausicaä · Sky & Gold","fam":"橙","src":"风之谷","kind":"cat","grade":"A","safe":[0,1,2,3,4,5],"c":["#B38708","#BDB7A6","#82BFDD","#3176A0","#6A7668","#7D2D02"],"d":["#856200","#958F7E","#5797B4","#005176","#465144","#461700"],"l":["#DDB25D","#E9E4D6","#C1E9FF","#729EC0","#959F93","#A15B39"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,3,2,5,4,1],"hue":[5,0,2,3,1,4],"light":[1,2,0,4,3,5]},"bg":"#F9F4EE","bg2":"#EEE4D6","ink":"#3F3011","muted":"#8D8272","seq":["#FDF5EA","#F8EAD5","#F2DEBF","#EBD3AA","#E3C491","#DAB778","#CFA85B","#C3993D","#B78B1B","#A97F06","#9B7404","#8C6802","#7D5C00","#6E5101","#604602","#533D02","#453200"],"div":["#24455C","#2A5A79","#307098","#4E85AD","#6A9BC1","#8DB3D1","#B0CAE1","#D1DFEC","#F1F3F5","#EBDBC2","#E1C38D","#CEA961","#B99033","#A17A1C","#886500","#6E5200","#553F00"],"flw":["#F0EBDB","#DEE4CE","#C9DEC7","#AFD8C6","#98D2CA","#76CDC5","#48C7B3","#06C19D","#00B77F","#00AD86","#00A48F","#009A95","#2E8F95","#4A868F","#527C8A","#4E738A","#4F6987","#546082","#59577C","#614E71","#674462","#683A4E","#64343A","#5C302A","#522E1D"],"cyc":["#C4886C","#BD8C64","#B49060","#AA945E","#9F975E","#919B63","#809F6A","#6FA176","#5BA486","#48A596","#38A5A4","#2FA4B3","#38A2C0","#4D9FC9","#639ACD","#7797CD","#8A92CA","#9B8EC5","#AA8ABE","#BA85B1","#C582A3","#CB8091","#CD8282","#CA8476","#C4886C"],"wh":[{"i":0,"L":58.9,"C":63.1,"h":83.6},{"i":1,"L":74.5,"C":9.4,"h":95.1},{"i":2,"L":74.3,"C":24.3,"h":240.6},{"i":3,"L":47.2,"C":29.9,"h":255.2},{"i":4,"L":48.3,"C":9.6,"h":139.9},{"i":5,"L":30.0,"C":52.4,"h":51.1}],"rs":{"seq":{"m":true,"r":74.8,"u":0.699},"div":{"m":false,"r":67.9,"u":0.715},"flow":{"m":true,"r":69.9,"u":0.733},"cyclic":{"m":true,"r":0.4,"u":0.675}},"minde":24.1,"cvd":{"protan":22.2,"deutan":22.1,"tritan":16.3}},{"slug":"zenitsu-lightning","zh":"我妻善逸","en":"Zenitsu","tone":"雷明黄","toneEn":"Lightning Yellow","nameZh":"我妻善逸 · 雷明黄","nameEn":"Zenitsu · Lightning Yellow","fam":"黄","src":"鬼灭之刃","kind":"cat","grade":"C","safe":[0,1,2,4],"c":["#E8B000","#BEB6A3","#948634","#69563A","#A32F1D","#E25A00"],"d":["#B78A00","#968E7C","#6B6108","#443419","#750000","#A73D00"],"l":["#FFE1AE","#E9E3D3","#BFB06F","#8F7E67","#C5654F","#FF935B"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,2,5,4,3,1],"hue":[4,5,3,0,2,1],"light":[0,1,2,5,3,4]},"bg":"#FAF4EC","bg2":"#F0E4D2","ink":"#413006","muted":"#8F826E","seq":["#FFF5E7","#FCEBD2","#F8E1BB","#F3D5A2","#EBC785","#E2B969","#D7AB4E","#CB9E33","#BE9006","#AF8400","#9E7600","#8E6A00","#805F00","#715301","#614802","#523C02","#453200"],"div":["#742B00","#963801","#B94500","#D35C1C","#EC7433","#F89563","#FFB792","#FFD5C0","#FCF0EC","#D1E0E2","#A1CED8","#78B8C5","#49A2B2","#2D8C9B","#017685","#035F6C","#044953"],"flw":["#FFE8C3","#FFE0AB","#F7D7A0","#E7CDA5","#DAC6A9","#D0BEA4","#CEB58F","#CBAC7B","#C8A264","#C39648","#C58B36","#C77F22","#CA720B","#CC6600","#CB5800","#BD5400","#A85518","#965526","#875530","#785439","#6D5340","#664B3A","#613F2F","#5D3527","#58291F"],"cyc":["#E17961","#D97F53","#CE8547","#C18C3F","#B4923B","#A3973B","#8F9D42","#77A34D","#55A761","#20AA7A","#00A990","#00A7A4","#00A5B7","#00A3CA","#01A0E1","#429AED","#6E94EA","#8C8EE5","#A487DD","#BD7FCF","#D177BB","#E171A1","#E77088","#E67373","#E17961"],"wh":[{"i":0,"L":75.0,"C":78.2,"h":83.9},{"i":1,"L":74.2,"C":10.7,"h":92.2},{"i":2,"L":55.7,"C":45.0,"h":96.4},{"i":3,"L":37.8,"C":19.6,"h":79.4},{"i":4,"L":37.7,"C":60.1,"h":39.1},{"i":5,"L":55.6,"C":82.1,"h":52.5}],"rs":{"seq":{"m":true,"r":74.8,"u":0.747},"div":{"m":false,"r":67.8,"u":0.724},"flow":{"m":true,"r":70.1,"u":0.717},"cyclic":{"m":true,"r":0.5,"u":0.751}},"minde":19.9,"cvd":{"protan":6.6,"deutan":6.7,"tritan":17.0}},{"slug":"pikachu-lemon","zh":"皮卡丘","en":"Pikachu","tone":"柠黄","toneEn":"Lemon Yellow","nameZh":"皮卡丘 · 柠黄","nameEn":"Pikachu · Lemon Yellow","fam":"黄","src":"宝可梦","kind":"cat","grade":"B","safe":[0,1,2,3,4],"c":["#DEB100","#BCB7A6","#847700","#444845","#7D491C","#ED493E"],"d":["#AE8A00","#948F7E","#5C5200","#232724","#542800","#BE0D1B"],"l":["#FFDF9A","#E8E3D6","#AFA050","#6B6E6C","#A2734F","#FF8F7E"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,2,5,4,3,1],"hue":[5,4,0,2,1,3],"light":[1,0,5,2,4,3]},"bg":"#F9F4EC","bg2":"#EEE4D2","ink":"#3F3107","muted":"#8D836F","seq":["#FEF6E8","#FAEDD5","#F5E2BD","#EFD5A3","#E7C886","#DDBB6C","#D2AE52","#C6A135","#B9930A","#A88500","#987800","#896C00","#7B6100","#6C5401","#5F4A02","#513F02","#433300"],"div":["#534000","#6B5300","#836700","#9D7C03","#B7910A","#CEAA4E","#E2C480","#EFDBB6","#F7F2EB","#D0E0EC","#A2CCEC","#77B5E0","#419ED3","#2888B9","#0072A0","#005C83","#004766"],"flw":["#F0EBDB","#EEE6C9","#ECE1B6","#E9DB9D","#E4D583","#DCCD60","#D4C339","#D2B623","#D1A803","#CE9B00","#C49300","#B39200","#A28F00","#928D00","#808900","#718510","#697B19","#646F1E","#606522","#595A25","#4D5529","#424F2D","#384831","#324032","#2F3932"],"cyc":["#E67565","#DE7B55","#D48248","#C8893E","#BA8F38","#AA9536","#969C3A","#80A143","#60A657","#30AA6F","#00AA88","#00A89E","#00A6B0","#00A4C3","#00A1D8","#259CEE","#6096EF","#828FEA","#9C89E3","#B681D6","#CD78C5","#DF70AB","#E96E90","#EA6F79","#E67565"],"wh":[{"i":0,"L":74.2,"C":76.8,"h":87.4},{"i":1,"L":74.4,"C":9.4,"h":97.4},{"i":2,"L":49.6,"C":55.5,"h":96.3},{"i":3,"L":30.1,"C":2.6,"h":152.0},{"i":4,"L":36.4,"C":39.5,"h":62.5},{"i":5,"L":55.2,"C":75.3,"h":34.5}],"rs":{"seq":{"m":true,"r":75.0,"u":0.731},"div":{"m":false,"r":67.7,"u":0.703},"flow":{"m":true,"r":70.2,"u":0.684},"cyclic":{"m":true,"r":0.5,"u":0.763}},"minde":22.6,"cvd":{"protan":9.1,"deutan":9.3,"tritan":16.1}},{"slug":"zelda-pale-gold","zh":"塞尔达","en":"Zelda","tone":"淡金","toneEn":"Pale Gold","nameZh":"塞尔达 · 淡金","nameEn":"Zelda · Pale Gold","fam":"黄","src":"塞尔达传说","kind":"cat","grade":"A","safe":[0,1,2,3,4,5],"c":["#A18001","#C7B679","#6B8469","#AEACA7","#7FA3C4","#2F5C8A"],"d":["#755C00","#9D8E52","#465F45","#868580","#577C9C","#003962"],"l":["#CBAA57","#F2E2B1","#98AD96","#DAD8D4","#B3CEE9","#6783A9"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,1,5,4,2,3],"hue":[0,1,2,4,5,3],"light":[1,3,4,0,2,5]},"bg":"#F8F5EE","bg2":"#ECE4D6","ink":"#3D3113","muted":"#8B8373","seq":["#FCF6EB","#F4E9D4","#ECDCBD","#E2CDA2","#D7BE88","#CCB06D","#BE9F50","#B19133","#A58411","#987901","#8B6E00","#7E6300","#715900","#644F01","#584502","#4E3D02","#433300"],"div":["#384637","#485B47","#597158","#6F866E","#869C84","#A2B3A0","#BECABC","#D8DFD7","#F2F3F0","#E9DCC1","#DDC58F","#C9AB63","#B29237","#9B7C1F","#836700","#6A5302","#524003"],"flw":["#F6EBC8","#E2DDBD","#CFCFB3","#BDC4AB","#ACBFA6","#98BAA5","#84B4A7","#73AEAB","#63A8AF","#45A5A5","#24A298","#009D87","#009773","#00925F","#008D46","#008552","#007C5A","#00735F","#1B6B60","#2F625E","#345B5B","#2C5159","#294956","#294051","#2A384A"],"cyc":["#AB935C","#9F975C","#939B60","#829F68","#70A273","#5AA482","#45A593","#33A6A2","#26A5B1","#2CA3C0","#44A0C9","#5D9BCF","#7497CF","#8693CD","#988FC9","#A88AC1","#B885B6","#C581A5","#CD7F95","#CF8084","#CD8277","#C7866C","#C08B64","#B78F5E","#AB935C"],"wh":[{"i":0,"L":55.1,"C":60.3,"h":87.6},{"i":1,"L":74.2,"C":33.4,"h":94.6},{"i":2,"L":52.6,"C":18.7,"h":141.3},{"i":3,"L":70.4,"C":2.8,"h":94.3},{"i":4,"L":65.5,"C":21.3,"h":258.7},{"i":5,"L":38.0,"C":30.1,"h":269.9}],"rs":{"seq":{"m":true,"r":74.9,"u":0.678},"div":{"m":false,"r":67.7,"u":0.703},"flow":{"m":true,"r":70.0,"u":0.639},"cyclic":{"m":true,"r":0.5,"u":0.652}},"minde":17.1,"cvd":{"protan":16.9,"deutan":17.0,"tritan":12.4}},{"slug":"luigi-grass","zh":"路易吉","en":"Luigi","tone":"草绿","toneEn":"Grass Green","nameZh":"路易吉 · 草绿","nameEn":"Luigi · Grass Green","fam":"绿","src":"超级马力欧","kind":"cat","grade":"A","safe":[0,1,2,3,4,5],"c":["#009530","#8ACB96","#DAB32B","#8F8C82","#005B2D","#2B54B0"],"d":["#006B1E","#61A26F","#AD8C00","#69665C","#003515","#00337B"],"l":["#67BD6C","#C2F5CA","#FFE197","#B9B7AE","#49815A","#6D7CC8"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,1,4,5,2,3],"hue":[2,0,1,4,5,3],"light":[1,2,3,0,5,4]},"bg":"#F0F7F0","bg2":"#DBE9DA","ink":"#1A391C","muted":"#798878","seq":["#EFF9EE","#E1F2DF","#D1EACF","#BDE0BB","#A8D5A6","#92CA91","#7BBE7C","#63B266","#48A751","#2A9D3E","#00902E","#008329","#007623","#00681D","#005A17","#004D12","#003F0C"],"div":["#44423D","#58564F","#6D6A61","#828077","#98968D","#B0AEA7","#C9C7C2","#DEDDDA","#F3F3F2","#CBE4C9","#A0D49F","#77BF78","#4AA953","#2D933C","#017C25","#06641E","#084D18"],"flw":["#D0F4D5","#C0EDBD","#B5E5A3","#ACDC83","#A8D264","#A2C36E","#9DB679","#9AAC80","#97A386","#8A9F77","#7A9C66","#619854","#3D9442","#008E39","#00884D","#008259","#007B62","#007468","#006C6B","#00646C","#005C61","#005551","#004D40","#124532","#213D29"],"cyc":["#B2932F","#9E9A30","#899F38","#6CA548","#49A95C","#00AB75","#00A990","#00A8A4","#00A6B7","#00A3CB","#00A0E2","#3C99F6","#6E92F3","#8C8CED","#A984E3","#C27BD4","#DA71BC","#E96B9F","#EF6B85","#ED6F6E","#E7755B","#DD7C4A","#D1843D","#C38C34","#B2932F"],"wh":[{"i":0,"L":53.7,"C":69.3,"h":142.2},{"i":1,"L":76.3,"C":37.3,"h":147.5},{"i":2,"L":74.4,"C":68.7,"h":88.8},{"i":3,"L":58.2,"C":5.8,"h":97.5},{"i":4,"L":33.3,"C":40.7,"h":150.6},{"i":5,"L":37.8,"C":56.5,"h":289.5}],"rs":{"seq":{"m":true,"r":74.7,"u":0.685},"div":{"m":false,"r":67.9,"u":0.611},"flow":{"m":true,"r":69.9,"u":0.63},"cyclic":{"m":true,"r":0.6,"u":0.791}},"minde":20.9,"cvd":{"protan":14.7,"deutan":15.6,"tritan":13.2}},{"slug":"zoro-moss-ink","zh":"索隆","en":"Zoro","tone":"苔墨","toneEn":"Moss & Ink","nameZh":"索隆 · 苔墨","nameEn":"Zoro · Moss & Ink","fam":"绿","src":"海贼王","kind":"cat","grade":"A","safe":[0,1,2,3,4,5],"c":["#6D8557","#9CC574","#BAB7AC","#B28E00","#2F5025","#454747"],"d":["#486033","#739C4D","#928F84","#856900","#0D2E01","#242626"],"l":["#9BAE88","#D0F0AE","#E6E3DB","#DDB95D","#5C7652","#6C6D6D"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,1,4,3,5,2],"hue":[3,1,0,4,2,5],"light":[1,2,3,0,4,5]},"bg":"#F4F5F2","bg2":"#E3E6E0","ink":"#2E3527","muted":"#81857D","seq":["#F5F7F2","#E3E8DD","#D2DAC9","#C0CBB5","#AEBCA0","#9CAD8C","#8A9E78","#7B9166","#6C8456","#637B4E","#5A7045","#50663D","#475C35","#3F522F","#384929","#313F24","#2C3920"],"div":["#524000","#6A5300","#836700","#9C7C19","#B4922D","#CAAB5D","#DEC58B","#ECDCBC","#F6F2EC","#CFDFEC","#A3CBEC","#79B5DF","#459ED2","#2A88B9","#0072A0","#005C83","#004767"],"flw":["#DCF2C4","#D2E3BC","#C9D6B5","#C1CAB0","#B9C4A4","#B1C195","#A7BD82","#9CBB71","#8DB659","#7BB13E","#6CAA39","#62A346","#5A9B50","#559458","#538D5E","#528562","#4A7C5D","#407256","#376A51","#2E604B","#2A584A","#285047","#284844","#294140","#2A3A3A"],"cyc":["#AF9349","#9F984A","#8F9D4F","#79A15A","#63A467","#42A87D","#0DA992","#00A8A3","#00A6B4","#00A3C6","#03A1D8","#499BE0","#6D96E0","#8591DC","#9D8BD5","#B085CB","#C57EBB","#D578A5","#DC7790","#DD797C","#D97C6C","#D2825E","#C88854","#BD8D4D","#AF9349"],"wh":[{"i":0,"L":52.6,"C":28.1,"h":128.3},{"i":1,"L":75.0,"C":45.6,"h":127.4},{"i":2,"L":74.4,"C":6.0,"h":98.7},{"i":3,"L":60.6,"C":65.2,"h":87.7},{"i":4,"L":30.6,"C":30.5,"h":135.1},{"i":5,"L":30.0,"C":0.9,"h":199.3}],"rs":{"seq":{"m":true,"r":74.8,"u":0.628},"div":{"m":false,"r":67.7,"u":0.718},"flow":{"m":true,"r":69.8,"u":0.6},"cyclic":{"m":true,"r":0.6,"u":0.72}},"minde":19.8,"cvd":{"protan":13.7,"deutan":13.4,"tritan":12.4}},{"slug":"tanjiro-ink-ember","zh":"灶门炭治郎","en":"Tanjiro","tone":"墨绿炭赤","toneEn":"Ink Green & Ember","nameZh":"灶门炭治郎 · 墨绿炭赤","nameEn":"Tanjiro · Ink Green & Ember","fam":"绿","src":"鬼灭之刃","kind":"cat","grade":"B","safe":[0,1,3,5],"c":["#426B47","#464746","#8B2B1C","#D4703F","#C0B6A7","#7CA377"],"d":["#1D4725","#252625","#5D0400","#A84919","#988E7F","#557C51"],"l":["#719274","#6C6D6C","#AD5D4B","#F7A178","#EBE3D7","#ADCDA9"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,5,2,3,1,4],"hue":[2,3,5,0,4,1],"light":[4,5,3,0,2,1]},"bg":"#F3F6F3","bg2":"#E1E7E1","ink":"#29362A","muted":"#7F857F","seq":["#F3F8F3","#E5ECE5","#D3DED3","#C1D0C2","#B0C2B0","#A0B5A0","#8EA78F","#7C997E","#6C8C6E","#5E8061","#4E7452","#406945","#375E3C","#2F5434","#2A4B2F","#26412A","#233A26"],"div":["#314733","#3F5D42","#4D7451","#648967","#7B9F7D","#99B69A","#B7CCB8","#D5E0D5","#F2F3F1","#F5D7CE","#F5B9AB","#E99B89","#DA7D68","#C46551","#AD4D3A","#8B3F30","#6A3226"],"flw":["#F4EADB","#E9DFC7","#DDD6B5","#CBCDA3","#BFC590","#BDBB76","#BEAF5E","#C1A549","#C49A34","#B79631","#A69536","#94913D","#838E45","#75884D","#678255","#657845","#666E35","#666425","#675B18","#5F5415","#52511C","#454C24","#3A462A","#33402F","#313931"],"cyc":["#CE8371","#C88667","#C18A60","#B78F5A","#AC9358","#9E9859","#8E9C5D","#7EA067","#6AA373","#52A585","#3BA695","#21A6A5","#09A5B6","#1CA3C4","#419FCE","#5E9BD2","#7796D2","#8B91CF","#9C8DC9","#AF88C0","#BE83B3","#CB7FA0","#D17E8E","#D17F7E","#CE8371"],"wh":[{"i":0,"L":41.4,"C":27.6,"h":145.2},{"i":1,"L":30.0,"C":0.8,"h":144.4},{"i":2,"L":32.5,"C":51.0,"h":38.6},{"i":3,"L":58.0,"C":56.6,"h":51.1},{"i":4,"L":74.5,"C":9.0,"h":83.8},{"i":5,"L":63.2,"C":28.9,"h":139.8}],"rs":{"seq":{"m":true,"r":75.1,"u":0.627},"div":{"m":false,"r":67.9,"u":0.726},"flow":{"m":true,"r":70.1,"u":0.661},"cyclic":{"m":true,"r":0.5,"u":0.655}},"minde":21.3,"cvd":{"protan":11.1,"deutan":10.9,"tritan":18.3}},{"slug":"totoro-moss-gray","zh":"龙猫","en":"Totoro","tone":"苔灰","toneEn":"Moss Gray","nameZh":"龙猫 · 苔灰","nameEn":"Totoro · Moss Gray","fam":"绿","src":"龙猫","kind":"cat","grade":"B","safe":[0,2,5],"c":["#616967","#3B4A45","#8A7550","#718578","#9D9D99","#B8C2B3"],"d":["#3E4543","#1A2924","#63512D","#4C6053","#767672","#909A8B"],"l":["#8B9190","#63706C","#B29F81","#9EAEA3","#C8C8C5","#E6EEE2"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,3,1,2,5,4],"hue":[2,5,4,3,0,1],"light":[5,4,3,2,0,1]},"bg":"#F4F5F5","bg2":"#E4E5E5","ink":"#313332","muted":"#838484","seq":["#F6F7F6","#DEE0DF","#C6C9C8","#B0B5B4","#9DA3A2","#8C9391","#7C8382","#6B7371","#5C6462","#555D5B","#4F5755","#454C4A","#414846","#3E4442","#3A403E","#373C3B","#313635"],"div":["#4C412D","#635439","#7B6845","#917D5C","#A79373","#BDAC92","#D2C6B2","#E4DCD1","#F4F2F1","#D5DFE6","#B3CADB","#92B3C9","#729BB6","#5885A2","#3E708D","#345A71","#2A4556"],"flw":["#E4EEDF","#D8E3D1","#CFDAC7","#C4CFB9","#BCC7B0","#B0BFA8","#A4B69F","#99B099","#8DA792","#84A089","#7E997E","#799172","#758A67","#72835D","#6A7D58","#617858","#587258","#506C57","#4A6657","#445F55","#405850","#3A4F48","#364842","#31413C","#2C3A35"],"cyc":["#AA936C","#A1966B","#99986D","#8E9B71","#849D76","#799F7E","#6CA189","#61A295","#58A2A2","#56A1AD","#5B9FB6","#689CBD","#7599C0","#8297C0","#8E93BE","#9A90BA","#A78CB4","#B489A9","#BC879D","#C1868E","#C18783","#BD8A7A","#B88D73","#B18F6E","#AA936C"],"wh":[{"i":0,"L":43.7,"C":3.5,"h":178.9},{"i":1,"L":30.1,"C":7.2,"h":172.0},{"i":2,"L":50.3,"C":23.6,"h":83.4},{"i":3,"L":53.6,"C":11.0,"h":155.3},{"i":4,"L":64.6,"C":2.2,"h":109.9},{"i":5,"L":77.3,"C":8.9,"h":134.3}],"rs":{"seq":{"m":true,"r":75.0,"u":0.39},"div":{"m":false,"r":67.7,"u":0.708},"flow":{"m":true,"r":69.9,"u":0.549},"cyclic":{"m":true,"r":0.5,"u":0.552}},"minde":12.0,"cvd":{"protan":9.8,"deutan":10.1,"tritan":11.4}},{"slug":"miku-aqua","zh":"初音未来","en":"Miku","tone":"青碧","toneEn":"Aqua Teal","nameZh":"初音未来 · 青碧","nameEn":"Miku · Aqua Teal","fam":"青","src":"VOCALOID","kind":"cat","grade":"C","safe":[0,2,3],"c":["#35CFC4","#A8ACAB","#689893","#00737D","#404757","#D7486A"],"d":["#00A49B","#818584","#41716D","#004C53","#1F2635","#AB1246"],"l":["#93F9EF","#D5D8D7","#9CC1BD","#5B9AA2","#686D7B","#F58397"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,2,3,4,5,1],"hue":[5,0,2,3,1,4],"light":[0,1,2,5,3,4]},"bg":"#EFF6F5","bg2":"#D9E8E6","ink":"#123835","muted":"#768785","seq":["#EDF9F7","#DCF2EE","#C7E9E4","#B0DFDA","#98D5CF","#82CCC4","#68C1B8","#48B5AC","#1CABA1","#009B92","#008B82","#007E76","#00716A","#00635C","#00554F","#004742","#003C38"],"div":["#004B46","#00615B","#007871","#188F87","#2AA79E","#68BDB5","#96D2CB","#C4E4E0","#EDF4F3","#D9DEE2","#C3C7D0","#AAAEBB","#9096A5","#7A8090","#646B7B","#515663","#3E424C"],"flw":["#B3F8F0","#B3E3D4","#B2D2C0","#A6BEA9","#9AAD92","#95A07B","#9B9867","#A39059","#AC874D","#B57D46","#BE7344","#C66846","#CD5C4C","#D24F54","#D04662","#C44771","#B14B80","#9A508A","#83558D","#6C588C","#595986","#475879","#3F4B63","#394153","#333741"],"cyc":["#CC818C","#CC827D","#C88573","#C18969","#BA8D63","#B0915F","#A4965E","#989960","#889D67","#75A172","#63A37F","#4FA48F","#3FA59F","#34A4AB","#33A3B8","#41A0C3","#589DCA","#6E99CD","#8095CC","#9191C9","#A08DC3","#B089BA","#BE84AC","#C7819C","#CC818C"],"wh":[{"i":0,"L":75.7,"C":41.5,"h":188.1},{"i":1,"L":70.0,"C":1.6,"h":179.3},{"i":2,"L":59.4,"C":17.4,"h":188.4},{"i":3,"L":43.9,"C":26.8,"h":209.7},{"i":4,"L":30.1,"C":10.5,"h":276.9},{"i":5,"L":52.0,"C":59.5,"h":11.8}],"rs":{"seq":{"m":true,"r":75.0,"u":0.642},"div":{"m":false,"r":67.7,"u":0.651},"flow":{"m":true,"r":70.0,"u":0.762},"cyclic":{"m":true,"r":0.5,"u":0.633}},"minde":16.7,"cvd":{"protan":6.7,"deutan":8.2,"tritan":13.9}},{"slug":"venti-mint","zh":"温迪","en":"Venti","tone":"风薄荷","toneEn":"Anemo Mint","nameZh":"温迪 · 风薄荷","nameEn":"Venti · Anemo Mint","fam":"青","src":"原神","kind":"cat","grade":"B","safe":[0,1,4],"c":["#089275","#216156","#3B5A6E","#949795","#8FC2B0","#C8B384"],"d":["#006953","#003D34","#15374A","#6E716F","#679A88","#9F8B5D"],"l":["#68BAA1","#59877E","#6A8191","#BFC2C0","#C4EDDE","#F2E0BA"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,4,1,2,5,3],"hue":[5,4,0,1,2,3],"light":[4,5,3,0,1,2]},"bg":"#F0F6F4","bg2":"#DBE8E3","ink":"#1A382F","muted":"#788782","seq":["#EFF9F5","#DBEEE7","#C5E2D8","#AED6C8","#94C8B7","#7ABBA7","#5FAE96","#42A187","#1A9578","#06886D","#037C62","#02725A","#006751","#005B47","#00503F","#004636","#003D2F"],"div":["#274841","#315E55","#3A7569","#538A7F","#6DA095","#8EB7AE","#AFCDC7","#D0E1DD","#F1F3F2","#E2DDD1","#D1C6AF","#BBAD8E","#A5946E","#8F7E57","#796940","#625534","#4B4129"],"flw":["#D5F1E7","#C8E9D9","#BEE2CC","#B3D7BB","#ACCEAB","#9EC5A7","#92BCA5","#89B4A3","#80ABA0","#72A39A","#5E9F96","#459992","#1D948F","#008C8B","#008385","#007B7F","#007278","#166970","#246268","#2A5A62","#2B535C","#2D4B56","#2D4550","#2E3F48","#2D3841"],"cyc":["#A79469","#9D976A","#939A6C","#869D73","#79A07B","#69A188","#5EA293","#55A29F","#50A2AC","#54A0B6","#5F9EBE","#6E9AC2","#7D97C2","#8A94C1","#9790BD","#A38DB8","#B08AAF","#BB87A2","#C28594","#C38687","#C2877D","#BD8A74","#B78D6E","#B0916A","#A79469"],"wh":[{"i":0,"L":53.9,"C":40.4,"h":171.1},{"i":1,"L":37.0,"C":23.2,"h":179.3},{"i":2,"L":36.7,"C":15.9,"h":249.9},{"i":3,"L":62.2,"C":1.6,"h":155.5},{"i":4,"L":74.5,"C":20.8,"h":169.9},{"i":5,"L":73.7,"C":26.8,"h":88.7}],"rs":{"seq":{"m":true,"r":75.0,"u":0.662},"div":{"m":false,"r":67.7,"u":0.726},"flow":{"m":true,"r":70.0,"u":0.606},"cyclic":{"m":true,"r":0.5,"u":0.566}},"minde":17.9,"cvd":{"protan":9.8,"deutan":9.3,"tritan":5.2}},{"slug":"giyu-pine","zh":"富冈义勇","en":"Giyu","tone":"松青","toneEn":"Pine Teal","nameZh":"富冈义勇 · 松青","nameEn":"Giyu · Pine Teal","fam":"青","src":"鬼灭之刃","kind":"cat","grade":"B","safe":[0,1,3],"c":["#26635B","#5F9A8E","#B6B9B8","#C9A227","#863434","#36485F"],"d":["#003F38","#377368","#8E9190","#9C7B00","#5D0B14","#12273C"],"l":["#5D8A82","#95C3B9","#E3E5E5","#F4CE73","#A8635F","#616E81"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,1,4,3,5,2],"hue":[4,3,1,0,5,2],"light":[2,3,1,0,4,5]},"bg":"#F2F6F5","bg2":"#DFE7E5","ink":"#253633","muted":"#7D8584","seq":["#F2F8F7","#E0EAE8","#CBDBD8","#B5CBC7","#A1BBB6","#8DADA7","#7B9F98","#689089","#55837B","#457770","#306961","#225D56","#1E5850","#19524A","#184A43","#19413C","#193A36"],"div":["#284843","#325E57","#3C746C","#558981","#6E9F97","#8FB6AF","#B0CDC8","#D1E1DE","#F1F3F3","#F0D8D5","#EDBBB7","#DF9E99","#D0817C","#BA6A66","#A45250","#834341","#643432"],"flw":["#DAF0E9","#CAEDDC","#BCE9C8","#B6E3AD","#B7DB92","#BFD275","#C7C85D","#B4BC69","#A4AE72","#98A178","#92946B","#8D865F","#877954","#8A714F","#8D694C","#8F604B","#8F574D","#8E4F52","#884759","#7D4361","#6A4363","#564260","#454059","#3A3D4F","#313741"],"cyc":["#CE817D","#CA8471","#C48868","#BC8D61","#B2905D","#A7955C","#99995D","#8A9D63","#77A06E","#62A37D","#4FA58C","#3CA59A","#2BA5AA","#26A4B8","#37A1C5","#509ECC","#6999CF","#7F95CE","#8F91CB","#A18DC5","#B088BC","#BF83AD","#CA809C","#CE808D","#CE817D"],"wh":[{"i":0,"L":38.0,"C":21.8,"h":183.5},{"i":1,"L":59.4,"C":22.1,"h":179.4},{"i":2,"L":74.9,"C":1.2,"h":173.6},{"i":3,"L":68.3,"C":64.0,"h":87.4},{"i":4,"L":33.5,"C":39.6,"h":27.3},{"i":5,"L":30.0,"C":15.8,"h":268.7}],"rs":{"seq":{"m":true,"r":75.2,"u":0.537},"div":{"m":false,"r":67.9,"u":0.735},"flow":{"m":true,"r":70.2,"u":0.651},"cyclic":{"m":true,"r":0.4,"u":0.623}},"minde":21.3,"cvd":{"protan":11.3,"deutan":11.4,"tritan":10.9}},{"slug":"gojo-sky","zh":"五条悟","en":"Gojo","tone":"晴空蓝","toneEn":"Six-Eyes Sky","nameZh":"五条悟 · 晴空蓝","nameEn":"Gojo · Six-Eyes Sky","fam":"蓝","src":"咒术回战","kind":"cat","grade":"B","safe":[0,1,3,4,5],"c":["#1394CE","#85BEDC","#B3B6B9","#7F8995","#296AA4","#424754"],"d":["#006C99","#5B96B3","#8B8E91","#59636F","#004675","#212632"],"l":["#79BDEC","#C1E9FF","#E0E2E5","#ABB3BD","#6C92C2","#696D78"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,1,4,5,3,2],"hue":[1,0,4,2,3,5],"light":[1,2,0,3,4,5]},"bg":"#F1F5F9","bg2":"#DDE6EF","ink":"#1C3546","muted":"#7B858E","seq":["#F0F7FE","#DFECF9","#CDE2F4","#BDD8EF","#ABCDEA","#96C1E5","#7CB5DF","#5DA7D8","#369AD1","#118EC6","#0B81B4","#0575A5","#016994","#005D84","#005073","#004564","#003954"],"div":["#034765","#025C82","#0172A1","#3188B8","#4E9ECF","#7DB5DD","#A6CBEA","#CCE0F1","#F0F3F7","#EDDAD0","#E6C0A8","#D5A485","#C38963","#AD734B","#965D34","#794B2B","#5C3A22"],"flw":["#D4EFFF","#C9E5F7","#C2DDF0","#B7D0E4","#B0C8DC","#A0C1DD","#8DBBDF","#78B5E1","#5CAEE3","#3AA5E3","#4D9DD2","#5894C2","#608BB2","#6484A4","#667D96","#5F7691","#536F8E","#47678B","#3B5F88","#325680","#364F72","#374864","#374257","#353C4C","#333741"],"cyc":["#579EC0","#679BC5","#7698C6","#8594C5","#9291C2","#A08EBC","#AE89B3","#BA86A8","#C38499","#C6848A","#C5867F","#C28875","#BB8B6D","#B48F68","#AB9266","#A29666","#969968","#889D6E","#79A077","#68A284","#5BA391","#4EA39F","#48A3AC","#4BA1B7","#579EC0"],"wh":[{"i":0,"L":57.8,"C":40.3,"h":253.8},{"i":1,"L":74.2,"C":23.5,"h":242.4},{"i":2,"L":73.9,"C":1.9,"h":255.8},{"i":3,"L":56.7,"C":7.7,"h":262.2},{"i":4,"L":43.4,"C":37.1,"h":269.7},{"i":5,"L":30.2,"C":8.5,"h":278.0}],"rs":{"seq":{"m":true,"r":74.7,"u":0.746},"div":{"m":false,"r":67.8,"u":0.725},"flow":{"m":true,"r":69.9,"u":0.69},"cyclic":{"m":true,"r":0.6,"u":0.603}},"minde":14.9,"cvd":{"protan":11.9,"deutan":13.5,"tritan":11.0}},{"slug":"rei-pale-blue","zh":"绫波丽","en":"Rei","tone":"苍白蓝","toneEn":"Pale Blue","nameZh":"绫波丽 · 苍白蓝","nameEn":"Rei · Pale Blue","fam":"蓝","src":"新世纪福音战士","kind":"cat","grade":"B","safe":[0,1,2,3,4,5],"c":["#82BFDC","#3D7CA0","#7F949F","#B5B8B9","#E8873A","#C5394A"],"d":["#5797B3","#00577A","#596E78","#8D9091","#BB600C","#980029"],"l":["#C0EAFF","#79A4C2","#AEBEC7","#E2E4E5","#FFBD8F","#E47479"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,2,1,5,4,3],"hue":[5,4,0,1,3,2],"light":[3,0,4,2,1,5]},"bg":"#F2F5F7","bg2":"#DFE6EA","ink":"#24353D","muted":"#7D8589","seq":["#F2F7FA","#E2EDF3","#D2E2EB","#C0D7E3","#AECCDB","#9DC1D4","#8BB6CC","#77ABC3","#629FBB","#5390AB","#47839D","#3C7790","#2F6981","#285D72","#215063","#1B4555","#153947"],"div":["#254655","#2D5C70","#35728B","#5187A0","#6C9DB4","#8EB4C7","#B0CBD9","#D1E0E8","#F1F3F4","#F5D8C6","#F4BC95","#E69F6C","#D58243","#BE6B27","#A75406","#86440B","#66350D"],"flw":["#D8EFF6","#C0E1EF","#AFD6EC","#96C9E8","#74C7E9","#33C5E5","#00BFD2","#00B9BE","#00B2A9","#00ACAA","#00A6B1","#009FB7","#0096BE","#348EBB","#5686B0","#6580A5","#707A98","#6D708C","#676483","#605777","#604C6C","#63415E","#64364C","#622D3B","#5B2629"],"cyc":["#D57D7F","#D28071","#CC8466","#C4895D","#BA8E57","#AD9354","#9F9854","#8F9C59","#7AA064","#62A474","#49A684","#2AA797","#00A7A9","#00A6B7","#01A3C7","#32A0D2","#589BD7","#7496D6","#8891D3","#9C8DCE","#AD87C5","#BF82B6","#CE7DA3","#D47C91","#D57D7F"],"wh":[{"i":0,"L":74.3,"C":24.0,"h":239.4},{"i":1,"L":49.4,"C":26.9,"h":250.5},{"i":2,"L":60.1,"C":9.7,"h":239.0},{"i":3,"L":74.6,"C":1.2,"h":225.5},{"i":4,"L":65.6,"C":63.5,"h":60.5},{"i":5,"L":46.0,"C":60.6,"h":22.3}],"rs":{"seq":{"m":true,"r":74.9,"u":0.564},"div":{"m":false,"r":67.9,"u":0.709},"flow":{"m":true,"r":70.1,"u":0.652},"cyclic":{"m":true,"r":0.5,"u":0.692}},"minde":13.8,"cvd":{"protan":12.4,"deutan":13.5,"tritan":14.0}},{"slug":"ayaka-frost","zh":"神里绫华","en":"Ayaka","tone":"霜蓝","toneEn":"Frost Blue","nameZh":"神里绫华 · 霜蓝","nameEn":"Ayaka · Frost Blue","fam":"蓝","src":"原神","kind":"cat","grade":"B","safe":[0,1,4,5],"c":["#73BDFD","#B5B7B9","#C8657D","#A497C6","#6C889E","#2B5C8C"],"d":["#4095D3","#8D8F91","#9E3D58","#7C709E","#466278","#003962"],"l":["#CFE6FF","#E2E3E5","#E997A8","#CFC4EA","#9CB2C4","#6583AB"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,4,5,3,2,1],"hue":[2,4,0,5,3,1],"light":[1,0,3,4,2,5]},"bg":"#F2F5F9","bg2":"#DFE6EF","ink":"#213446","muted":"#7D858E","seq":["#F2F7FE","#E2EDFA","#D2E2F6","#C4D9F3","#B6D1F0","#A6C7EC","#93BDE7","#79AFE2","#5EA2DD","#4695D2","#3687C1","#257AB1","#106DA2","#045F8F","#02517B","#014469","#003858"],"div":["#194565","#185A85","#1270A7","#4085BB","#609BCF","#88B2DD","#ADC9EA","#D0DFF1","#F1F3F7","#F1D7DD","#EEBAC3","#E19CA9","#D37D90","#BE657A","#A84D64","#863F51","#66323E"],"flw":["#DEEDFA","#D0E6FC","#C0DFFD","#AED8FE","#99CFFF","#8BC2F9","#8CB6EB","#8BABDE","#8AA0D2","#8097C2","#778FB5","#6D87A6","#667F98","#607893","#5D7192","#5C6A90","#5D628D","#605A89","#645283","#604B7B","#524975","#44456C","#384161","#303D57","#29384B"],"cyc":["#CB8190","#CC8281","#C98575","#C3886B","#BC8C65","#B29160","#A7955F","#9B9860","#8C9C65","#7AA06F","#68A27C","#54A48C","#42A59C","#37A5A9","#35A3B7","#41A1C2","#589DCA","#6D99CC","#7E95CC","#8F91C8","#9D8EC4","#AD89BC","#BB85AF","#C582A1","#CB8190"],"wh":[{"i":0,"L":74.3,"C":39.0,"h":262.2},{"i":1,"L":74.3,"C":1.3,"h":255.7},{"i":2,"L":55.1,"C":42.1,"h":6.9},{"i":3,"L":65.0,"C":26.6,"h":302.5},{"i":4,"L":55.3,"C":15.6,"h":253.3},{"i":5,"L":38.0,"C":31.4,"h":269.9}],"rs":{"seq":{"m":true,"r":75.0,"u":0.663},"div":{"m":false,"r":67.9,"u":0.732},"flow":{"m":true,"r":70.0,"u":0.644},"cyclic":{"m":true,"r":0.5,"u":0.638}},"minde":18.3,"cvd":{"protan":9.2,"deutan":9.6,"tritan":8.5}},{"slug":"ganyu-glacier","zh":"甘雨","en":"Ganyu","tone":"冰蓝","toneEn":"Glacier Blue","nameZh":"甘雨 · 冰蓝","nameEn":"Ganyu · Glacier Blue","fam":"蓝","src":"原神","kind":"cat","grade":"A","safe":[0,1,2,3,4,5],"c":["#5586CB","#9BBADF","#8A8F96","#C34759","#766987","#33466E"],"d":["#2061A3","#7292B6","#646970","#981836","#514562","#08254A"],"l":["#91B0E8","#D2E6FF","#B6BABF","#E37E86","#9E93AC","#606C8E"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,1,5,4,3,2],"hue":[3,1,0,5,4,2],"light":[1,2,0,3,4,5]},"bg":"#F3F5FA","bg2":"#E1E5EF","ink":"#273347","muted":"#7F848F","seq":["#F3F6FE","#E4EAF9","#D4DDF3","#C5D1EE","#B6C6E9","#A3B7E3","#91AADD","#7D9ED7","#6991D1","#5485CA","#4778BA","#3B6CAC","#2F619E","#26568E","#214B7C","#1C3F6A","#17355A"],"div":["#334456","#415871","#506D8D","#6882A2","#7F98B6","#9DB0C9","#BBC9DB","#D7DEE9","#F2F3F5","#F8D6D7","#FAB6B9","#EF969C","#E2767F","#CC5C69","#B64253","#923743","#6F2C34"],"flw":["#DEECFF","#CFDFF5","#C2D2E8","#B6C6DC","#A9BFDE","#98B6E2","#84ADE5","#6FA3E8","#6F99E6","#7990E0","#8188DB","#8980D4","#9177CD","#996EC4","#A063B9","#9960AF","#8660A5","#765F99","#695D8C","#5E5A7E","#575772","#4E5067","#43465A","#393E51","#313747"],"cyc":["#CE8086","#CC8379","#C8866E","#C08A65","#B78E60","#AC935D","#9F975D","#929B61","#809F69","#6CA277","#58A486","#44A596","#33A5A5","#2AA4B3","#34A2C1","#4A9FCA","#659ACE","#7996CE","#8992CC","#998FC7","#A78BC1","#B686B6","#C482A7","#CB8097","#CE8086"],"wh":[{"i":0,"L":55.4,"C":40.9,"h":275.8},{"i":1,"L":74.5,"C":22.0,"h":264.9},{"i":2,"L":59.2,"C":4.4,"h":264.9},{"i":3,"L":48.0,"C":53.4,"h":17.9},{"i":4,"L":46.6,"C":18.6,"h":307.8},{"i":5,"L":29.9,"C":26.0,"h":281.3}],"rs":{"seq":{"m":true,"r":75.0,"u":0.696},"div":{"m":false,"r":67.9,"u":0.695},"flow":{"m":true,"r":69.8,"u":0.675},"cyclic":{"m":true,"r":0.5,"u":0.657}},"minde":16.5,"cvd":{"protan":14.0,"deutan":14.1,"tritan":15.5}},{"slug":"link-champion","zh":"林克","en":"Link","tone":"苍蓝","toneEn":"Champion Blue","nameZh":"林克 · 苍蓝","nameEn":"Link · Champion Blue","fam":"蓝","src":"塞尔达传说","kind":"cat","grade":"A","safe":[0,1,2,3,4,5],"c":["#327EBF","#9ABAD4","#98958A","#D0B560","#7E5F40","#354862"],"d":["#005990","#7292AB","#716F64","#A58D38","#583C1E","#10273F"],"l":["#7AA7DC","#CDE6FB","#C2C0B7","#FBE29E","#A4886F","#616E84"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,1,3,4,5,2],"hue":[4,3,1,0,5,2],"light":[3,1,2,0,4,5]},"bg":"#F2F5FA","bg2":"#E0E6EF","ink":"#233447","muted":"#7E848F","seq":["#F2F7FE","#E1EAF8","#D0DDF1","#BED0EB","#ABC2E4","#96B4DD","#81A6D5","#6B98CE","#548DC7","#3A81C1","#2975B4","#1E6BA8","#0E619A","#02568B","#044B7A","#06416A","#07375A"],"div":["#1F4467","#225988","#236EAB","#4883BF","#6799D3","#8DB1E0","#B0C9EC","#D1DEF2","#F1F3F7","#E5DDCA","#D6C69C","#C1AD75","#AA9450","#947E36","#7D691B","#655518","#4E4115"],"flw":["#FDE9BA","#EAE7B8","#D7E4B9","#C1DEBD","#B0D6C2","#A2CBC3","#99BBAB","#94AD97","#8AA288","#729E85","#579B88","#349790","#009299","#008B9E","#0082A3","#007AA9","#3371A3","#4A699A","#576390","#605B84","#665475","#5E4D66","#4C475D","#3E4052","#313742"],"cyc":["#B78E66","#AE9263","#A59562","#999964","#8B9C69","#7AA073","#68A280","#58A48E","#4AA49C","#3FA4AB","#3FA2B6","#4CA0C1","#609CC7","#7199C9","#8295C8","#9192C6","#A08DC0","#AF89B6","#BC85AA","#C5839B","#C9828C","#C8847F","#C58774","#BF8A6C","#B78E66"],"wh":[{"i":0,"L":51.1,"C":40.7,"h":268.3},{"i":1,"L":74.0,"C":17.3,"h":253.6},{"i":2,"L":61.7,"C":6.3,"h":98.5},{"i":3,"L":74.4,"C":46.4,"h":91.1},{"i":4,"L":42.7,"C":24.1,"h":69.5},{"i":5,"L":30.1,"C":17.6,"h":271.0}],"rs":{"seq":{"m":true,"r":75.0,"u":0.718},"div":{"m":false,"r":67.9,"u":0.717},"flow":{"m":true,"r":70.0,"u":0.641},"cyclic":{"m":true,"r":0.5,"u":0.647}},"minde":21.0,"cvd":{"protan":20.2,"deutan":20.0,"tritan":17.4}},{"slug":"taki-night-indigo","zh":"泷","en":"Taki","tone":"夜靛","toneEn":"Night Indigo","nameZh":"泷 · 夜靛","nameEn":"Taki · Night Indigo","fam":"蓝","src":"你的名字","kind":"cat","grade":"A","safe":[0,1,2,3,4,5],"c":["#1F467E","#5F6471","#5B86B2","#9DB9E5","#96999C","#C46E5A"],"d":["#002550","#3C414D","#30618B","#7491BC","#707275","#994836"],"l":["#586C9B","#888C97","#91AFD3","#D6E5FF","#C2C4C7","#E79E8C"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,2,1,3,5,4],"hue":[5,2,3,0,4,1],"light":[3,4,5,2,1,0]},"bg":"#F4F5F9","bg2":"#E3E5EE","ink":"#2B3245","muted":"#81838D","seq":["#F4F6FD","#E4E7F4","#D5DAEB","#C4CBE1","#B5BED9","#A4AECE","#94A0C5","#8392BC","#7284B2","#6377A9","#516AA0","#3D5D96","#32538A","#2A4A80","#264170","#253A60","#243455"],"div":["#2D445B","#385978","#446E96","#5E83AB","#7899BF","#97B1D0","#B7C9E0","#D5DEEC","#F2F3F6","#F1D8D3","#EDBCB0","#DE9F90","#CE8270","#B86B59","#A25443","#824537","#63362B"],"flw":["#E1ECFF","#D0DFF8","#C3D3EA","#B7C7DE","#B1C0DD","#AEB8DF","#B1AEDE","#B5A5DC","#BD9BD7","#C591CF","#CE86C5","#BB85C5","#A884C4","#9783C2","#8582BD","#7680B7","#647EAF","#5A77A1","#586E92","#556582","#535D75","#4E5568","#434B60","#394258","#2D374E"],"cyc":["#C48778","#BE8A6F","#B88D6A","#AF9166","#A69465","#9B9866","#8D9C6B","#7F9E73","#6EA17F","#5DA38D","#51A39A","#47A3A7","#47A2B4","#51A0BE","#619CC4","#7299C6","#8196C6","#8F92C4","#9C8EBF","#AB8BB8","#B787AD","#C1849E","#C7838F","#C78483","#C48778"],"wh":[{"i":0,"L":29.9,"C":36.4,"h":281.1},{"i":1,"L":42.4,"C":8.0,"h":277.3},{"i":2,"L":54.5,"C":27.8,"h":265.1},{"i":3,"L":74.5,"C":25.1,"h":271.5},{"i":4,"L":63.1,"C":2.0,"h":255.9},{"i":5,"L":55.7,"C":41.3,"h":39.1}],"rs":{"seq":{"m":true,"r":75.0,"u":0.617},"div":{"m":false,"r":67.9,"u":0.735},"flow":{"m":true,"r":70.0,"u":0.687},"cyclic":{"m":true,"r":0.5,"u":0.581}},"minde":16.9,"cvd":{"protan":15.9,"deutan":15.9,"tritan":15.7}},{"slug":"cloud-soldier","zh":"克劳德","en":"Cloud","tone":"军蓝","toneEn":"Soldier Blue","nameZh":"克劳德 · 军蓝","nameEn":"Cloud · Soldier Blue","fam":"蓝","src":"最终幻想VII","kind":"cat","grade":"A","safe":[0,1,2,3,4,5],"c":["#294771","#6B5A48","#6882A5","#34C3F9","#B6B8BB","#D0B55C"],"d":["#00264C","#473726","#415D7E","#0099C8","#8E9093","#A58D34"],"l":["#5B6D90","#918273","#98ACC8","#C0E8FF","#E3E5E7","#FBE29B"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,2,3,5,1,4],"hue":[1,5,3,2,0,4],"light":[4,5,3,2,1,0]},"bg":"#F4F5F8","bg2":"#E3E5EC","ink":"#2C3341","muted":"#81848B","seq":["#F4F6FC","#E4E7F1","#D0D6E4","#BDC5D7","#ACB6CC","#9AA6C0","#8997B5","#7989AA","#697BA0","#5A6F96","#4A628D","#3C5782","#354E77","#2F486F","#2B4061","#293B58","#27354E"],"div":["#354356","#445771","#546C8C","#6B81A1","#8297B6","#9FAFC8","#BDC8DA","#D8DEE8","#F2F3F5","#E5DDC8","#D6C69A","#C1AD73","#AB944D","#947E32","#7D6916","#655515","#4E4113"],"flw":["#E1ECFB","#CCE8FD","#B6E5FE","#99E2F9","#7BDFF1","#5EDDE3","#43D9D2","#19D3D5","#00CBDC","#00C1E1","#00B8E6","#12ADEA","#40A2E2","#5395CC","#5E88B6","#627EA4","#677598","#6C6D8D","#6F6682","#6F5C72","#695361","#5C4B59","#4B4254","#3E3E50","#2E3749"],"cyc":["#B68F62","#AC9360","#A19660","#949B63","#859E6A","#72A176","#5EA484","#4EA493","#3EA5A2","#36A4B0","#3AA2BC","#4E9FC6","#629BCB","#7598CC","#8694CA","#9590C6","#A58BBF","#B586B4","#C183A7","#CA8196","#CC8288","#CA847A","#C5876F","#BE8B68","#B68F62"],"wh":[{"i":0,"L":29.8,"C":27.7,"h":276.5},{"i":1,"L":39.4,"C":13.6,"h":73.1},{"i":2,"L":53.6,"C":21.6,"h":269.1},{"i":3,"L":73.9,"C":41.8,"h":242.6},{"i":4,"L":74.7,"C":1.8,"h":265.8},{"i":5,"L":74.3,"C":48.3,"h":91.5}],"rs":{"seq":{"m":true,"r":74.8,"u":0.595},"div":{"m":false,"r":67.9,"u":0.719},"flow":{"m":true,"r":70.0,"u":0.667},"cyclic":{"m":true,"r":0.5,"u":0.642}},"minde":21.6,"cvd":{"protan":17.7,"deutan":17.7,"tritan":20.8}},{"slug":"raiden-electro","zh":"雷电将军","en":"Raiden","tone":"雷紫","toneEn":"Electro Violet","nameZh":"雷电将军 · 雷紫","nameEn":"Raiden · Electro Violet","fam":"紫","src":"原神","kind":"cat","grade":"A","safe":[0,1,2,3,4,5],"c":["#886CD4","#BDA5F0","#B6B2BD","#A16D8D","#5C3F8E","#484552"],"d":["#5F47AC","#947DC7","#8E8A95","#7A4867","#351D69","#272430"],"l":["#B49AEE","#E5D7FF","#E2DFE8","#C59AB4","#846AAA","#6E6C76"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,1,4,5,3,2],"hue":[0,1,4,3,2,5],"light":[2,1,0,3,4,5]},"bg":"#F6F4FB","bg2":"#E8E3F2","ink":"#372D4C","muted":"#878191","seq":["#F9F5FF","#EFE8FB","#E5DAF8","#D9CBF3","#CBBBEE","#BFABEA","#B19AE4","#A38ADE","#957AD9","#886CD4","#7C61C6","#7158B8","#654DAA","#594399","#4E3B86","#433373","#392B63"],"div":["#483970","#5D4994","#735ABA","#8B70CE","#A287E1","#BAA3EB","#D0BFF5","#E3D9F7","#F4F1F7","#E0DEC6","#C9CA92","#AEB367","#929C3C","#7B8622","#647100","#515B04","#3F4606"],"flw":["#EEE8F8","#E8E0F9","#E3D8FA","#DDCDFA","#D5C3FB","#CDB8FC","#C3ABFC","#B99FFC","#AE93FC","#A889F1","#A782DE","#A37CCA","#9D76B7","#9672A7","#8D6D98","#846695","#795D92","#6D568F","#614F8C","#56497D","#4F456F","#47405F","#413B52","#3C3847","#38363F"],"cyc":["#998DCF","#A988C8","#B984BE","#C97EAD","#D27C9B","#D67C87","#D57E76","#D08269","#C7875F","#BD8C57","#B29154","#A49752","#939C57","#819F5F","#69A36E","#50A57E","#31A792","#02A7A4","#00A6B3","#00A4C4","#23A0D1","#519CD7","#6F97D8","#8592D5","#998DCF"],"wh":[{"i":0,"L":52.6,"C":60.7,"h":304.6},{"i":1,"L":72.2,"C":41.7,"h":304.6},{"i":2,"L":73.2,"C":6.2,"h":304.5},{"i":3,"L":52.3,"C":27.3,"h":340.5},{"i":4,"L":33.5,"C":50.0,"h":307.9},{"i":5,"L":30.0,"C":8.4,"h":300.2}],"rs":{"seq":{"m":true,"r":75.2,"u":0.676},"div":{"m":false,"r":67.6,"u":0.64},"flow":{"m":true,"r":69.7,"u":0.651},"cyclic":{"m":true,"r":0.6,"u":0.707}},"minde":17.6,"cvd":{"protan":15.4,"deutan":15.5,"tritan":6.3}},{"slug":"eva01-violet-lime","zh":"初号机","en":"EVA-01","tone":"紫萤","toneEn":"Violet & Lime","nameZh":"初号机 · 紫萤","nameEn":"EVA-01 · Violet & Lime","fam":"紫","src":"新世纪福音战士","kind":"cat","grade":"A","safe":[0,1,2,3,4,5],"c":["#824CC5","#503F64","#A989D6","#B9B4C0","#7F8E4F","#83CA20"],"d":["#58259D","#2D1E41","#8163AE","#918C98","#58682A","#609F00"],"l":["#AA7CDD","#756785","#D2B7F6","#E5E1EB","#ACB784","#C0F478"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,2,1,5,4,3],"hue":[4,5,2,1,0,3],"light":[5,3,2,4,0,1]},"bg":"#F8F3FB","bg2":"#EBE2F3","ink":"#3C2B4F","muted":"#8A8093","seq":["#FAF4FF","#F2E7FB","#E9D9F7","#DFC9F2","#D3B9ED","#C7A7E7","#BB96E1","#AF85DB","#A275D4","#9766CF","#8B57C9","#7E49C0","#7240B1","#6636A2","#592F8E","#4D2A7A","#432568"],"div":["#523375","#6B419B","#8450C3","#9B68D6","#B17FE9","#C69CF2","#DABAFA","#E9D6FA","#F5F1F9","#DFDCE3","#C9C6CC","#B0ADB5","#98949E","#827E88","#6D6973","#58555D","#444147"],"flw":["#D4F7A0","#E6EA99","#F1E099","#F8D59E","#F9CCA5","#F3C4AE","#E2BDB8","#E3AFAF","#E89BA2","#EB8198","#E27783","#D2746C","#C07159","#AF704C","#A56943","#AA5F45","#AD524B","#AE4654","#AB3B60","#A23371","#933180","#75377A","#593865","#483754","#3B3443"],"cyc":["#879F3F","#6DA44D","#49A862","#06AA7D","#00A994","#00A7A7","#00A5BA","#00A2CD","#009FE7","#4B98F2","#7192EE","#908CE8","#AA84DE","#C17DD0","#D873B9","#E56EA0","#EB6D85","#E9716E","#E4775D","#DA7E4D","#CF8542","#C08C39","#B09335","#9E9936","#879F3F"],"wh":[{"i":0,"L":44.2,"C":72.4,"h":310.6},{"i":1,"L":29.9,"C":24.7,"h":309.5},{"i":2,"L":62.7,"C":44.5,"h":308.1},{"i":3,"L":74.0,"C":6.8,"h":306.4},{"i":4,"L":56.5,"C":35.5,"h":116.7},{"i":5,"L":74.3,"C":83.0,"h":123.7}],"rs":{"seq":{"m":true,"r":74.9,"u":0.711},"div":{"m":false,"r":67.8,"u":0.689},"flow":{"m":true,"r":70.1,"u":0.737},"cyclic":{"m":true,"r":0.4,"u":0.754}},"minde":19.2,"cvd":{"protan":17.5,"deutan":17.5,"tritan":11.7}},{"slug":"howl-iridescent","zh":"哈尔","en":"Howl","tone":"金蓝虹","toneEn":"Iridescent Gold","nameZh":"哈尔 · 金蓝虹","nameEn":"Howl · Iridescent Gold","fam":"紫","src":"哈尔的移动城堡","kind":"cat","grade":"A","safe":[0,1,2,3,4,5],"c":["#DF72A6","#C0B7A5","#977900","#578B6C","#77BDE0","#346595"],"d":["#B5497F","#988F7D","#6B5500","#316548","#4A95B7","#00426D"],"l":["#FFA7CE","#EBE4D5","#C1A353","#8AB39A","#BCE7FF","#6E8CB4"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,5,2,4,3,1],"hue":[2,3,4,5,0,1],"light":[1,4,0,3,2,5]},"bg":"#FAF3F6","bg2":"#F1E1E7","ink":"#482937","muted":"#907F86","seq":["#FFF3F8","#FDE7F0","#FBDAE7","#F7CBDD","#F4BBD2","#EFA9C7","#EA97BC","#E585B1","#DE72A6","#CE6598","#BF5A8B","#B04D7E","#A14272","#8F3964","#7D3157","#6C284A","#5A203D"],"div":["#2C445F","#37587D","#426D9C","#5D82B0","#7798C4","#97B0D4","#B7C9E3","#D5DEED","#F2F3F5","#E9DCC5","#DCC592","#C8AC67","#B1933C","#9A7D22","#826800","#695404","#514006"],"flw":["#F2EADB","#E2E3CC","#CFDEC2","#B6D9BE","#9CD3BF","#7BCDC4","#53C7CB","#14C1D6","#00B5DC","#00A9E2","#1AA0EA","#5397E2","#6E8FD7","#7E88CD","#8C7FC0","#9778B0","#9D709B","#9B6588","#925582","#86427D","#713F7C","#574176","#41406B","#303D5D","#29384B"],"cyc":["#AB9359","#9E985B","#909B5E","#7DA068","#6BA375","#54A585","#3EA696","#29A6A5","#18A5B5","#26A3C3","#419FCC","#5D9BD1","#7697D1","#8893CF","#9A8EC9","#AA89C2","#BB84B5","#C880A4","#CF7E93","#D17F82","#CE8275","#C8866A","#C08A61","#B78F5C","#AB9359"],"wh":[{"i":0,"L":62.1,"C":49.0,"h":350.3},{"i":1,"L":74.7,"C":10.3,"h":89.4},{"i":2,"L":52.1,"C":57.9,"h":88.3},{"i":3,"L":53.6,"C":27.0,"h":155.5},{"i":4,"L":73.3,"C":27.5,"h":242.3},{"i":5,"L":41.5,"C":31.2,"h":268.6}],"rs":{"seq":{"m":true,"r":74.8,"u":0.666},"div":{"m":false,"r":67.9,"u":0.695},"flow":{"m":true,"r":69.9,"u":0.733},"cyclic":{"m":true,"r":0.4,"u":0.648}},"minde":26.5,"cvd":{"protan":15.0,"deutan":14.9,"tritan":12.3}},{"slug":"nezuko-crimson-pink","zh":"祢豆子","en":"Nezuko","tone":"绯粉","toneEn":"Crimson Pink","nameZh":"祢豆子 · 绯粉","nameEn":"Nezuko · Crimson Pink","fam":"粉","src":"鬼灭之刃","kind":"cat","grade":"C","safe":[0,1,3,4],"c":["#E93F6E","#F1A0B9","#C8B4A1","#E4703C","#903159","#4F4449"],"d":["#B9004A","#C77891","#9F8C7A","#B74815","#680037","#2D2328"],"l":["#FF869C","#FFDAE4","#F2E1D2","#FFA780","#B0647F","#746B6F"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,1,3,4,5,2],"hue":[0,3,2,4,1,5],"light":[2,1,3,0,4,5]},"bg":"#FEF2F4","bg2":"#F8E0E2","ink":"#53232D","muted":"#987D80","seq":["#FFF4F5","#FFE8EB","#FFDBDF","#FFCAD1","#FFB8C2","#FFA5B3","#FB90A2","#F77A92","#F16282","#EB4A73","#DF3767","#CF2B5D","#BE1C52","#AC0D47","#950C3D","#7F0B34","#6B0A2B"],"div":["#7A2038","#A12448","#C92759","#DF496F","#F46785","#FB8EA1","#FFB3BE","#FFD3D8","#FBF1F1","#CFE2DB","#9FD1C4","#76BBAA","#49A590","#2D8F7A","#007965","#056252","#074B3F"],"flw":["#F7E9DC","#F7DFCD","#F7D5C3","#F8C9B8","#F9BFB0","#FAB2AA","#FDA498","#FE9886","#FF896F","#FC7B57","#F96E50","#F56152","#EF5555","#E94857","#E23B5B","#D3395D","#BF3C5E","#AA3E5C","#983F5A","#843F56","#733D50","#623A4A","#543844","#49353E","#403439"],"cyc":["#E07589","#DF7875","#DB7C66","#D38259","#CA8750","#BD8D49","#AE9345","#9F9846","#8B9E4C","#72A35A","#55A66C","#29A982","#00A898","#00A7A8","#00A5BA","#00A3CC","#189FE1","#5499E4","#7394E3","#8E8FDE","#A388D6","#BA81C8","#CE7AB5","#DB769F","#E07589"],"wh":[{"i":0,"L":54.0,"C":68.4,"h":11.0},{"i":1,"L":74.4,"C":33.4,"h":359.2},{"i":2,"L":74.5,"C":13.0,"h":71.7},{"i":3,"L":60.3,"C":64.0,"h":49.5},{"i":4,"L":35.7,"C":43.8,"h":357.0},{"i":5,"L":30.1,"C":5.8,"h":347.3}],"rs":{"seq":{"m":true,"r":75.0,"u":0.659},"div":{"m":false,"r":68.0,"u":0.696},"flow":{"m":true,"r":70.0,"u":0.693},"cyclic":{"m":true,"r":0.5,"u":0.743}},"minde":19.7,"cvd":{"protan":7.2,"deutan":7.3,"tritan":7.1}},{"slug":"march7-sakura-ice","zh":"三月七","en":"March 7th","tone":"樱冰","toneEn":"Sakura Ice","nameZh":"三月七 · 樱冰","nameEn":"March 7th · Sakura Ice","fam":"粉","src":"崩坏：星穹铁道","kind":"cat","grade":"C","safe":[0,5],"c":["#DF81AA","#A64575","#8D7B82","#BAB8B9","#78BDDD","#3E6B9E"],"d":["#B55983","#7D1A51","#67565D","#929091","#4B95B4","#034778"],"l":["#FFB4D3","#C6789B","#B5A6AB","#E6E5E5","#B9E7FF","#7693BD"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,2,4,5,1,3],"hue":[4,5,1,0,3,2],"light":[3,4,0,2,5,1]},"bg":"#FAF3F6","bg2":"#EFE2E7","ink":"#462B36","muted":"#8F8085","seq":["#FEF4F8","#FBE8F0","#F7DBE6","#F3CCDC","#EEBDD1","#E8ABC4","#E299B7","#DC88AB","#D4779F","#C56B92","#B66086","#A8547A","#9A496E","#893F61","#773654","#662D48","#55243B"],"div":["#214757","#265C72","#2B728E","#4A87A3","#669DB8","#8BB4CA","#AECBDB","#D0E0E9","#F1F3F5","#EED7E1","#EABACC","#DC9CB6","#CD7EA0","#B8678A","#A34F75","#82415E","#633348"],"flw":["#F9E6F0","#F2DBEC","#E8D2EA","#DBC9EA","#CDC2E9","#C6BAE8","#CAB0E1","#CEA6DA","#D39CD0","#D890C4","#DC86B6","#D57EA8","#C27B9C","#B27892","#A27489","#967182","#8C6B7C","#84637A","#7B5C77","#705576","#654D72","#624465","#5E3B57","#58344A","#512B3C"],"cyc":["#46A0C4","#5B9CCA","#6F99CC","#8194CB","#9191C8","#A18CC2","#B088B9","#BD84AD","#C7829C","#CC818C","#CC827F","#C88673","#C28A6A","#BA8D64","#AF9160","#A5955F","#989961","#889D68","#77A071","#63A380","#52A48E","#41A59E","#35A4AC","#36A3B9","#46A0C4"],"wh":[{"i":0,"L":65.2,"C":41.7,"h":351.9},{"i":1,"L":43.7,"C":45.8,"h":350.6},{"i":2,"L":53.4,"C":8.3,"h":351.3},{"i":3,"L":75.0,"C":0.9,"h":343.7},{"i":4,"L":73.3,"C":26.4,"h":239.6},{"i":5,"L":44.2,"C":32.3,"h":271.2}],"rs":{"seq":{"m":true,"r":75.1,"u":0.639},"div":{"m":false,"r":67.7,"u":0.702},"flow":{"m":true,"r":70.0,"u":0.729},"cyclic":{"m":true,"r":0.5,"u":0.645}},"minde":19.7,"cvd":{"protan":9.6,"deutan":6.3,"tritan":19.9}},{"slug":"aerith-rose-sage","zh":"爱丽丝","en":"Aerith","tone":"玫粉鼠尾草","toneEn":"Rose & Sage","nameZh":"爱丽丝 · 玫粉鼠尾草","nameEn":"Aerith · Rose & Sage","fam":"粉","src":"最终幻想VII","kind":"cat","grade":"B","safe":[0,1,5],"c":["#C95B7C","#ECA8BA","#9E9698","#408E52","#775D4C","#AF212B"],"d":["#9F3257","#C28092","#777072","#0E672E","#523A2A","#790012"],"l":["#E98FA6","#FFDFE7","#C8C1C3","#7BB684","#9D8678","#CF605A"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,1,5,3,4,2],"hue":[1,0,5,4,3,2],"light":[1,2,0,3,4,5]},"bg":"#FBF3F5","bg2":"#F2E1E5","ink":"#4A2931","muted":"#917F83","seq":["#FFF4F6","#FBE6EA","#F7D7DE","#F2C6CF","#ECB3C0","#E5A1B1","#DE8EA2","#D67B93","#CF6986","#C75A7A","#B94F70","#AD4667","#9D3B5B","#8D3250","#7B2C46","#6A263C","#5B2033"],"div":["#214A2A","#286135","#2F7941","#4A8F58","#65A46F","#88BA8F","#ABD0B0","#CEE3D1","#F0F4F0","#F2D7DB","#F2B8C5","#E699AC","#D87993","#C3617D","#AE4867","#8B3B53","#6A2F40"],"flw":["#FFE4EB","#FBD5DE","#EBC8CF","#DEBBC2","#E2B0BA","#E7A2B0","#EB91A4","#EF7F97","#EB7584","#E37373","#DB7265","#D17156","#C6714A","#BB7140","#AE7136","#A3712E","#9B6B32","#956439","#8C5E40","#805845","#735349","#694C45","#653F38","#61342E","#5C2623"],"cyc":["#D87995","#DA7A81","#D87D73","#D28165","#CB865C","#C08C53","#B3914F","#A6964E","#949B51","#80A05B","#69A369","#4BA67C","#25A890","#00A8A1","#00A6B1","#00A4C1","#09A2D4","#489CDB","#6897DC","#8292D9","#968ED4","#AB87CB","#BF80BC","#CE7CAB","#D87995"],"wh":[{"i":0,"L":53.3,"C":47.1,"h":3.7},{"i":1,"L":75.7,"C":27.6,"h":1.7},{"i":2,"L":62.8,"C":3.3,"h":360.0},{"i":3,"L":53.0,"C":45.2,"h":146.6},{"i":4,"L":41.6,"C":16.0,"h":60.0},{"i":5,"L":38.5,"C":64.0,"h":29.6}],"rs":{"seq":{"m":true,"r":75.1,"u":0.663},"div":{"m":false,"r":68.0,"u":0.694},"flow":{"m":true,"r":70.0,"u":0.655},"cyclic":{"m":true,"r":0.5,"u":0.71}},"minde":19.9,"cvd":{"protan":9.1,"deutan":9.1,"tritan":15.7}},{"slug":"noface-ink-gray","zh":"无脸男","en":"No-Face","tone":"墨灰","toneEn":"Ink Gray","nameZh":"无脸男 · 墨灰","nameEn":"No-Face · Ink Gray","fam":"中性","src":"千与千寻","kind":"mono","grade":"B","safe":[0,3,5],"c":["#303038","#4F4F5F","#765D84","#7B7B8B","#959599","#B6B6C5"],"d":["#111019","#2D2D3C","#513A5F","#565665","#6F6F73","#8E8E9D"],"l":["#55545B","#767684","#9C87A7","#A5A5B2","#C0C0C3","#E3E3EF"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,1,3,5,4,2],"hue":[2,5,4,3,1,0],"light":[5,4,3,2,1,0]},"bg":"#F5F5F5","bg2":"#E5E5E6","ink":"#323235","muted":"#848385","seq":["#F6F6F7","#E1E1E3","#CECED1","#BEBEC2","#ADADB1","#9D9DA3","#8D8D93","#7E7E85","#717179","#64646C","#56565E","#515159","#4C4C54","#44444C","#3F3F45","#39393F","#343439"],"div":["#4B3D53","#624F6D","#7A6287","#8F789C","#A58EB1","#BBA8C4","#D0C3D7","#E3DBE7","#F4F2F5","#DDDED5","#C4C9B3","#A9B293","#8F9A74","#79845D","#636F47","#505A3A","#3E452E"],"flw":["#EAEAFA","#DEDEF1","#D4D4EA","#CBCBE2","#C2C2DB","#BABAD4","#B2B3CD","#ABACC7","#A4A4C0","#9C9DB9","#9594B4","#8E8BAE","#8882A8","#827BA3","#7D729D","#746D93","#6B6788","#64617E","#5D5C75","#56566B","#515164","#4A4B5A","#444553","#3E3E4B","#363640"],"cyc":["#9093BD","#9A90BA","#A38EB6","#AF8AAE","#B988A3","#BF8694","#C18788","#BF897E","#BB8B76","#B58F70","#AE916D","#A6946B","#9C976C","#929A6F","#849D76","#779F7F","#69A18C","#5DA299","#57A2A4","#57A1AF","#5D9FB7","#699CBD","#7799C0","#8396C0","#9093BD"],"wh":[{"i":0,"L":20.2,"C":5.4,"h":291.5},{"i":1,"L":34.1,"C":10.0,"h":291.9},{"i":2,"L":43.3,"C":25.3,"h":315.1},{"i":3,"L":52.1,"C":9.3,"h":291.3},{"i":4,"L":61.8,"C":2.2,"h":290.4},{"i":5,"L":74.5,"C":8.1,"h":290.9}],"rs":{"seq":{"m":true,"r":75.0,"u":0.442},"div":{"m":false,"r":67.7,"u":0.722},"flow":{"m":true,"r":70.1,"u":0.615},"cyclic":{"m":true,"r":0.5,"u":0.55}},"minde":10.7,"cvd":{"protan":9.7,"deutan":9.6,"tritan":9.0}},{"slug":"2b-achromatic","zh":"2B","en":"2B","tone":"素墨","toneEn":"Achromatic Ink","nameZh":"2B · 素墨","nameEn":"2B · Achromatic Ink","fam":"中性","src":"尼尔：机械纪元","kind":"mono","grade":"A","safe":[0,1,2,3,4,5],"c":["#303035","#5A5A67","#81818D","#C7C5C2","#999487","#83714F"],"d":["#111016","#373744","#5C5C67","#9E9C99","#726E61","#5D4D2C"],"l":["#545459","#82828D","#ABABB5","#F4F2F0","#C3BFB4","#AB9B7F"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,1,2,3,4,5],"hue":[5,3,4,2,1,0],"light":[3,4,2,5,1,0]},"bg":"#F5F5F5","bg2":"#E5E5E6","ink":"#323234","muted":"#848484","seq":["#F6F6F7","#E3E3E5","#D3D3D4","#C0C0C3","#B0B0B3","#9F9FA2","#919195","#818185","#737378","#66666B","#56565C","#515157","#4C4C52","#45454A","#3E3E43","#3A3A3E","#343438"],"div":["#4B412E","#62543B","#796849","#8F7E5F","#A59476","#BBAD95","#D1C6B4","#E4DCD2","#F4F2F1","#D6DEE5","#B6C9D9","#96B2C7","#779AB4","#5E849F","#456F8A","#395A6F","#2D4555"],"flw":["#F3EADB","#EBDECE","#E2D4C2","#DAC7B4","#D5BFAC","#D3B7A8","#D1AFA6","#CDA7A5","#C59FA5","#BB98A6","#B38F9F","#AF8590","#AA7C82","#A57574","#9E6E67","#986968","#8F646B","#845F6D","#785C6D","#6A586A","#5E5467","#524C5D","#484554","#3F3E4A","#363640"],"cyc":["#A9936C","#A0966C","#97996D","#8B9C72","#7F9E79","#72A084","#64A190","#5BA29C","#56A1A8","#58A0B3","#619EBA","#6E9BBF","#7C98C0","#8895BF","#9492BC","#9F8FB8","#AC8BB0","#B688A6","#BE8699","#C1868C","#C08882","#BD8A79","#B78D72","#B1906E","#A9936C"],"wh":[{"i":0,"L":20.0,"C":3.4,"h":291.0},{"i":1,"L":38.7,"C":8.0,"h":291.4},{"i":2,"L":54.3,"C":6.9,"h":291.0},{"i":3,"L":79.6,"C":1.8,"h":85.1},{"i":4,"L":61.4,"C":7.5,"h":93.9},{"i":5,"L":48.5,"C":21.6,"h":85.1}],"rs":{"seq":{"m":true,"r":75.1,"u":0.443},"div":{"m":false,"r":67.6,"u":0.71},"flow":{"m":true,"r":70.0,"u":0.589},"cyclic":{"m":true,"r":0.4,"u":0.537}},"minde":14.7,"cvd":{"protan":14.3,"deutan":14.4,"tritan":9.6}},{"slug":"kakashi-silver-navy","zh":"卡卡西","en":"Kakashi","tone":"银藏","toneEn":"Silver & Navy","nameZh":"卡卡西 · 银藏","nameEn":"Kakashi · Silver & Navy","fam":"中性","src":"火影忍者","kind":"cat","grade":"A","safe":[0,1,2,3,4,5],"c":["#8E98A4","#BFC1C2","#727578","#516E90","#3B475C","#B14A3A"],"d":["#68727D","#97999A","#4E5153","#2A4A6A","#192639","#862218"],"l":["#BBC3CD","#ECEEEF","#9C9EA1","#8196B2","#646D7F","#D37C6B"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,2,4,3,5,1],"hue":[5,3,4,1,0,2],"light":[1,0,2,3,5,4]},"bg":"#F4F5F6","bg2":"#E4E5E7","ink":"#303336","muted":"#828486","seq":["#F5F6F8","#E7E9EC","#D9DDE2","#CCD1D7","#BCC2C9","#AEB5BE","#A0A8B2","#929CA7","#848E99","#79828D","#6D7681","#626B75","#565F68","#4C535C","#424951","#383E45","#30353B"],"div":["#344356","#435871","#526D8D","#6A82A2","#8198B6","#9EB0C9","#BCC8DB","#D7DEE9","#F2F3F5","#F5D7D1","#F5B9AC","#E99B8B","#DA7C6A","#C46453","#AE4C3C","#8B3E31","#6A3127"],"flw":["#DAEEF8","#CDE3F0","#C0D8E7","#B2CBDD","#A6C0D4","#99B4CA","#8DA9C0","#83A0B7","#7795B0","#6A8BA9","#6082A2","#5A799E","#5B719C","#5F699A","#646195","#695A91","#70518A","#764881","#6E447A","#5D4474","#50436C","#444163","#3B3F58","#363B4D","#323741"],"cyc":["#C68678","#C1896E","#BA8C68","#B19164","#A79462","#9C9863","#8E9B68","#7F9F70","#6DA27C","#5BA38B","#4DA499","#42A4A7","#40A2B4","#49A0BE","#5C9DC6","#6E99C9","#7F95C8","#8F92C5","#9D8FC1","#AB8AB9","#B787AF","#C283A0","#C88290","#C98383","#C68678"],"wh":[{"i":0,"L":62.4,"C":7.6,"h":262.0},{"i":1,"L":77.9,"C":0.9,"h":235.8},{"i":2,"L":49.1,"C":2.1,"h":256.0},{"i":3,"L":45.5,"C":21.9,"h":267.2},{"i":4,"L":29.9,"C":14.0,"h":274.0},{"i":5,"L":45.0,"C":51.0,"h":36.6}],"rs":{"seq":{"m":true,"r":75.0,"u":0.448},"div":{"m":false,"r":68.0,"u":0.703},"flow":{"m":true,"r":70.0,"u":0.619},"cyclic":{"m":true,"r":0.5,"u":0.632}},"minde":13.3,"cvd":{"protan":13.0,"deutan":13.3,"tritan":13.3}},{"slug":"mario-primary","zh":"马力欧","en":"Mario","tone":"正红蓝","toneEn":"Primary Red & Blue","nameZh":"马力欧 · 正红蓝","nameEn":"Mario · Primary Red & Blue","fam":"撞色","src":"超级马力欧","kind":"cat","grade":"A","safe":[0,1,2,3,4,5],"c":["#DD5643","#C8B3A2","#DDB300","#683D17","#46464D","#2F56B3"],"d":["#B02A20","#9F8B7B","#AE8C00","#3E1E00","#25252C","#003580"],"l":["#FD8D78","#F2E0D2","#FFE19B","#8D6546","#6C6C72","#6F7ECB"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,5,2,3,1,4],"hue":[0,3,1,2,5,4],"light":[2,1,0,5,3,4]},"bg":"#FDF3F1","bg2":"#F6E1DC","ink":"#502720","muted":"#967E79","seq":["#FFF4F2","#FFE7E2","#FFD9D1","#FECBC0","#FCBAAC","#F9A998","#F49683","#ED826E","#E66F5A","#DF5C49","#D24E3D","#C34434","#B2382A","#A02D22","#8C271D","#762118","#631B13"],"div":["#4B4038","#625348","#796759","#8F7D6F","#A49385","#BAACA1","#D0C6BD","#E3DCD7","#F5F2F1","#FCD4CC","#FFB5A6","#F59482","#E97460","#D35A47","#BC4030","#973628","#732B20"],"flw":["#FFE9B9","#FFD9A0","#F2CDA6","#E3C4AC","#DABCA9","#E2B196","#EBA284","#F49275","#FE7E6A","#FF6D6C","#FF6175","#F75A83","#EA5691","#DA559D","#C557A9","#B059B1","#AB5299","#A24C7F","#97496A","#864758","#754455","#624156","#503E52","#423B4B","#363640"],"cyc":["#E27864","#D97E55","#D0844A","#C48A42","#B7903D","#A6963C","#919D41","#7AA24B","#5AA65F","#2AA977","#00A98E","#00A7A2","#00A6B5","#00A3C7","#00A0DE","#3A9BEC","#6995EA","#888EE5","#A088DE","#B980D0","#CE78BF","#DF72A6","#E7708B","#E77277","#E27864"],"wh":[{"i":0,"L":54.5,"C":64.3,"h":36.6},{"i":1,"L":74.3,"C":12.4,"h":67.4},{"i":2,"L":74.6,"C":77.0,"h":88.5},{"i":3,"L":30.3,"C":34.1,"h":63.2},{"i":4,"L":30.0,"C":4.5,"h":291.0},{"i":5,"L":38.7,"C":56.8,"h":289.7}],"rs":{"seq":{"m":true,"r":75.1,"u":0.705},"div":{"m":false,"r":67.7,"u":0.68},"flow":{"m":true,"r":70.1,"u":0.714},"cyclic":{"m":true,"r":0.5,"u":0.748}},"minde":22.9,"cvd":{"protan":16.7,"deutan":16.4,"tritan":10.8}},{"slug":"luffy-red-straw","zh":"路飞","en":"Luffy","tone":"赤麦","toneEn":"Red & Straw","nameZh":"路飞 · 赤麦","nameEn":"Luffy · Red & Straw","fam":"撞色","src":"海贼王","kind":"cat","grade":"B","safe":[0,1,2,3,4,5],"c":["#C11B1E","#C8732E","#D7B34E","#A29D96","#51443E","#2B5FA8"],"d":["#860009","#9C4D00","#AB8B23","#7B766F","#2F231E","#003C78"],"l":["#E16352","#EDA26B","#FFE09A","#CDC9C3","#766B66","#6C87C3"],"ord":{"smooth":[0,1,2,3,4,5],"distinct":[0,2,5,1,4,3],"hue":[0,1,2,5,3,4],"light":[2,3,1,0,5,4]},"bg":"#FFF2F0","bg2":"#F9E0DB","ink":"#54241D","muted":"#997D78","seq":["#FFF4F2","#FFE8E4","#FDD9D2","#FBC9BF","#F9BAAE","#F5A89A","#F09787","#EA8574","#E27261","#DC6251","#D44F41","#CB3A30","#C11C1F","#B01017","#9D0110","#830C0F","#6A110E"],"div":["#2C426B","#36568D","#406AB1","#5D7FC5","#7895D8","#99AEE4","#B9C7EF","#D6DDF4","#F2F2F7","#E8DCC7","#DBC594","#C6AC6A","#B09341","#997D25","#826800","#695407","#51400A"],"flw":["#FFE9BA","#F4DCAF","#E3CEAD","#D3C3AC","#D3BB9B","#D4B183","#D6A568","#D8994F","#DA8A34","#D67924","#D36A17","#CF5808","#CD4D17","#CA4627","#C44135","#BC3D40","#B13B4A","#A23C53","#933D59","#823D52","#763C45","#673B3A","#583934","#4C3731","#40352F"],"cyc":["#EE6F5D","#E5774B","#DB7F3D","#CD8730","#BE8E27","#AC9524","#969C28","#7EA234","#59A84B","#12AC67","#00AA84","#00A89C","#00A6B0","#00A4C3","#00A1DB","#009BF9","#5B94FB","#838DF5","#A086EC","#BD7BDD","#D671C8","#EA68AA","#F4658C","#F36974","#EE6F5D"],"wh":[{"i":0,"L":41.6,"C":75.4,"h":35.0},{"i":1,"L":56.8,"C":57.8,"h":60.8},{"i":2,"L":74.3,"C":55.0,"h":88.1},{"i":3,"L":65.0,"C":4.3,"h":83.0},{"i":4,"L":30.0,"C":7.2,"h":52.0},{"i":5,"L":40.4,"C":45.1,"h":281.0}],"rs":{"seq":{"m":true,"r":75.0,"u":0.697},"div":{"m":false,"r":67.7,"u":0.7},"flow":{"m":true,"r":69.9,"u":0.727},"cyclic":{"m":true,"r":0.6,"u":0.806}},"minde":22.9,"cvd":{"protan":14.3,"deutan":12.8,"tritan":15.6}}];
+const FAMS = ["红","橙","黄","绿","青","蓝","紫","粉","中性","撞色"];
+let state = {q:"", fam:"", grade:"", cvd:"none", view:"main", order:"smooth"};
+const ORDER_LABEL={smooth:"平滑",distinct:"区分度优先",hue:"色相环",light:"明度浅→深"};
+const ord = (p,key) => p.ord[state.order].map(i=>p[key][i]);
+
+/* ---------- 色觉模拟（Machado et al. 2009, severity 1.0） ---------- */
+const M = {
+ protan:[[0.152286,1.052583,-0.204868],[0.114503,0.786281,0.099216],[-0.003882,-0.048116,1.051998]],
+ deutan:[[0.367322,0.860646,-0.227968],[0.280085,0.672501,0.047413],[-0.011820,0.042940,0.968881]],
+ tritan:[[1.255528,-0.076749,-0.178779],[-0.078411,0.930809,0.147602],[0.004733,0.691367,0.303900]]
+};
+const s2l = c => c<=0.04045 ? c/12.92 : Math.pow((c+0.055)/1.055,2.4);
+const l2s = c => {c=Math.max(0,Math.min(1,c)); return c<=0.0031308?12.92*c:1.055*Math.pow(c,1/2.4)-0.055;};
+function hx(h){h=h.replace('#','');return [0,2,4].map(i=>parseInt(h.substr(i,2),16)/255);}
+function xh(v){return '#'+v.map(c=>Math.round(Math.max(0,Math.min(1,c))*255).toString(16).padStart(2,'0')).join('').toUpperCase();}
+const cache = {};
+function sim(h){
+  const m = state.cvd; if(m==="none") return h;
+  const k = m+h; if(cache[k]) return cache[k];
+  const lin = hx(h).map(s2l); let out;
+  if(m==="gray"){const y=0.2126*lin[0]+0.7152*lin[1]+0.0722*lin[2]; out=[y,y,y];}
+  else {const A=M[m]; out=A.map(r=>r[0]*lin[0]+r[1]*lin[1]+r[2]*lin[2]);}
+  return cache[k]=xh(out.map(l2s));
+}
+function lum(h){const l=hx(h).map(s2l);return 0.2126*l[0]+0.7152*l[1]+0.0722*l[2];}
+const readable = h => lum(h)>0.42 ? '#111' : '#fff';
+
+/* ---------- 复制 ---------- */
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),1500);}
+function copy(text,msg){
+  const done=()=>toast(msg);
+  if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(done,()=>fb());}
+  else fb();
+  function fb(){const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';
+    ta.style.opacity=0;document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');done();}catch(e){toast('复制失败，请手动选取');}
+    document.body.removeChild(ta);}
+}
+
+/* ---------- 迷你示意图 ---------- */
+function chart(p){
+  const C = ord(p,"c").map(sim);
+  const W=406,H=76,pad=4;
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" style="display:block">`;
+  // 折线
+  const n=44;
+  for(let i=0;i<6;i++){
+    let d="";
+    for(let j=0;j<n;j++){
+      const x=pad+j*(W*0.45-2*pad)/(n-1);
+      const y=H/2 + Math.sin(j/5.2+i*0.75)*(H*0.16) - (i-2.5)*4.4;
+      d+=(j?"L":"M")+x.toFixed(1)+" "+y.toFixed(1);
+    }
+    s+=`<path d="${d}" fill="none" stroke="${C[i]}" stroke-width="2" stroke-linecap="round"/>`;
+  }
+  // 柱状
+  const bv=[.62,.9,.44,1,.72,.34], bx=W*0.48, bw=(W*0.24)/6;
+  for(let i=0;i<6;i++)
+    s+=`<rect x="${(bx+i*bw+1).toFixed(1)}" y="${(H-4-bv[i]*(H-14)).toFixed(1)}" width="${(bw-2).toFixed(1)}" height="${(bv[i]*(H-14)).toFixed(1)}" fill="${C[i]}" rx="1.5"/>`;
+  // 散点
+  const sx=W*0.755;
+  let seed=7; const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
+  for(let i=0;i<6;i++)for(let j=0;j<9;j++){
+    const x=sx+ (i*1.0+rnd()*3.6)*((W*0.235)/9.2);
+    const y=H-6-(i*1.0+rnd()*3.6)*((H-14)/9.2);
+    s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.6" fill="${C[i]}" fill-opacity=".92"/>`;
+  }
+  return s+"</svg>";
+}
+const grad = arr => `linear-gradient(90deg,${arr.map(sim).join(',')})`;
+
+/* ---------- 色环：角度=CIELAB 色相，半径=彩度 ---------- */
+function wheelSVG(p){
+  const S=92, c=S/2, R=S/2-4, CMAX=64;
+  let s=`<svg class="wheel" viewBox="0 0 ${S} ${S}">`;
+  // 参考色轮（低透明度扇区）
+  for(let k=0;k<36;k++){
+    const a0=k*10*Math.PI/180, a1=(k*10+10.4)*Math.PI/180;
+    const x0=c+R*Math.cos(a0), y0=c-R*Math.sin(a0);
+    const x1=c+R*Math.cos(a1), y1=c-R*Math.sin(a1);
+    const hue=k*10;
+    s+=`<path d="M${c} ${c}L${x0.toFixed(2)} ${y0.toFixed(2)}A${R} ${R} 0 0 0 ${x1.toFixed(2)} ${y1.toFixed(2)}Z" fill="${labHex(78,52,hue)}" opacity=".26"/>`;
+  }
+  s+=`<circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="rgba(128,128,128,.35)" stroke-width=".8"/>`;
+  s+=`<circle cx="${c}" cy="${c}" r="${R*20/CMAX}" fill="none" stroke="rgba(128,128,128,.22)" stroke-width=".7"/>`;
+  s+=`<circle cx="${c}" cy="${c}" r="${R*40/CMAX}" fill="none" stroke="rgba(128,128,128,.22)" stroke-width=".7"/>`;
+  const idx=p.ord[state.order];
+  const pt=i=>{const w=p.wh[i], r=Math.min(1,w.C/CMAX)*R, a=w.h*Math.PI/180;
+    return [c+r*Math.cos(a), c-r*Math.sin(a)];};
+  let d="";
+  idx.forEach((i,k)=>{const [x,y]=pt(i); d+=(k?"L":"M")+x.toFixed(2)+" "+y.toFixed(2);});
+  s+=`<path d="${d}" fill="none" stroke="rgba(90,90,100,.55)" stroke-width="1.1"/>`;
+  idx.forEach(i=>{const [x,y]=pt(i);
+    s+=`<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="5.4" fill="${sim(p.c[i])}" stroke="#fff" stroke-width="1.3"/>`;});
+  return s+"</svg>";
+}
+/* 极简 Lab(L,C,h)->hex，仅供色轮底图 */
+function labHex(L,C,h){
+  const r=h*Math.PI/180, a=C*Math.cos(r), b=C*Math.sin(r);
+  const fy=(L+16)/116, fx=fy+a/500, fz=fy-b/200;
+  const fi=t=>t*t*t>0.008856?t*t*t:(t-4/29)*108/841;
+  const X=fi(fx)*0.95047, Y=fi(fy), Z=fi(fz)*1.08883;
+  let R=3.2404542*X-1.5371385*Y-0.4985314*Z,
+      G=-0.9692660*X+1.8760108*Y+0.0415560*Z,
+      B=0.0556434*X-0.2040259*Y+1.0572252*Z;
+  return xh([R,G,B].map(l2s));
+}
+
+/* ---------- 卡片 ---------- */
+function card(p){
+  const trip = state.view==="trip";
+  const idx = p.ord[state.order];
+  const rows = trip ? [ord(p,"l"),ord(p,"c"),ord(p,"d")] : [ord(p,"c")];
+  let sw = rows.map((row,ri)=>
+    `<div class="sw${trip?' trip':''}">`+row.map((c,i)=>{
+      const v=sim(c);
+      const unsafe = ri===(trip?1:0) && !p.safe.includes(idx[i]) && p.grade!=="A";
+      return `<div class="cell${unsafe?' unsafe':''}" style="background:${v}" data-hex="${c}"
+        title="${c}${unsafe?'  · 色盲下与其它色接近':''}"><span style="color:${readable(v)}">${c.slice(1)}</span></div>`;
+    }).join('')+`</div>`).join('');
+  return `<div class="card" data-slug="${p.slug}">
+   <div class="chead">
+     <div>
+       <div class="cname">${p.zh} <span class="tone">· ${p.tone}</span></div>
+       <div class="cmeta">${p.en} · ${p.toneEn} &nbsp;|&nbsp; ${p.src}</div>
+     </div>
+     <div class="badges">
+       <span class="badge">${p.fam}</span>
+       <span class="badge g${p.grade}" title="色盲友好度：A 全可分 / B 大部分 / C 建议取子集">色盲 ${p.grade}</span>
+     </div>
+   </div>
+   ${sw}
+   <div class="chartrow">${wheelSVG(p)}<div class="chart">${chart(p)}</div></div>
+   <div class="rlab">
+     <span data-r="seq" title="单色相，热图/密度">连续 seq ↓</span>
+     <span data-r="flow" title="多色相、明度单调 —— 散点连续着色首选">强过渡 flow ↓</span>
+     <span data-r="div" title="以 0 为中心的量">发散 div ↓</span>
+     <span data-r="cyclic" title="相位/角度/时刻">环形 cyclic ↓</span>
+   </div>
+   <div class="ramps">
+     <div class="ramp" data-r="seq" style="background:${grad(p.seq)}" title="点击取代码 · 单色相连续 · L*跨度 ${p.rs.seq.r}"></div>
+     <div class="ramp" data-r="flow" style="background:${grad(p.flw)}" title="点击取代码 · 多色相强过渡 · L*跨度 ${p.rs.flow.r} · 明度单调 ${p.rs.flow.m?'是':'否'} · 均匀度 ${p.rs.flow.u}"></div>
+     <div class="ramp" data-r="div" style="background:${grad(p.div)}" title="点击取代码 · 发散 · L*跨度 ${p.rs.div.r}"></div>
+     <div class="ramp" data-r="cyclic" style="background:${grad(p.cyc)}" title="点击取代码 · 环形 · 首尾闭合"></div>
+   </div>
+   <div class="foot">
+     <span class="stat">ΔE₀₀ ${p.minde} · 色盲ΔE ${Math.min(p.cvd.protan,p.cvd.deutan).toFixed(1)} · 安全 ${p.safe.length}/6</span>
+     <span class="copy">
+       <button data-a="hex">HEX</button>
+       <button data-a="py">Python</button>
+       <button data-a="r">R</button>
+       <button data-a="mpl">rcParams</button>
+       <button data-a="safe">安全子集</button>
+       <button data-a="flow" title="散点连续着色用的多色相色标（11 级）">flow 色标</button>
+     </span>
+   </div>
+  </div>`;
+}
+
+function payload(p,kind){
+  const q = a => a.map(x=>`"${x}"`).join(", ");
+  const C = ord(p,"c");
+  if(kind==="hex") return C.join("\n");
+  if(kind==="safe") return p.safe.map(i=>p.c[i]).join("\n");
+  if(kind==="py") return `${p.slug.split('-')[0]} = [${q(C)}]`;
+  if(kind==="r") return `${p.slug.split('-')[0]} <- c(${q(C)})`;
+  if(kind==="flow"){
+    const st=[]; for(let i=0;i<11;i++) st.push(p.flw[Math.round(i*(p.flw.length-1)/10)]);
+    return `# 散点/密度图连续着色：明度单调、跨色相，过渡最强\n`+
+      `from matplotlib.colors import LinearSegmentedColormap\n`+
+      `${p.slug.split('-')[0]}_flow = LinearSegmentedColormap.from_list(\n`+
+      `    "${p.slug}_flow", [${st.map(x=>`"${x}"`).join(", ")}])\n`+
+      `# ax.scatter(x, y, c=v, cmap=${p.slug.split('-')[0]}_flow, s=42, edgecolor="white", lw=.35)`;
+  }
+  if(kind==="mpl") return `import matplotlib as mpl\nmpl.rcParams["axes.prop_cycle"] = mpl.cycler(color=[${q(C)}])\n# bg=${p.bg}  ink=${p.ink}  muted=${p.muted}`;
+}
+
+function render(){
+  const q=state.q.trim().toLowerCase();
+  const rows=DATA.filter(p=>
+    (!state.fam||p.fam===state.fam) && (!state.grade||p.grade===state.grade) &&
+    (!q||[p.zh,p.en,p.tone,p.toneEn,p.src,p.slug,p.nameZh,p.nameEn].join(' ').toLowerCase().includes(q)));
+  rows.sort((a,b)=>FAMS.indexOf(a.fam)-FAMS.indexOf(b.fam)||a.slug.localeCompare(b.slug));
+  document.getElementById('grid').innerHTML = rows.length
+    ? rows.map(card).join('') : '<div class="empty">没有匹配的配色</div>';
+  const tip = {
+    smooth:"当前「平滑」排序：相邻两色的 ΔE₀₀ 之和最小，过渡最顺滑，适合色带、装饰、整体配图协调。<b>画多系列折线/柱状/散点时请切到「区分度」</b>。",
+    distinct:"当前「区分度」排序：前几个颜色彼此差异最大，<b>多系列图表用这个</b>——只画 2–3 条线时直接取前 2–3 色即可。",
+    hue:"当前「色相环」排序：红→橙→黄→绿→青→蓝→紫，规律性最强、最好预测，但明度会跳。",
+    light:"当前「明度」排序：L* 由浅到深，适合表达强弱/多少的有序数据，也最适合灰度打印。"
+  }[state.order];
+  document.getElementById('note').innerHTML =
+    `当前显示 <b>${rows.length}</b> / ${DATA.length} 套。${tip}`+
+    ` 色块右上角的小圆点＝该色在红/绿色盲下与同套其它色接近，多系列图建议避开或改用「安全子集」。`;
+}
+
+
+/* ================= 色标代码生成 ================= */
+const RAMP_KEY = {seq:"seq", flow:"flw", div:"div", cyclic:"cyc"};
+const RAMP_NAME = {seq:"连续 seq（单色相）", flow:"强过渡 flow（多色相）",
+                   div:"发散 div", cyclic:"环形 cyclic"};
+const RAMP_USE = {
+  seq:"热图、密度图、等高线填充、单调强度。单色相最“素”，不抢主体。",
+  flow:"散点连续着色、需要强过渡的图。多色相 + 明度严格单调，小点也分得开，灰度打印仍成立。",
+  div:"相关系数、差值、以 0 为中心的量。中点近白，两侧对称发散。",
+  cyclic:"相位、角度、风向、一天中的时刻。首尾闭合，明度恒定 —— 不要用它表示大小。"
+};
+const FORMATS = ["Python", "Python 256", "R", "MATLAB", "Origin", "CSS", "HEX"];
+let MST = {p:null, r:"flow", fmt:"Python"};
+
+function rampStops(p, r){ return p[RAMP_KEY[r]]; }
+
+/* sRGB 线性插值取 N 级（stop 已足够密，误差可忽略） */
+function sampleRamp(stops, N){
+  const out=[];
+  for(let i=0;i<N;i++){
+    const t=i/(N-1)*(stops.length-1), k=Math.min(Math.floor(t), stops.length-2), f=t-k;
+    const a=hx(stops[k]), b=hx(stops[k+1]);
+    out.push(xh([0,1,2].map(j=>a[j]+(b[j]-a[j])*f)));
+  }
+  return out;
+}
+
+function varName(p, r){ return `${p.slug.split('-')[0]}_${r}`; }
+
+function genCode(p, r, fmt){
+  const stops = rampStops(p, r);
+  const st = p.rs[r];
+  const v = varName(p, r);
+  const head = `${p.nameZh} / ${p.nameEn} — ${RAMP_NAME[r]}`;
+  const meta = `L* ${st.r} · 明度单调 ${st.m?'是':'否'} · 感知均匀度 ${st.u}`;
+  const q = a => a.map(x=>`"${x}"`);
+  const wrap = (arr, per, ind) => {
+    const rows=[]; for(let i=0;i<arr.length;i+=per) rows.push(ind+arr.slice(i,i+per).join(", "));
+    return rows.join(",\n");
+  };
+  if(fmt==="Python")
+    return `# ${head}\n# ${meta}\n`+
+      `# ${RAMP_USE[r]}\n`+
+      `from matplotlib.colors import LinearSegmentedColormap\n\n`+
+      `${v} = LinearSegmentedColormap.from_list("${p.slug}_${r}", [\n`+
+      wrap(q(stops), 4, "    ")+`,\n])\n\n`+
+      (r==="flow"
+        ? `# 散点连续着色（crop 掉最浅端，否则小点在白底上看不见）\n`+
+          `# ax.scatter(x, y, c=v, cmap=${v}, s=42, edgecolor="white", linewidth=.35,\n`+
+          `#            vmin=v.min(), vmax=v.max())\n`
+        : r==="div"
+        ? `# ax.imshow(C, cmap=${v}, vmin=-1, vmax=1)   # 记得对称设 vmin/vmax\n`
+        : r==="cyclic"
+        ? `# ax.scatter(x, y, c=phase, cmap=${v}, vmin=0, vmax=2*np.pi)\n`
+        : `# ax.imshow(Z, cmap=${v})\n`);
+  if(fmt==="Python 256")
+    return `# ${head}  —  256 级查找表\n# ${meta}\n`+
+      `${v}_hex = [\n`+wrap(q(sampleRamp(stops,256)), 6, "    ")+`,\n]\n\n`+
+      `from matplotlib.colors import ListedColormap\n${v} = ListedColormap(${v}_hex, name="${p.slug}_${r}")\n`;
+  if(fmt==="R")
+    return `# ${head}\n# ${meta}\n`+
+      `${v}_stops <- c(\n`+wrap(q(stops), 4, "  ")+`\n)\n`+
+      `${v} <- grDevices::colorRampPalette(${v}_stops, space = "Lab")\n\n`+
+      `# ggplot2:\n`+
+      `# + scale_colour_gradientn(colours = ${v}(256))\n`+
+      `# + scale_fill_gradientn(colours = ${v}(256))\n`;
+  if(fmt==="MATLAB"){
+    const rows = sampleRamp(stops,256).map(c=>{
+      const [r0,g0,b0]=hx(c); return `    ${r0.toFixed(4)} ${g0.toFixed(4)} ${b0.toFixed(4)}`;});
+    return `% ${head}\n% ${meta}\n`+
+      `${v} = [\n${rows.join(";\n")}\n];\n\n`+
+      `% colormap(${v});  scatter(x, y, 36, v, "filled"); colorbar\n`;
+  }
+  if(fmt==="Origin")
+    return `# ${head}  —  16 级取样，逐行粘进 Origin 自定义色阶\n# ${meta}\n`+
+      sampleRamp(stops,16).join("\n")+"\n";
+  if(fmt==="CSS")
+    return `/* ${head} */\n/* ${meta} */\n`+
+      `.${p.slug}-${r} {\n  background: linear-gradient(90deg,\n`+
+      sampleRamp(stops,12).map((c,i,a)=>`    ${c} ${(i*100/(a.length-1)).toFixed(1)}%`).join(",\n")+
+      `\n  );\n}\n\n:root { --${p.slug}-${r}: ${sampleRamp(stops,3)[1]}; }\n`;
+  return `${head}\n${meta}\n\n`+sampleRamp(stops,32).join("\n")+"\n";
+}
+
+const FILE_EXT = {"Python":"py","Python 256":"py","R":"R","MATLAB":"m",
+                  "Origin":"txt","CSS":"css","HEX":"txt"};
+
+function genWhole(p){
+  const q = a => a.map(x=>`"${x}"`).join(", ");
+  const cs = ord(p,"c");
+  let out = `# -*- coding: utf-8 -*-\n`+
+    `# ${p.nameZh} / ${p.nameEn}  [${p.src}]\n`+
+    `# 色系 ${p.fam} · 色盲友好度 ${p.grade} · 排序 ${ORDER_LABEL[state.order]}\n`+
+    `from matplotlib.colors import LinearSegmentedColormap, ListedColormap\n\n`+
+    `# 6 主色（当前排序）\n${p.slug.split('-')[0]} = [${q(cs)}]\n`+
+    `# 深 / 浅变体\n${p.slug.split('-')[0]}_dark  = [${q(ord(p,"d"))}]\n`+
+    `${p.slug.split('-')[0]}_light = [${q(ord(p,"l"))}]\n`+
+    `# 中性色\nbg, bg2, muted, ink = "${p.bg}", "${p.bg2}", "${p.muted}", "${p.ink}"\n`+
+    `# 色盲下仍两两可分的子集\nsafe = [${q(p.safe.map(i=>p.c[i]))}]\n\n`;
+  for(const r of ["seq","flow","div","cyclic"]){
+    out += `# ${RAMP_NAME[r]} — ${RAMP_USE[r]}\n`+
+      `${varName(p,r)} = LinearSegmentedColormap.from_list(\n    "${p.slug}_${r}", [${
+        rampStops(p,r).map(x=>`"${x}"`).join(", ")}])\n\n`;
+  }
+  out += `# 一次性套用到 matplotlib\n`+
+    `def use():\n    import matplotlib as mpl\n`+
+    `    mpl.rcParams.update({\n`+
+    `        "axes.prop_cycle": mpl.cycler(color=${p.slug.split('-')[0]}),\n`+
+    `        "axes.edgecolor": ink, "axes.labelcolor": ink, "text.color": ink,\n`+
+    `        "xtick.color": ink, "ytick.color": ink, "grid.color": bg2,\n`+
+    `        "axes.grid": True, "axes.axisbelow": True,\n`+
+    `        "axes.spines.top": False, "axes.spines.right": False,\n`+
+    `        "legend.frameon": False, "savefig.dpi": 300,\n    })\n`;
+  return out;
+}
+
+function download(text, filename){
+  const blob = new Blob([text], {type:"text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename; document.body.appendChild(a); a.click();
+  document.body.removeChild(a); setTimeout(()=>URL.revokeObjectURL(url), 1500);
+  toast("已下载 "+filename);
+}
+
+function renderModal(){
+  const {p, r, fmt} = MST;
+  document.getElementById("mtitle").textContent = `${p.nameZh} · ${RAMP_NAME[r]}`;
+  document.getElementById("mdesc").textContent = RAMP_USE[r];
+  document.getElementById("mbar").style.background = grad(rampStops(p, r));
+  const st = p.rs[r];
+  document.getElementById("mstat").textContent =
+    `L* 跨度 ${st.r} · 明度单调 ${st.m?"是":"否"} · 均匀度 ${st.u}`;
+  document.getElementById("mtabs").innerHTML =
+    FORMATS.map(f=>`<button data-f="${f}"${f===fmt?' class="on"':''}>${f}</button>`).join("");
+  document.getElementById("code").textContent = genCode(p, r, fmt);
+}
+
+function openModal(p, r){
+  MST.p = p; MST.r = r;
+  renderModal();
+  document.getElementById("mask").classList.add("on");
+}
+function closeModal(){ document.getElementById("mask").classList.remove("on"); }
+
+document.getElementById("mtabs").addEventListener("click", e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  MST.fmt=b.dataset.f; renderModal();
+});
+document.getElementById("mcopy").addEventListener("click", ()=>
+  copy(document.getElementById("code").textContent, "已复制代码"));
+document.getElementById("mdl").addEventListener("click", ()=>
+  download(document.getElementById("code").textContent,
+           `${MST.p.slug}_${MST.r}.${FILE_EXT[MST.fmt]}`));
+document.getElementById("mdlall").addEventListener("click", ()=>
+  download(genWhole(MST.p), `${MST.p.slug}.py`));
+document.getElementById("mclose").addEventListener("click", closeModal);
+document.getElementById("mask").addEventListener("click", e=>{
+  if(e.target.id==="mask") closeModal();
+});
+document.addEventListener("keydown", e=>{
+  if(e.key==="Escape") closeModal();
+});
+
+/* ---------- 事件 ---------- */
+const famBox=document.getElementById('fam');
+famBox.innerHTML='<button data-f="" class="on">全部</button>'+FAMS.map(f=>`<button data-f="${f}">${f}</button>`).join('');
+function segHandler(box,key,fn){
+  box.addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    [...box.children].forEach(x=>x.classList.remove('on')); b.classList.add('on');
+    state[key]=b.dataset[fn]; render();
+  });
+}
+segHandler(famBox,'fam','f');
+segHandler(document.getElementById('grade'),'grade','g');
+segHandler(document.getElementById('cvd'),'cvd','v');
+segHandler(document.getElementById('view'),'view','w');
+segHandler(document.getElementById('order'),'order','o');
+document.getElementById('q').addEventListener('input',e=>{state.q=e.target.value;render();});
+document.getElementById('grid').addEventListener('click',e=>{
+  const rp=e.target.closest('.ramp, .rlab span');
+  if(rp && rp.dataset.r){
+    const p=DATA.find(x=>x.slug===rp.closest('.card').dataset.slug);
+    openModal(p, rp.dataset.r); return;
+  }
+  const cell=e.target.closest('.cell');
+  if(cell){copy(cell.dataset.hex, '已复制 '+cell.dataset.hex); return;}
+  const btn=e.target.closest('.copy button');
+  if(btn){
+    const p=DATA.find(x=>x.slug===btn.closest('.card').dataset.slug);
+    const txt=payload(p,btn.dataset.a);
+    copy(txt, '已复制 '+p.zh+' · '+btn.textContent);
+  }
+});
+document.getElementById('tbtn').addEventListener('click',()=>{
+  const h=document.documentElement;
+  const dark=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',dark?'light':'dark');
+  document.getElementById('tbtn').textContent=dark?'深色界面':'浅色界面';
+});
+render();
+</script>
+</body>
+</html>

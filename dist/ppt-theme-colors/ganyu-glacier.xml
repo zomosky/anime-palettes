@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="甘雨 冰蓝">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="273347"/></a:dk2>
+  <a:lt2><a:srgbClr val="F3F5FA"/></a:lt2>
+  <a:accent1><a:srgbClr val="5586CB"/></a:accent1>
+  <a:accent2><a:srgbClr val="9BBADF"/></a:accent2>
+  <a:accent3><a:srgbClr val="33466E"/></a:accent3>
+  <a:accent4><a:srgbClr val="766987"/></a:accent4>
+  <a:accent5><a:srgbClr val="C34759"/></a:accent5>
+  <a:accent6><a:srgbClr val="8A8F96"/></a:accent6>
+  <a:hlink><a:srgbClr val="2061A3"/></a:hlink>
+  <a:folHlink><a:srgbClr val="7F848F"/></a:folHlink>
+</a:clrScheme>

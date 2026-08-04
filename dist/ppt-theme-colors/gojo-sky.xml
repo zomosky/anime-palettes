@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="五条悟 晴空蓝">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="1C3546"/></a:dk2>
+  <a:lt2><a:srgbClr val="F1F5F9"/></a:lt2>
+  <a:accent1><a:srgbClr val="1394CE"/></a:accent1>
+  <a:accent2><a:srgbClr val="85BEDC"/></a:accent2>
+  <a:accent3><a:srgbClr val="296AA4"/></a:accent3>
+  <a:accent4><a:srgbClr val="424754"/></a:accent4>
+  <a:accent5><a:srgbClr val="7F8995"/></a:accent5>
+  <a:accent6><a:srgbClr val="B3B6B9"/></a:accent6>
+  <a:hlink><a:srgbClr val="006C99"/></a:hlink>
+  <a:folHlink><a:srgbClr val="7B858E"/></a:folHlink>
+</a:clrScheme>

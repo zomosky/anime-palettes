@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="爱丽丝 玫粉鼠尾草">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="4A2931"/></a:dk2>
+  <a:lt2><a:srgbClr val="FBF3F5"/></a:lt2>
+  <a:accent1><a:srgbClr val="C95B7C"/></a:accent1>
+  <a:accent2><a:srgbClr val="ECA8BA"/></a:accent2>
+  <a:accent3><a:srgbClr val="AF212B"/></a:accent3>
+  <a:accent4><a:srgbClr val="408E52"/></a:accent4>
+  <a:accent5><a:srgbClr val="775D4C"/></a:accent5>
+  <a:accent6><a:srgbClr val="9E9698"/></a:accent6>
+  <a:hlink><a:srgbClr val="9F3257"/></a:hlink>
+  <a:folHlink><a:srgbClr val="917F83"/></a:folHlink>
+</a:clrScheme>

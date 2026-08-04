@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="胡桃 绯梅">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="4D2826"/></a:dk2>
+  <a:lt2><a:srgbClr val="FCF3F2"/></a:lt2>
+  <a:accent1><a:srgbClr val="C74E4D"/></a:accent1>
+  <a:accent2><a:srgbClr val="DE9476"/></a:accent2>
+  <a:accent3><a:srgbClr val="792C3D"/></a:accent3>
+  <a:accent4><a:srgbClr val="49435F"/></a:accent4>
+  <a:accent5><a:srgbClr val="D5B326"/></a:accent5>
+  <a:accent6><a:srgbClr val="BCB6AF"/></a:accent6>
+  <a:hlink><a:srgbClr val="9B232B"/></a:hlink>
+  <a:folHlink><a:srgbClr val="947F7D"/></a:folHlink>
+</a:clrScheme>

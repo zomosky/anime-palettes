@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest matplotlib numpy
+      - name: Import without matplotlib present (核心 API 必须零依赖)
+        run: |
+          pip download . -d /tmp/whl --no-deps -q || true
+          python -c "
+          import subprocess, sys, venv, tempfile, os
+          d = tempfile.mkdtemp(); venv.create(d, with_pip=True)
+          py = os.path.join(d, 'bin', 'python')
+          subprocess.check_call([py, '-c',
+            'import sys; sys.path.insert(0, \".\"); import anime_palettes as ap;'
+            'assert len(ap.colors(\"miku\"))==6; assert ap.safe(\"hutao\");'
+            'print(\"zero-dependency import OK\")'])
+          "
+      - name: Test
+        run: python -m pytest tests/ -q
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: pip install matplotlib numpy openpyxl pytest
+      - name: 重跑生成链路，确认产物与仓库一致
+        run: |
+          cd src
+          python derive.py > /dev/null
+          python gen_py.py
+          python gen_html.py
+          python gen_files.py
+          cd ..
+          diff -q src/build/anime_palettes.py anime_palettes.py
+          diff -q src/build/anime-palettes.html dist/anime-palettes.html
+          diff -q src/build/anime_palettes.csv dist/anime_palettes.csv
+          echo "生成链路可复现"

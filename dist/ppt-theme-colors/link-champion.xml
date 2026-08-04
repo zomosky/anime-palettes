@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="林克 苍蓝">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="233447"/></a:dk2>
+  <a:lt2><a:srgbClr val="F2F5FA"/></a:lt2>
+  <a:accent1><a:srgbClr val="327EBF"/></a:accent1>
+  <a:accent2><a:srgbClr val="9ABAD4"/></a:accent2>
+  <a:accent3><a:srgbClr val="D0B560"/></a:accent3>
+  <a:accent4><a:srgbClr val="7E5F40"/></a:accent4>
+  <a:accent5><a:srgbClr val="354862"/></a:accent5>
+  <a:accent6><a:srgbClr val="98958A"/></a:accent6>
+  <a:hlink><a:srgbClr val="005990"/></a:hlink>
+  <a:folHlink><a:srgbClr val="7E848F"/></a:folHlink>
+</a:clrScheme>

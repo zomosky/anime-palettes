@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="波妞 珊瑚">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="572218"/></a:dk2>
+  <a:lt2><a:srgbClr val="FFF2EF"/></a:lt2>
+  <a:accent1><a:srgbClr val="ED3124"/></a:accent1>
+  <a:accent2><a:srgbClr val="FDA083"/></a:accent2>
+  <a:accent3><a:srgbClr val="A12044"/></a:accent3>
+  <a:accent4><a:srgbClr val="2284B1"/></a:accent4>
+  <a:accent5><a:srgbClr val="92BFCA"/></a:accent5>
+  <a:accent6><a:srgbClr val="8C867E"/></a:accent6>
+  <a:hlink><a:srgbClr val="B50009"/></a:hlink>
+  <a:folHlink><a:srgbClr val="9C7D76"/></a:folHlink>
+</a:clrScheme>

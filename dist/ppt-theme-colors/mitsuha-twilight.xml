@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="三叶 暮橙">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="4C2A18"/></a:dk2>
+  <a:lt2><a:srgbClr val="FDF3EF"/></a:lt2>
+  <a:accent1><a:srgbClr val="CB5C21"/></a:accent1>
+  <a:accent2><a:srgbClr val="F4A665"/></a:accent2>
+  <a:accent3><a:srgbClr val="C75681"/></a:accent3>
+  <a:accent4><a:srgbClr val="474B89"/></a:accent4>
+  <a:accent5><a:srgbClr val="8093D4"/></a:accent5>
+  <a:accent6><a:srgbClr val="BDB5AD"/></a:accent6>
+  <a:hlink><a:srgbClr val="9C3600"/></a:hlink>
+  <a:folHlink><a:srgbClr val="957F76"/></a:folHlink>
+</a:clrScheme>

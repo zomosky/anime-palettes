@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="绫波丽 苍白蓝">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="24353D"/></a:dk2>
+  <a:lt2><a:srgbClr val="F2F5F7"/></a:lt2>
+  <a:accent1><a:srgbClr val="82BFDC"/></a:accent1>
+  <a:accent2><a:srgbClr val="7F949F"/></a:accent2>
+  <a:accent3><a:srgbClr val="3D7CA0"/></a:accent3>
+  <a:accent4><a:srgbClr val="C5394A"/></a:accent4>
+  <a:accent5><a:srgbClr val="E8873A"/></a:accent5>
+  <a:accent6><a:srgbClr val="B5B8B9"/></a:accent6>
+  <a:hlink><a:srgbClr val="5797B3"/></a:hlink>
+  <a:folHlink><a:srgbClr val="7D8589"/></a:folHlink>
+</a:clrScheme>
