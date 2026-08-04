@@ -4,18 +4,27 @@
 
 **36 套取自动漫与游戏角色的配色，为科研配图与 PPT 做过色彩学调优**
 
+[![在线打开色卡库](https://img.shields.io/badge/🎨_在线打开色卡库-立即使用-2E7D6B?style=for-the-badge)](https://zomosky.github.io/anime-palettes/)
+
 [![CI](https://github.com/zomosky/anime-palettes/actions/workflows/ci.yml/badge.svg)](https://github.com/zomosky/anime-palettes/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-black.svg)](LICENSE)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org)
 [![No dependencies](https://img.shields.io/badge/核心依赖-0-brightgreen.svg)](docs/INSTALL.md)
 [![uv](https://img.shields.io/badge/uv-ready-de5fe9.svg)](docs/INSTALL.md#uv)
 
-### 👉 [**在线打开色卡库**](https://zomosky.github.io/anime-palettes/) — 不用下载、不用装任何东西
+### 👉 [**在线打开色卡库**](https://zomosky.github.io/anime-palettes/)
+
+浏览器里直接用：筛选 · 搜角色 · 点色块复制 HEX · 点色标条取 Python/R/MATLAB 代码 · 色盲模拟
+**不用下载，不用装任何东西，手机也能开**
 
 每套 = **6 主色** + 深/浅变体 + 4 条连续色标 + 配套中性色 + 色环 · 预置 **4 种排列顺序** · 标注**色盲友好度**
 交付形式：交互色卡库 HTML · Python 模块 · Excel · PPT 取色板与主题色 · Adobe `.ase` · GIMP `.gpl` · Origin 清单
 
-<img src="docs/images/配色总览.png" width="900" alt="36 套配色总览">
+<a href="https://zomosky.github.io/anime-palettes/">
+  <img src="docs/images/配色总览.png" width="900" alt="36 套配色总览 —— 点击在线打开">
+</a>
+
+<sub>👆 点图直接打开在线色卡库</sub>
 
 </div>
 
