@@ -80,6 +80,32 @@ jobs:
           uv add "anime-palettes @ file://${{ github.workspace }}"
           uv run python -c "import anime_palettes as ap; print(ap.colors('ganyu'))"
 
+  skill:
+    name: Skill 打包与目录一致
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 速查表必须与色库一致
+        # references/palettes.md 由 src/gen_skill_table.py 生成，改了配色却忘了
+        # 重新生成的话，agent 会照着过期的 HEX 配色
+        run: |
+          python src/gen_skill_table.py
+          git diff --exit-code -- skills/anime-palettes/references/palettes.md \
+            || (echo "::error::速查表过期，跑 make skill 重新生成"; exit 1)
+
+      - name: .skill 压缩包必须与源目录一致
+        # 压缩包是 skills/anime-palettes/ 的构建产物，改了 SKILL.md 却忘了重新
+        # 打包的话，别人下载到的是旧版
+        run: |
+          mkdir -p /tmp/unz && unzip -q skills/anime-palettes.skill -d /tmp/unz
+          diff -r skills/anime-palettes /tmp/unz/anime-palettes \
+            || (echo "::error::.skill 与源目录不一致，跑 make skill 重新打包"; exit 1)
+          echo "skill 打包一致"
+
   build:
     name: 生成链路可复现
     runs-on: ubuntu-latest

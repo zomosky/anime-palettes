@@ -10,6 +10,8 @@
 [![No dependencies](https://img.shields.io/badge/核心依赖-0-brightgreen.svg)](docs/INSTALL.md)
 [![uv](https://img.shields.io/badge/uv-ready-de5fe9.svg)](docs/INSTALL.md#uv)
 
+### 👉 [**在线打开色卡库**](https://zomosky.github.io/anime-palettes/) — 不用下载、不用装任何东西
+
 每套 = **6 主色** + 深/浅变体 + 4 条连续色标 + 配套中性色 + 色环 · 预置 **4 种排列顺序** · 标注**色盲友好度**
 交付形式：交互色卡库 HTML · Python 模块 · Excel · PPT 取色板与主题色 · Adobe `.ase` · GIMP `.gpl` · Origin 清单
 
@@ -46,7 +48,10 @@
 
 ### 只想拿颜色 → 打开色卡库
 
-下载 [`dist/anime-palettes.html`](dist/anime-palettes.html)，**双击用浏览器打开**，单文件、无需联网。
+**在线用**：<https://zomosky.github.io/anime-palettes/> —— 直接开，不用下载。
+
+**离线用**：下载 [`dist/anime-palettes.html`](dist/anime-palettes.html) 双击打开。
+单文件、零外部依赖，断网也照常工作。
 
 - 按色系 / 色盲等级筛选，搜角色、色调或作品名
 - 点色块复制 HEX；点底部色标条弹出代码面板 —— Python / R / MATLAB / Origin / CSS 七种格式，可复制或下载成文件
@@ -102,8 +107,13 @@ uv run examples/uv_single_file.py
 uvx --from git+https://github.com/zomosky/anime-palettes anime-palettes show 胡桃
 ```
 
-或者直接读 `dist/anime_palettes.json` 的 raw 链接 —— R、MATLAB、JS 都能用，
-写法见 [`docs/INSTALL.md`](docs/INSTALL.md#其他语言直接读-json)。
+或者直接读 JSON —— R、MATLAB、JS 都能用，写法见
+[`docs/INSTALL.md`](docs/INSTALL.md#其他语言直接读-json)：
+
+```
+https://zomosky.github.io/anime-palettes/anime_palettes.json   ← 带 CORS，网页里能 fetch
+https://raw.githubusercontent.com/zomosky/anime-palettes/main/dist/anime_palettes.json
+```
 
 ### 命令行
 

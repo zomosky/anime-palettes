@@ -14,19 +14,19 @@
 
 ### 1. 在线打开色卡库
 
-仓库开了 GitHub Pages 之后直接访问（Settings → Pages → Source 选 `main` / `root`）：
+<https://zomosky.github.io/anime-palettes/>
 
-```
-https://zomosky.github.io/anime-palettes/dist/anime-palettes.html
-```
+点色标条就能拿 Python / R / MATLAB / Origin / CSS 代码，复制或下载成文件 ——
+这条路根本不碰 Python，手机上也能开。
 
-没开 Pages 也能看，用 htmlpreview 代理渲染：
+> 在线版比本地打开还好用一点：`file://` 下浏览器不给完整的剪贴板权限（要靠
+> `execCommand` 兜底），https 是安全上下文，复制和下载都是原生行为。
+
+Pages 挂了或者你 fork 之后没开 Pages，还可以用 htmlpreview 代理渲染：
 
 ```
 https://htmlpreview.github.io/?https://github.com/zomosky/anime-palettes/blob/main/dist/anime-palettes.html
 ```
-
-点色标条就能拿 Python / R / MATLAB / Origin / CSS 代码，复制或下载成文件，这条路根本不碰 Python。
 
 ### 2. 抓单文件模块（核心 API 零依赖）
 
@@ -35,10 +35,10 @@ https://htmlpreview.github.io/?https://github.com/zomosky/anime-palettes/blob/ma
 
 ```bash
 # macOS / Linux
-curl -fsSLO https://raw.githubusercontent.com/zomosky/anime-palettes/main/anime_palettes.py
+curl -fsSLO https://zomosky.github.io/anime-palettes/anime_palettes.py
 
 # Windows PowerShell
-irm https://raw.githubusercontent.com/zomosky/anime-palettes/main/anime_palettes.py -OutFile anime_palettes.py
+irm https://zomosky.github.io/anime-palettes/anime_palettes.py -OutFile anime_palettes.py
 ```
 
 ```python
@@ -65,7 +65,7 @@ import anime_palettes as ap
 
 ```python
 import json, urllib.request
-URL = "https://raw.githubusercontent.com/zomosky/anime-palettes/main/dist/anime_palettes.json"
+URL = "https://zomosky.github.io/anime-palettes/anime_palettes.json"
 lib = json.load(urllib.request.urlopen(URL))
 miku = next(e for e in lib if e["slug"] == "miku-aqua")
 print(miku["colors"], miku["flow"][::32])
@@ -359,9 +359,11 @@ lib = jsondecode(webread('https://raw.githubusercontent.com/zomosky/anime-palett
 
 **JavaScript / Observable**
 
+`raw.githubusercontent.com` 不带 CORS 头，浏览器里 fetch 会被拦；用 Pages 的地址：
+
 ```js
 const lib = await fetch(
-  "https://raw.githubusercontent.com/zomosky/anime-palettes/main/dist/anime_palettes.json"
+  "https://zomosky.github.io/anime-palettes/anime_palettes.json"
 ).then(r => r.json());
 const miku = lib.find(e => e.slug === "miku-aqua");
 d3.scaleSequential(t => d3.interpolateRgbBasis(miku.flow)(t));

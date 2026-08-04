@@ -1,0 +1,56 @@
+name: Pages
+
+# 把交互色卡库发布到 GitHub Pages，别人打开网址就能用，不用 clone、不用下载。
+# 首次生效前需要在仓库 Settings → Pages → Source 里选 "GitHub Actions"。
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "dist/**"
+      - "docs/images/**"
+      - "anime_palettes.py"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 组装站点
+        run: |
+          mkdir -p _site
+          # 根 URL 直接就是色卡库本体
+          cp dist/anime-palettes.html _site/index.html
+          # 保留原路径，方便老链接
+          mkdir -p _site/dist
+          cp dist/anime-palettes.html _site/dist/
+          # 数据与单文件模块：Pages 带 CORS 头，可被网页 fetch，raw.githubusercontent 不行
+          cp dist/anime_palettes.json _site/anime_palettes.json
+          cp dist/anime_palettes.csv  _site/anime_palettes.csv
+          cp anime_palettes.py        _site/anime_palettes.py
+          cp -r docs/images           _site/images
+          # 让 Pages 原样发布，不要过 Jekyll（中文文件名会被吃掉）
+          touch _site/.nojekyll
+          ls -R _site | head -30
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4
