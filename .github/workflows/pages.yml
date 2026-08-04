@@ -1,7 +1,10 @@
 name: Pages
 
 # 把交互色卡库发布到 GitHub Pages，别人打开网址就能用，不用 clone、不用下载。
-# 首次生效前需要在仓库 Settings → Pages → Source 里选 "GitHub Actions"。
+#
+# configure-pages 带了 enablement: true，会自己把 Pages 打开并设成 GitHub Actions
+# 构建，所以正常情况下不需要去 Settings 里手动配。如果组织策略禁止 action 改仓库
+# 设置，就手动开一次：Settings → Pages → Source 选 "GitHub Actions"。
 
 on:
   push:
@@ -48,7 +51,12 @@ jobs:
           touch _site/.nojekyll
           ls -R _site | head -30
 
+      # enablement: true 让 action 自己通过 API 把 Pages 打开（需要 pages: write，
+      # 上面已经给了）。不加的话，仓库设置里没手动开 Pages 时这一步会直接失败：
+      #   Get Pages site failed ... Error: Not Found
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
