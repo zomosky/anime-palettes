@@ -224,6 +224,29 @@ ap.scatter_guide("eva01")              # 散点四策略对照
 
 ---
 
+## 给 AI agent 用（Claude Skill）
+
+仓库带了一个 [Claude Skill](skills/anime-palettes/SKILL.md)：安装后，
+Claude 在做任何画图 / 出报告 / 做幻灯片的任务时会自动按这套规则配色，
+并且**把配色决策显式写进方案**，而不是每张图临时挑颜色。
+
+```bash
+# 安装：把 skills/anime-palettes.skill 拖进 Claude 的技能设置即可
+# 或者 Claude Code / Cowork 里放到 ~/.claude/skills/anime-palettes/
+```
+
+Skill 里教给 agent 的东西：
+
+- **先判断颜色在表达「哪一类」还是「多少」** —— 这是所有配色决策的分叉点
+- 按色盲要求 → 色系 → 具体角色三步筛选，附 36 套速查表和按需求定位的对照
+- 各工具的具体写法（matplotlib / seaborn / plotly / ggplot / MATLAB / Origin / PPT / CSS / D3）
+- **怎么把配色嵌进现有的规划和设计**：在方案里落一条「配色锁」（slug + order +
+  类别绑定 + 中性色），一个交付物只用一套，跨图表复用同一套类别→颜色映射
+- 交付前自检清单，以及 8 类常见错误与后果
+- 什么时候**不该**用这个库（品牌配色已定、期刊指定、需要计量级感知均匀色标）
+
+---
+
 ## 仓库结构
 
 ```
@@ -236,6 +259,7 @@ dist/                      全部交付物
   ase/ gpl/                  Adobe 与 GIMP 色板
   ppt-theme-colors/          PowerPoint 主题色 XML
   origin-hex/                Origin / GraphPad 逐行粘贴用清单
+skills/anime-palettes/     Claude Skill：教 agent 怎么用、怎么写进方案
 src/                       生成链路（改 data.py → make all）
 docs/INSTALL.md            安装矩阵：pip / uv / conda / 离线 / 其他语言
 docs/USAGE.md              详细使用说明

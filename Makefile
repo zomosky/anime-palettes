@@ -43,3 +43,8 @@ test:
 
 clean:
 	rm -rf $(SRC)/build $(SRC)/__pycache__ __pycache__ .pytest_cache
+
+## 8. 打包 Claude Skill（速查表从 library.json 重新生成）
+skill:
+	$(PY) src/gen_skill_table.py
+	cd skills && zip -qr anime-palettes.skill anime-palettes -x '*.DS_Store' && echo "wrote skills/anime-palettes.skill"
