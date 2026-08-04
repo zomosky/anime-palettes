@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """生成单文件交互色卡库 anime-palettes.html"""
+import os
 import json
 
+os.makedirs('build', exist_ok=True)
 lib = json.load(open('library.json'))
 
 def thin(seq, k=17):

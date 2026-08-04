@@ -5,6 +5,7 @@ from colorlib import hex2rgb, lch, contrast
 
 lib = json.load(open('library.json'))
 OUT = 'build'
+os.makedirs(OUT, exist_ok=True)
 os.makedirs(f'{OUT}/ase', exist_ok=True)
 os.makedirs(f'{OUT}/ppt-theme-colors', exist_ok=True)
 

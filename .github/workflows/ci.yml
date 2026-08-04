@@ -8,6 +8,7 @@ on:
 
 jobs:
   test:
+    name: 测试 (py${{ matrix.python-version }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -18,26 +19,31 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install
+
+      - name: 核心 API 必须零依赖
+        run: |
+          python -c "
+          import anime_palettes as ap
+          assert len(ap.colors('miku')) == 6
+          assert ap.safe('hutao')
+          assert ap.code('ganyu', 'flow', 'r')
+          print('zero-dependency import OK')
+          "
+
+      - name: 未安装也能跑 CLI
+        run: |
+          python anime_palettes.py ls --grade A
+          python anime_palettes.py hex miku -n 3
+
+      - name: 装依赖
         run: |
           python -m pip install --upgrade pip
           pip install pytest matplotlib numpy
-      - name: Import without matplotlib present (核心 API 必须零依赖)
-        run: |
-          pip download . -d /tmp/whl --no-deps -q || true
-          python -c "
-          import subprocess, sys, venv, tempfile, os
-          d = tempfile.mkdtemp(); venv.create(d, with_pip=True)
-          py = os.path.join(d, 'bin', 'python')
-          subprocess.check_call([py, '-c',
-            'import sys; sys.path.insert(0, \".\"); import anime_palettes as ap;'
-            'assert len(ap.colors(\"miku\"))==6; assert ap.safe(\"hutao\");'
-            'print(\"zero-dependency import OK\")'])
-          "
-      - name: Test
+
+      - name: 跑测试
         run: python -m pytest tests/ -q
 
-      - name: 安装后 CLI 可用
+      - name: 安装后 CLI 入口可用
         run: |
           pip install .
           anime-palettes ls --grade A
@@ -47,38 +53,56 @@ jobs:
           test "$(anime-palettes hex miku -n 3 | wc -l)" -eq 3
 
   uv:
+    name: uv / uvx / PEP 723
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
+
       - name: uvx 直接跑（模拟别人从 git 拉来用）
         run: |
           uvx --from . anime-palettes ls --family 蓝
           uvx --from . anime-palettes code miku --ramp flow --lang python | head -3
+
       - name: PEP 723 单文件脚本
+        # 内联元数据里不能写相对路径（uv 会报 "relative path without a working
+        # directory"），所以把 git 依赖换成指向本次 checkout 的 file:// 绝对 URL
         run: |
-          sed 's|git+https://github.com/zomosky/anime-palettes.git|.|' \
-            examples/uv_single_file.py > /tmp/s.py
-          uv run /tmp/s.py
+          sed 's|git+https://github.com/zomosky/anime-palettes.git|file://${{ github.workspace }}|' \
+            examples/uv_single_file.py > "${RUNNER_TEMP}/script.py"
+          cd "${RUNNER_TEMP}" && uv run script.py
+          test -f "${RUNNER_TEMP}/uv_single_file.png"
+
+      - name: uv add 进一个新项目
+        run: |
+          uv init --no-workspace "${RUNNER_TEMP}/proj"
+          cd "${RUNNER_TEMP}/proj"
+          uv add "anime-palettes @ file://${{ github.workspace }}"
+          uv run python -c "import anime_palettes as ap; print(ap.colors('ganyu'))"
 
   build:
+    name: 生成链路可复现
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Install
-        run: pip install matplotlib numpy openpyxl pytest
-      - name: 重跑生成链路，确认产物与仓库一致
+      - run: pip install matplotlib numpy openpyxl
+
+      - name: 重跑生成链路
         run: |
           cd src
           python derive.py > /dev/null
           python gen_py.py
           python gen_html.py
           python gen_files.py
-          cd ..
-          diff -q src/build/anime_palettes.py anime_palettes.py
+
+      - name: 产物必须与仓库里的一致
+        # 只比确定性产物：xlsx / pptx / png 内嵌创建时间戳，字节不可复现
+        run: |
+          diff -q src/build/anime_palettes.py   anime_palettes.py
           diff -q src/build/anime-palettes.html dist/anime-palettes.html
-          diff -q src/build/anime_palettes.csv dist/anime_palettes.csv
+          diff -q src/build/anime_palettes.csv  dist/anime_palettes.csv
+          diff -q src/build/anime_palettes.json dist/anime_palettes.json
           echo "生成链路可复现"

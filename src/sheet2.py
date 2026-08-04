@@ -1,9 +1,11 @@
+import os
 import json, matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 plt.rcParams['font.sans-serif']=['WenQuanYi Zen Hei','Noto Sans CJK SC','DejaVu Sans']
 plt.rcParams['axes.unicode_minus']=False
+os.makedirs('build', exist_ok=True)
 lib=json.load(open('library.json'))
 n=len(lib)
 fig,axes=plt.subplots(n,1,figsize=(13,n*0.58))
