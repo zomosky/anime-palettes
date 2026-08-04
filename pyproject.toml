@@ -31,5 +31,8 @@ Homepage = "https://github.com/zomosky/anime-palettes"
 Documentation = "https://github.com/zomosky/anime-palettes/blob/main/docs/USAGE.md"
 Issues = "https://github.com/zomosky/anime-palettes/issues"
 
+[project.scripts]
+anime-palettes = "anime_palettes:main"
+
 [tool.setuptools]
 py-modules = ["anime_palettes"]

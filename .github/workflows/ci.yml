@@ -37,6 +37,30 @@ jobs:
       - name: Test
         run: python -m pytest tests/ -q
 
+      - name: 安装后 CLI 可用
+        run: |
+          pip install .
+          anime-palettes ls --grade A
+          anime-palettes show miku
+          anime-palettes hex ganyu --safe
+          anime-palettes code ganyu --ramp flow --lang r | head -3
+          test "$(anime-palettes hex miku -n 3 | wc -l)" -eq 3
+
+  uv:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: uvx 直接跑（模拟别人从 git 拉来用）
+        run: |
+          uvx --from . anime-palettes ls --family 蓝
+          uvx --from . anime-palettes code miku --ramp flow --lang python | head -3
+      - name: PEP 723 单文件脚本
+        run: |
+          sed 's|git+https://github.com/zomosky/anime-palettes.git|.|' \
+            examples/uv_single_file.py > /tmp/s.py
+          uv run /tmp/s.py
+
   build:
     runs-on: ubuntu-latest
     steps:

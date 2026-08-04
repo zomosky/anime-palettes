@@ -1641,7 +1641,206 @@ def to_hex_block(name, order: str = None) -> str:
     return "\n".join(colors(name, order=order))
 
 
-__all__ = ["PALETTES", "FAMILIES", "ORDERS", "ORDER_LABEL", "order_of", "get", "colors", "safe", "neutrals", "ls",
+# ================================================================ 命令行
+# 零依赖，方便 `uvx --from git+... anime-palettes ls` 直接用。
+
+_LANGS = ("python", "python256", "r", "matlab", "origin", "css", "hex")
+
+
+def _sample(stops, n):
+    """在 sRGB 里线性重采样到 n 级（stops 已足够密，误差可忽略）。"""
+    def hx(h):
+        return [int(h[1:][i:i + 2], 16) / 255 for i in (0, 2, 4)]
+
+    def xh(v):
+        return "#" + "".join("%02X" % max(0, min(255, round(c * 255))) for c in v)
+    out = []
+    for i in range(n):
+        t = i / (n - 1) * (len(stops) - 1)
+        k = min(int(t), len(stops) - 2)
+        f = t - k
+        a, b = hx(stops[k]), hx(stops[k + 1])
+        out.append(xh([a[j] + (b[j] - a[j]) * f for j in range(3)]))
+    return out
+
+
+def code(name, ramp: str = "flow", lang: str = "python") -> str:
+    """生成可直接粘贴的色标代码。lang: python/python256/r/matlab/origin/css/hex"""
+    e = get(name)
+    ramp = ramp.replace("_r", "")
+    if ramp not in RAMPS:
+        raise ValueError(f"ramp 只能是 {RAMPS}")
+    if lang not in _LANGS:
+        raise ValueError(f"lang 只能是 {_LANGS}")
+    stops = e[ramp]
+    st = e["ramp_stats"][ramp]
+    v = f"{e['slug'].split('-')[0]}_{ramp}"
+    head = f"{e['name_zh']} / {e['name_en']} — {RAMP_LABEL[ramp]}"
+    meta = (f"L* 跨度 {st['L_range']} · 明度单调 {'是' if st['monotonic'] else '否'}"
+            f" · 感知均匀度 {st['uniformity']}")
+
+    def wrap(items, per, ind):
+        rows = [ind + ", ".join(items[i:i + per]) for i in range(0, len(items), per)]
+        return ",\n".join(rows)
+
+    q = [f'"{c}"' for c in stops]
+    if lang == "python":
+        tail = {
+            "flow": f'# ax.scatter(x, y, c=v, cmap={v}, s=42, edgecolor="white", linewidth=.35)',
+            "div": f"# ax.imshow(C, cmap={v}, vmin=-1, vmax=1)   # vmin/vmax 要对称",
+            "cyclic": f"# ax.scatter(x, y, c=phase, cmap={v}, vmin=0, vmax=2*np.pi)",
+            "seq": f"# ax.imshow(Z, cmap={v})",
+        }[ramp]
+        return (f"# {head}\n# {meta}\n"
+                f"from matplotlib.colors import LinearSegmentedColormap\n\n"
+                f'{v} = LinearSegmentedColormap.from_list("{e["slug"]}_{ramp}", [\n'
+                f"{wrap(q, 4, '    ')},\n])\n\n{tail}\n")
+    if lang == "python256":
+        s256 = [f'"{c}"' for c in _sample(stops, 256)]
+        return (f"# {head}  —  256 级查找表\n# {meta}\n"
+                f"{v}_hex = [\n{wrap(s256, 6, '    ')},\n]\n\n"
+                f"from matplotlib.colors import ListedColormap\n"
+                f'{v} = ListedColormap({v}_hex, name="{e["slug"]}_{ramp}")\n')
+    if lang == "r":
+        return (f"# {head}\n# {meta}\n"
+                f"{v}_stops <- c(\n{wrap(q, 4, '  ')}\n)\n"
+                f'{v} <- grDevices::colorRampPalette({v}_stops, space = "Lab")\n\n'
+                f"# + scale_colour_gradientn(colours = {v}(256))\n"
+                f"# + scale_fill_gradientn(colours = {v}(256))\n")
+    if lang == "matlab":
+        rows = []
+        for c in _sample(stops, 256):
+            r, g, b = [int(c[1:][i:i + 2], 16) / 255 for i in (0, 2, 4)]
+            rows.append(f"    {r:.4f} {g:.4f} {b:.4f}")
+        return (f"% {head}\n% {meta}\n{v} = [\n" + ";\n".join(rows) + "\n];\n\n"
+                f"% colormap({v}); scatter(x, y, 36, v, \"filled\"); colorbar\n")
+    if lang == "origin":
+        return f"# {head}  —  16 级\n# {meta}\n" + "\n".join(_sample(stops, 16)) + "\n"
+    if lang == "css":
+        s12 = _sample(stops, 12)
+        grad = ",\n".join(f"    {c} {i * 100 / 11:.1f}%" for i, c in enumerate(s12))
+        return (f"/* {head} */\n/* {meta} */\n.{e['slug']}-{ramp} {{\n"
+                f"  background: linear-gradient(90deg,\n{grad}\n  );\n}}\n")
+    return f"{head}\n{meta}\n\n" + "\n".join(_sample(stops, 32)) + "\n"
+
+
+def _swatch(hexes, width=8):
+    """终端真彩色色块（不支持真彩色的终端会退化成普通文字）。"""
+    out = []
+    for c in hexes:
+        r, g, b = [int(c[1:][i:i + 2], 16) for i in (0, 2, 4)]
+        fg = "0;0;0" if (0.299 * r + 0.587 * g + 0.114 * b) > 150 else "255;255;255"
+        out.append(f"\033[48;2;{r};{g};{b}m\033[38;2;{fg}m{c.center(width)}\033[0m")
+    return "".join(out)
+
+
+def main(argv=None):
+    """命令行入口：anime-palettes <命令> ..."""
+    import argparse
+    import json as _json
+    p = argparse.ArgumentParser(
+        prog="anime-palettes",
+        description="动漫 / 游戏角色配色库 —— 36 套，面向科研配图与 PPT",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""示例:
+  anime-palettes ls --family 蓝 --grade A
+  anime-palettes show 胡桃 --order distinct
+  anime-palettes hex miku -n 3
+  anime-palettes code ganyu --ramp flow --lang python > ganyu_flow.py
+  anime-palettes search 原神
+  anime-palettes json miku | jq .colors
+""")
+    sub = p.add_subparsers(dest="cmd", required=True)
+
+    a = sub.add_parser("ls", help="列出全部配色（带色块预览）")
+    a.add_argument("--family", help="按色系筛：红 橙 黄 绿 青 蓝 紫 粉 中性 撞色")
+    a.add_argument("--grade", choices=list("ABC"), help="按色盲友好度筛")
+    a.add_argument("--order", choices=ORDERS, default=DEFAULT_ORDER)
+
+    a = sub.add_parser("show", help="显示单套配色的全部细节")
+    a.add_argument("name")
+    a.add_argument("--order", choices=ORDERS, default=DEFAULT_ORDER)
+
+    a = sub.add_parser("hex", help="只输出 HEX，一行一个，方便管道")
+    a.add_argument("name")
+    a.add_argument("-n", type=int, default=6)
+    a.add_argument("--order", choices=ORDERS, default=DEFAULT_ORDER)
+    a.add_argument("--variant", choices=("main", "dark", "light"), default="main")
+    a.add_argument("--safe", action="store_true", help="只输出色盲安全子集")
+
+    a = sub.add_parser("code", help="生成色标代码")
+    a.add_argument("name")
+    a.add_argument("--ramp", choices=RAMPS, default="flow")
+    a.add_argument("--lang", choices=_LANGS, default="python")
+
+    a = sub.add_parser("search", help="按角色 / 色调 / 作品模糊搜索")
+    a.add_argument("query")
+
+    a = sub.add_parser("json", help="输出该配色的完整 JSON")
+    a.add_argument("name")
+
+    ns = p.parse_args(argv)
+
+    if ns.cmd == "ls":
+        rows = [e for e in PALETTES.values()
+                if (not ns.family or e["family"] == ns.family)
+                and (not ns.grade or e["cvd_grade"] == ns.grade)]
+        rows.sort(key=lambda e: (FAMILIES.index(e["family"]), e["slug"]))
+        for e in rows:
+            print(f"{e['name_zh']:<14}{e['family']}  {e['cvd_grade']}  "
+                  f"{_swatch(colors(e['slug'], order=ns.order), 9)}  {e['slug']}")
+        print(f"\n共 {len(rows)} 套 · 色盲友好度 A=全可分 B=大部分 C=只用安全子集")
+        return 0
+
+    if ns.cmd == "search":
+        for s in find(ns.query):
+            pass
+        return 0
+
+    e = get(ns.name)
+
+    if ns.cmd == "json":
+        print(_json.dumps(e, ensure_ascii=False, indent=1))
+        return 0
+
+    if ns.cmd == "hex":
+        cs = safe(ns.name) if ns.safe else colors(
+            ns.name, n=ns.n, variant=ns.variant, order=ns.order)
+        print("\n".join(cs))
+        return 0
+
+    if ns.cmd == "code":
+        print(code(ns.name, ns.ramp, ns.lang), end="")
+        return 0
+
+    # show
+    print(f"\n  {e['name_zh']}   {e['name_en']}")
+    print(f"  {e['source']} · 色系 {e['family']} · 色盲友好度 {e['cvd_grade']}"
+          f" · 最小 ΔE00 {e['min_de']}\n")
+    for label, variant in (("浅 light", "light"), ("主 main ", "main"), ("深 dark ", "dark")):
+        print(f"  {label}  {_swatch(colors(ns.name, variant=variant, order=ns.order), 9)}")
+    print(f"\n  中性色     {_swatch([e['bg'], e['bg2'], e['muted'], e['ink']], 9)}"
+          f"   bg / bg2 / muted / ink")
+    print(f"  色盲安全   {_swatch(safe(ns.name), 9)}")
+    print(f"\n  排序 {ORDER_LABEL[ns.order]}")
+    for o in ORDERS:
+        if o != ns.order:
+            print(f"       {ORDER_LABEL[o]:<18}{_swatch(colors(ns.name, order=o), 9)}")
+    print()
+    for r in RAMPS:
+        st = e["ramp_stats"][r]
+        print(f"  {r:<7}{_swatch(_sample(e[r], 8), 7)}  L*{st['L_range']:>5} "
+              f"单调{'是' if st['monotonic'] else '否'} 均匀{st['uniformity']}  {RAMP_LABEL[r]}")
+    print(f"\n  取代码: anime-palettes code {e['slug']} --ramp flow --lang python\n")
+    return 0
+
+
+__all__ = ["PALETTES", "FAMILIES", "ORDERS", "ORDER_LABEL", "order_of", "code", "main", "get", "colors", "safe", "neutrals", "ls",
            "find", "cmap", "listed", "register", "rc", "use", "using",
            "preview", "to_hex_block", "use_cjk_font", "wheel", "wheel_all",
            "scatter_guide", "RAMPS", "RAMP_LABEL", "ramp_info"]
+
+
+if __name__ == "__main__":
+    import sys as _sys
+    _sys.exit(main())

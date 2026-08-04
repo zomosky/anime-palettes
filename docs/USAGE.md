@@ -235,7 +235,7 @@ Esc 或点空白处关闭。
 
 ## Python 用法
 
-`pip install git+https://github.com/zomosky/anime-palettes.git`，或把 `anime_palettes.py` 放进项目目录，无第三方依赖，
+装法见 [INSTALL.md](INSTALL.md)（pip / uv / 零安装单文件都有），无第三方依赖，
 matplotlib 相关功能是懒加载的。
 
 ```python

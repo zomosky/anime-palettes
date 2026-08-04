@@ -240,3 +240,54 @@ def test_plot_helpers_run():
 
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-q"]))
+
+
+# ------------------------------------------------------------ 命令行
+def test_cli_commands(capsys):
+    for argv in (["ls"], ["ls", "--family", "蓝", "--grade", "A"],
+                 ["show", "胡桃"], ["show", "miku", "--order", "distinct"],
+                 ["hex", "miku", "-n", "3"], ["hex", "hutao", "--safe"],
+                 ["search", "原神"], ["json", "miku"]):
+        assert ap.main(argv) == 0
+        assert capsys.readouterr().out.strip()
+
+
+def test_cli_hex_output(capsys):
+    ap.main(["hex", "miku", "-n", "3", "--order", "distinct"])
+    out = capsys.readouterr().out.split()
+    assert out == ap.colors("miku", n=3, order="distinct")
+
+
+def test_cli_json_roundtrip(capsys):
+    import json
+    ap.main(["json", "ganyu"])
+    assert json.loads(capsys.readouterr().out)["colors"] == ap.colors("ganyu")
+
+
+@pytest.mark.parametrize("lang", ["python", "python256", "r", "matlab", "origin", "css", "hex"])
+@pytest.mark.parametrize("ramp", ["seq", "flow", "div", "cyclic"])
+def test_code_generation(lang, ramp):
+    src = ap.code("miku", ramp, lang)
+    assert len(src) > 80
+    assert ap.get("miku")["name_zh"] in src or "miku" in src
+
+
+def test_generated_python_code_executes():
+    pytest.importorskip("matplotlib")
+    for ramp in ap.RAMPS:
+        for lang in ("python", "python256"):
+            ns = {}
+            exec(ap.code("ganyu", ramp, lang), ns)
+            cm = ns[f"ganyu_{ramp}"]
+            assert cm(0.0) != cm(0.5) != cm(1.0)
+            if ramp == "cyclic":            # 环形色标首尾必须接上
+                assert max(abs(a - b) for a, b in zip(cm(0.0), cm(1.0))) < 0.02
+            else:
+                assert cm(0.0) != cm(1.0)
+
+
+def test_code_rejects_bad_args():
+    with pytest.raises(ValueError):
+        ap.code("miku", "nope")
+    with pytest.raises(ValueError):
+        ap.code("miku", "flow", "cobol")

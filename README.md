@@ -7,7 +7,8 @@
 [![CI](https://github.com/zomosky/anime-palettes/actions/workflows/ci.yml/badge.svg)](https://github.com/zomosky/anime-palettes/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-black.svg)](LICENSE)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org)
-[![No dependencies](https://img.shields.io/badge/核心依赖-0-brightgreen.svg)](#python-模块)
+[![No dependencies](https://img.shields.io/badge/核心依赖-0-brightgreen.svg)](docs/INSTALL.md)
+[![uv](https://img.shields.io/badge/uv-ready-de5fe9.svg)](docs/INSTALL.md#uv)
 
 每套 = **6 主色** + 深/浅变体 + 4 条连续色标 + 配套中性色 + 色环 · 预置 **4 种排列顺序** · 标注**色盲友好度**
 交付形式：交互色卡库 HTML · Python 模块 · Excel · PPT 取色板与主题色 · Adobe `.ase` · GIMP `.gpl` · Origin 清单
@@ -55,9 +56,14 @@
 ### 要在 Python 里用
 
 ```bash
-pip install git+https://github.com/zomosky/anime-palettes.git
-# 或者：把 anime_palettes.py 单文件丢进项目目录，核心 API 零依赖
+pip install git+https://github.com/zomosky/anime-palettes.git          # pip
+uv add "anime-palettes @ git+https://github.com/zomosky/anime-palettes.git"   # uv
 ```
+
+没有 uv？`curl -LsSf https://astral.sh/uv/install.sh | sh`（Windows 用
+`irm https://astral.sh/uv/install.ps1 | iex`，有 pip 的话 `pip install uv` 也行）。
+**完整安装矩阵见 [`docs/INSTALL.md`](docs/INSTALL.md)** —— 覆盖 pip / uv / conda /
+离线内网 / 国内网络慢 / 其他语言读 JSON，以及每一种的钉版本写法。
 
 ```python
 import anime_palettes as ap
@@ -79,7 +85,38 @@ ax.scatter(x, y, c=v, s=42, edgecolor="white", linewidth=.35,
            cmap=ap.cmap("ganyu", "flow", crop=(.10, .93)))
 ```
 
-`examples/quickstart.py` 是一个可直接跑的完整例子。
+`examples/quickstart.py` 是可直接跑的完整例子。
+
+### 一点都不想装
+
+三条路，都不碰 Python 环境：
+
+```bash
+# ① 单文件模块（~130 KB，核心 API 零依赖，配色数据就在里面）
+curl -fsSLO https://raw.githubusercontent.com/zomosky/anime-palettes/main/anime_palettes.py
+
+# ② PEP 723 单文件脚本 —— 依赖写在脚本注释里，uv 自动建环境
+uv run examples/uv_single_file.py
+
+# ③ 只用命令行，跑完不留痕迹
+uvx --from git+https://github.com/zomosky/anime-palettes anime-palettes show 胡桃
+```
+
+或者直接读 `dist/anime_palettes.json` 的 raw 链接 —— R、MATLAB、JS 都能用，
+写法见 [`docs/INSTALL.md`](docs/INSTALL.md#其他语言直接读-json)。
+
+### 命令行
+
+装完会多一个 `anime-palettes` 命令（没装也能 `python anime_palettes.py <命令>`）：
+
+```bash
+anime-palettes ls --family 蓝 --grade A     # 终端里直接显示色块
+anime-palettes show 胡桃                    # 单套全貌
+anime-palettes hex 甘雨 --safe              # 色盲安全子集，方便管道
+anime-palettes code ganyu --ramp flow --lang r > ganyu_flow.R
+```
+
+`--lang` 支持 `python` / `python256` / `r` / `matlab` / `origin` / `css` / `hex`。
 
 ### 要在 PPT 里用
 
@@ -200,9 +237,11 @@ dist/                      全部交付物
   ppt-theme-colors/          PowerPoint 主题色 XML
   origin-hex/                Origin / GraphPad 逐行粘贴用清单
 src/                       生成链路（改 data.py → make all）
+docs/INSTALL.md            安装矩阵：pip / uv / conda / 离线 / 其他语言
 docs/USAGE.md              详细使用说明
 examples/quickstart.py     可直接跑的例子
-tests/test_palettes.py     332 项自检，含 CIEDE2000 实现的标准数据验证
+examples/uv_single_file.py PEP 723 单文件脚本，uv run 一句话搞定
+tests/test_palettes.py     365 项自检，含 CIEDE2000 实现的标准数据验证
 ```
 
 ## 自己改 / 重新生成
@@ -215,6 +254,7 @@ make all      # 派生 + 生成全部交付物 + 跑测试
 ```
 
 依赖：Python 3.8+、`matplotlib` `numpy` `openpyxl`（生成用），`node` + `pptxgenjs`（只为 PPT 取色板）。
+用 uv 的话 `uv sync --extra build` 一步到位。
 
 ---
 
@@ -235,11 +275,21 @@ Ships as a zero-dependency Python module, a single-file interactive HTML swatch 
 (click a colormap bar to get ready-to-paste Python / R / MATLAB / Origin / CSS code),
 Excel workbook, PowerPoint picker deck and theme-colour files, Adobe `.ase`, GIMP `.gpl`, and Origin lists.
 
+```bash
+pip install git+https://github.com/zomosky/anime-palettes.git
+uv add   "anime-palettes @ git+https://github.com/zomosky/anime-palettes.git"
+uvx --from git+https://github.com/zomosky/anime-palettes anime-palettes ls
+```
+
 ```python
 import anime_palettes as ap
 ap.use("ganyu", order="distinct")
 ax.scatter(x, y, c=v, cmap=ap.cmap("ganyu", "flow", crop=(.1, .93)))
 ```
+
+Zero-dependency single file — `curl` it into your project and import, no install needed.
+Full install matrix (pip / uv / conda / offline / other languages) in
+[`docs/INSTALL.md`](docs/INSTALL.md).
 
 ---
 
