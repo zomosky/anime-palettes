@@ -422,3 +422,43 @@ def test_code_rejects_bad_args():
         ap.code("miku", "nope")
     with pytest.raises(ValueError):
         ap.code("miku", "flow", "cobol")
+
+
+# ------------------------------------------------------------ 标志物
+_MARK_CMDS = set("MLHVCSQTAZmlhvcsqtaz")
+_MARK_NUMS = set("0123456789 ,.-eE")
+
+
+def test_every_slug_has_a_mark():
+    """标志物开关打开后，缺 mark 的卡片会露出空洞。键集合必须严格相等。"""
+    import data
+    import marks
+    slugs = {p["slug"] for p in data.PALETTES}
+    assert set(marks.MARKS) == slugs, (
+        f"缺 mark：{sorted(slugs - set(marks.MARKS))}；"
+        f"多余 mark：{sorted(set(marks.MARKS) - slugs)}"
+    )
+
+
+def test_mark_is_wellformed():
+    """不要用 @parametrize 展开 —— 那会在收集阶段就 import marks，
+    marks.py 还没建的时候整个测试模块都收集不起来。"""
+    import marks
+    for slug, (vb, d) in sorted(marks.MARKS.items()):
+        parts = vb.split()
+        assert len(parts) == 4, f"{slug} 的 viewBox 不是四段：{vb!r}"
+        for x in parts:
+            float(x)
+        assert d.strip(), f"{slug} 的 path 是空的"
+        assert d.lstrip()[0] in "Mm", f"{slug} 的 path 不是以 M/m 开头：{d[:12]!r}"
+        bad = set(d) - _MARK_CMDS - _MARK_NUMS
+        assert not bad, f"{slug} 的 path 含非法字符：{sorted(bad)}"
+
+
+def test_marks_do_not_leak_into_library():
+    """marks 是展示资源不是色彩数据。让它进 library.json 会破坏
+    dist/anime_palettes.json 与 src/library.json 内容完全相同这条不变量。"""
+    import json
+    lib = json.load(open(os.path.join(_ROOT, "src", "library.json")))
+    for e in lib:
+        assert "mark" not in e and "path" not in e, f"{e['slug']} 的库记录里混进了标志物字段"
