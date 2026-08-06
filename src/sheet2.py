@@ -1,10 +1,27 @@
 import os
+import sys
 import json, matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
-plt.rcParams['font.sans-serif']=['WenQuanYi Zen Hei','Noto Sans CJK SC','DejaVu Sans']
-plt.rcParams['axes.unicode_minus']=False
+
+# 中文字体：走 anime_palettes.use_cjk_font() 自动挑一个系统里真的装了的。
+# 别再在这里手写字体名单 —— 原来写死的 ['WenQuanYi Zen Hei','Noto Sans CJK SC','DejaVu Sans']
+# 全是 Linux 字体，在 macOS 上一个都没有，matplotlib 会**静默**退到 DejaVu Sans，
+# 而它没有中文字形，于是整张图的中文全变成方框（tofu）。这张图是要放进 README 的，
+# 坏了没有任何测试会红 —— CI 的 build 关不比对 PNG 字节。所以下面挑不到就直接报错退出，
+# 宁可 make docs 失败，也不要悄悄产出一张中文全是方框的图。
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import anime_palettes as ap  # noqa: E402
+
+_font = ap.use_cjk_font()
+if not _font:
+    raise SystemExit(
+        "找不到任何中文字体，生成出来的图中文会全变成方框。\n"
+        f"在 {', '.join(ap.CJK_FONTS)} 里装一个再跑。\n"
+        "（macOS 自带 PingFang SC / Heiti SC；Linux 可装 fonts-noto-cjk）"
+    )
+
 os.makedirs('build', exist_ok=True)
 lib=json.load(open('library.json'))
 n=len(lib)
