@@ -1,4 +1,5 @@
 """Minimal, dependency-light colour-science helpers (sRGB / CIELAB / dE2000 / CVD)."""
+import itertools
 import math
 
 # ---------- basic conversions ----------
@@ -332,3 +333,36 @@ def diverging(low, high, n=256, mid_L=96.0):
     left = arm(ha, ca, 28.0, False)
     right = list(reversed(arm(hb, cb, 28.0, False)))
     return ramp(left + right[1:], n)
+
+
+# ---------- 色盲友好度 ----------
+# 这三个函数原先住在 derive.py，但 derive 的模块级有 tuned/data 指纹校验，
+# 仓库处于「改了 data.py 还没 tune」时 import 就 SystemExit。它们是纯色彩科学、
+# 只用本文件的原语，放这儿 propose.py 才能在那种状态下照常用。
+
+def cvd_min(hexes, kinds=('protan', 'deutan', 'tritan')):
+    out = {}
+    for k in kinds:
+        labs = [hex2lab(simulate_cvd(c, k)) for c in hexes]
+        out[k] = min(delta_e00(labs[i], labs[j])
+                     for i, j in itertools.combinations(range(len(hexes)), 2))
+    return out
+
+
+def safe_set(hexes, thr=12.0):
+    """按顺序贪心挑出在红/绿色盲下仍两两可分的最大子集（返回索引）。"""
+    keep = [0]
+    for i in range(1, len(hexes)):
+        sub = [hexes[k] for k in keep] + [hexes[i]]
+        if min(cvd_min(sub, ('protan', 'deutan')).values()) >= thr:
+            keep.append(i)
+    return keep
+
+
+def grade(hexes):
+    m = min(cvd_min(hexes, ('protan', 'deutan')).values())
+    if m >= 13:
+        return 'A'
+    if m >= 9:
+        return 'B'
+    return 'C'

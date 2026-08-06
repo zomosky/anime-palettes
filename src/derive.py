@@ -5,7 +5,8 @@ import itertools
 import math
 from colorlib import (hex2lab, lab2hex, delta_e00, simulate_cvd, contrast,
                       sequential, diverging, lch, lab2rgb, hex2rgb,
-                      flow, cyclic, uniformize, ramp_stats)
+                      flow, cyclic, uniformize, ramp_stats,
+                      cvd_min, safe_set, grade)
 from data import (PALETTES, MONO, DIVERGING_OVERRIDE, SIGNATURE_OVERRIDE,
                   source_fingerprint)
 from tuned import TUNED, SOURCE
@@ -22,34 +23,6 @@ if SOURCE != source_fingerprint():
 def _shift(h, dL, cf=1.0):
     L, a, b = hex2lab(h)
     return lab2hex((max(0, min(100, L + dL)), a * cf, b * cf))
-
-
-def cvd_min(hexes, kinds=('protan', 'deutan', 'tritan')):
-    out = {}
-    for k in kinds:
-        labs = [hex2lab(simulate_cvd(c, k)) for c in hexes]
-        out[k] = min(delta_e00(labs[i], labs[j])
-                     for i, j in itertools.combinations(range(len(hexes)), 2))
-    return out
-
-
-def safe_set(hexes, thr=12.0):
-    """按顺序贪心挑出在红/绿色盲下仍两两可分的最大子集（返回索引）。"""
-    keep = [0]
-    for i in range(1, len(hexes)):
-        sub = [hexes[k] for k in keep] + [hexes[i]]
-        if min(cvd_min(sub, ('protan', 'deutan')).values()) >= thr:
-            keep.append(i)
-    return keep
-
-
-def grade(hexes):
-    m = min(cvd_min(hexes, ('protan', 'deutan')).values())
-    if m >= 13:
-        return 'A'
-    if m >= 9:
-        return 'B'
-    return 'C'
 
 
 def order_smooth(cs, sig_i=0):

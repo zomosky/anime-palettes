@@ -634,9 +634,23 @@ def test_html_ships_marks_off_by_default():
 # ------------------------------------------------------------ 调优器 profile
 # 抽样而不是全跑：单套调优约 1.1s，58 套要 65s，CI 三个 Python 版本就是 3 分钟。
 # 全量校验放在 Task 8 的手工步骤和 CI 的 tuned.py 逐字节 diff 里，这里只挡住常见破坏。
-# 抽样覆盖：MONO 两套、单色相与多色相、高彩度与低彩度、6 色差异大与小。
-_PROFILE_SAMPLE = ["2b-achromatic", "noface-ink-gray", "miku-aqua",
-                   "ponyo-coral", "totoro-moss-gray", "eva01-violet-lime"]
+# 这 6 套不是随手挑的，是拿变异检验选出来的：把 DEFAULT 的每个参数各推一小步
+# （lmin 30→30.1、lmax 78→77.9、hue_span 7→4、chroma_hi 1.20→1.19、
+#  chroma_lo 0.45→0.46、penalty_w 0.55→0.56、cvd_w 0.65→0.66），全库 58 套逐个跑，
+# 记下哪些 slug 的结果会变，再选能把 7 项全覆盖的 6 套。实测两件事很反直觉：
+#   · hue_span 全库只有 3 套测得出来（zenitsu-lightning / acheron-magenta / luffy-red-straw）
+#     —— ±7° 的色相余量平时根本不吃满，不含这 3 套之一就等于没测色相约束
+#   · cvd_w 也只有 6 套测得出来
+# 括号里的数字取自 data.py 原始色，即 tune 的实际输入：
+#   2b-achromatic       MONO 分支；平均彩度 7.4 全库最低，2 色顶到 clamp 的 C≥6 地板
+#   noface-ink-gray     MONO 分支；色相跨度 23.8° 全库最窄；覆盖 cvd_w
+#   gojo-sky            非 MONO 里色相最窄（35.2°）；6 色有 4 色落在 [30,78] 窗口外
+#   hollowknight-pale   两两 ΔE00 最小（6.75），最贴 clamp 与 _edge_penalty 的边界
+#   inkling-splat       两两 ΔE00 最大（28.63）；色相跨度 262.9°、平均彩度 50.6，都近全库上限
+#   acheron-magenta     唯一能把上面 5 套补满 7/7 的一套 —— 它独家覆盖 hue_span 与 lmin
+# 换 slug 前先把变异检验重跑一遍，别让覆盖率悄悄掉下去（换之前那组是 6/7，漏 hue_span）。
+_PROFILE_SAMPLE = ["2b-achromatic", "noface-ink-gray", "gojo-sky",
+                   "hollowknight-pale", "inkling-splat", "acheron-magenta"]
 
 
 @pytest.mark.parametrize("slug", _PROFILE_SAMPLE)
@@ -689,3 +703,81 @@ def test_profile_a_stays_closer_to_source_than_profile_b():
         return sum(delta_e00(hex2lab(a), hex2lab(b)) for a, b in zip(cols, out)) / 6
 
     assert drift("A") < drift("B")
+
+
+# ------------------------------------------------------------ propose
+_PROPOSE_DEMO = ["#4FA8DE", "#9CD2F0", "#2A6BA5", "#1F2430", "#B9C4D0", "#EAF2F8"]
+
+
+def test_propose_builds_five_candidates():
+    import propose
+    cands = propose.build(_PROPOSE_DEMO)
+    assert [c.key for c in cands] == ["A", "B", "C", "D", "E"]
+    for c in cands:
+        assert len(c.colors) == 6 and len(set(c.colors)) == 6
+        assert c.grade in "ABC"
+        assert 0 <= c.safe_n <= 6
+        assert c.min_de > 0 and c.cvd_de > 0 and c.drift >= 0
+
+
+def test_propose_grayscale_profile_spreads_lightness():
+    """D 是灰度打印方案，它的最小明度间隔必须比忠于原作的 A 更大，
+    否则这个方案名不副实。"""
+    import propose
+    by = {c.key: c for c in propose.build(_PROPOSE_DEMO)}
+    assert by["D"].gray_gap > by["A"].gray_gap
+
+
+def test_propose_cvd_profile_is_friendlier_than_faithful():
+    """C 是色盲友好方案，它在红/绿色盲下的最小 ΔE00 必须高于忠于原作的 A，
+    否则 cvd_w 那 2.5 倍权重就是白写的（被手滑改回去也没人拦）。"""
+    import propose
+    by = {c.key: c for c in propose.build(_PROPOSE_DEMO)}
+    assert by["C"].cvd_de > by["A"].cvd_de
+
+
+def test_propose_soft_profile_is_less_saturated():
+    """E 是柔和低饱和方案，6 色平均彩度必须低于忠于原作的 A，
+    否则 chroma_hi 那个 0.85 上限被改掉也不会有测试红。"""
+    import propose
+    from colorlib import lch
+    by = {c.key: c for c in propose.build(_PROPOSE_DEMO)}
+
+    def mean_c(cand):
+        return sum(lch(x)[1] for x in cand.colors) / len(cand.colors)
+
+    assert mean_c(by["E"]) < mean_c(by["A"])
+
+
+def test_propose_rejects_bad_input():
+    import propose
+    with pytest.raises(SystemExit):
+        propose.parse_args(["--slug", "x", "--zh", "x", "--en", "X", "--tone-zh", "x",
+                            "--tone-en", "X", "--family", "蓝", "--source", "x",
+                            "--colors", "#FFFFFF,#000000"])          # 只有 2 色
+    with pytest.raises(SystemExit):
+        propose.parse_args(["--slug", "x", "--zh", "x", "--en", "X", "--tone-zh", "x",
+                            "--tone-en", "X", "--family", "不存在的色系", "--source", "x",
+                            "--colors", ",".join(_PROPOSE_DEMO)])
+    with pytest.raises(SystemExit):
+        propose.parse_args(["--slug", "miku-aqua", "--zh", "x", "--en", "X", "--tone-zh", "x",
+                            "--tone-en", "X", "--family", "蓝", "--source", "x",
+                            "--colors", ",".join(_PROPOSE_DEMO)])     # slug 已存在
+
+
+def test_propose_ansi_row_is_printable():
+    import propose
+    row = propose.ansi_row(_PROPOSE_DEMO)
+    assert "\x1b[" in row and row.endswith("\x1b[0m")
+
+
+def test_propose_ansi_row_carries_the_real_rgb():
+    """光检查「有 ESC 且以 reset 收尾」拦不住真正会犯的错：colorlib.hex2rgb
+    返回的是 0-1 浮点，忘了乘 255 的话每个通道都被 %d 截成 0，整行印成纯黑，
+    上面那条断言照样全绿 —— 预览是这个工具的全部价值，得验到数值。"""
+    import re
+    import propose
+    got = [tuple(int(v) for v in m)
+           for m in re.findall(r"\x1b\[48;2;(\d+);(\d+);(\d+)m", propose.ansi_row(
+               ["#FFFFFF", "#000000", "#4FA8DE"]))]
+    assert got == [(255, 255, 255), (0, 0, 0), (0x4F, 0xA8, 0xDE)], got
