@@ -122,6 +122,69 @@ def _gray(hexcode):
     return lab2hex((L, 0.0, 0.0))
 
 
+def _ramps(cs):
+    """四条色标，直接用 colorlib 现算，不读 library.json ——
+    这样全新 clone 上没跑过 make derive 也能用这个预览页。"""
+    from colorlib import sequential, flow, diverging, cyclic, uniformize, lch as _lch
+    sig = cs[0]
+    warm = [c for c in cs if _lch(c)[1] >= 16]
+    lo, hi = (warm[-1], warm[0]) if len(warm) >= 2 else (cs[-1], cs[0])
+    return [("seq", uniformize(sequential(sig, 64))),
+            ("flow", flow(cs, 64)),
+            ("div", diverging(lo, hi, 64)),
+            ("cyclic", cyclic(cs, 64))]
+
+
+def _grad(seq):
+    n = len(seq)
+    stops = ",".join(f"{c} {i * 100 / (n - 1):.1f}%" for i, c in enumerate(seq))
+    return f"linear-gradient(90deg,{stops})"
+
+
+def render_html(cands, colors, meta):
+    """5 个方案并排 + 每个的 4 条色标。单文件，不引任何外部资源。"""
+    head = (
+        "<!DOCTYPE html>\n<html lang=\"zh-CN\"><head><meta charset=\"utf-8\">"
+        "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
+        f"<title>{meta['zh']} · {meta['tone_zh']} —— 5 个调色方案</title><style>"
+        "body{font:14px/1.6 system-ui,-apple-system,'PingFang SC',sans-serif;"
+        "background:#f6f6f4;color:#1d1d21;margin:0;padding:26px}"
+        "h1{font-size:19px;margin:0 0 4px}.meta{color:#6c6c76;font-size:12.5px;margin-bottom:20px}"
+        ".card{background:#fff;border:1px solid #e4e4e0;border-radius:10px;padding:15px;margin-bottom:14px}"
+        ".hd{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:10px}"
+        ".hd b{font-size:15px}.stat{color:#6c6c76;font-size:12px;font-variant-numeric:tabular-nums}"
+        ".sw{display:flex;border-radius:6px;overflow:hidden;margin-bottom:9px}"
+        ".sw div{flex:1;height:52px;display:flex;align-items:flex-end;justify-content:center;"
+        "font-size:10px;padding-bottom:4px;font-family:ui-monospace,monospace}"
+        ".rl{display:flex;gap:8px;font-size:11px;color:#6c6c76;margin-bottom:3px}"
+        ".rl span{flex:1}.rs{display:flex;gap:8px}.rs i{flex:1;height:13px;border-radius:3px}"
+        "</style></head><body>")
+    ink = lambda c: "#111" if lch(c)[0] > 58 else "#fff"
+    parts = [head,
+             f"<h1>{meta['zh']} · {meta['tone_zh']}</h1>",
+             f"<div class=\"meta\">{meta['en']} · {meta['tone_en']} &nbsp;|&nbsp; "
+             f"{meta['source']} &nbsp;|&nbsp; 色系 {meta['family']} &nbsp;|&nbsp; "
+             f"slug <code>{meta['slug']}</code></div>",
+             "<div class=\"card\"><div class=\"hd\"><b>原始取色</b>"
+             "<span class=\"stat\">未调优</span></div><div class=\"sw\">",
+             "".join(f"<div style=\"background:{c};color:{ink(c)}\">{c[1:]}</div>" for c in colors),
+             "</div></div>"]
+    for c in cands:
+        parts.append(
+            f"<div class=\"card\"><div class=\"hd\"><b>{c.key} · {c.label}</b>"
+            f"<span class=\"stat\">minΔE₀₀ {c.min_de} · 色盲ΔE {c.cvd_de} · "
+            f"{c.grade} 级 · 安全 {c.safe_n}/6 · 灰度间隔 {c.gray_gap} · 偏移 {c.drift}</span></div>"
+            "<div class=\"sw\">"
+            + "".join(f"<div style=\"background:{x};color:{ink(x)}\">{x[1:]}</div>" for x in c.colors)
+            + "</div><div class=\"rl\">"
+            + "".join(f"<span>{k}</span>" for k, _ in _ramps(c.colors))
+            + "</div><div class=\"rs\">"
+            + "".join(f"<i style=\"background:{_grad(v)}\"></i>" for _, v in _ramps(c.colors))
+            + "</div></div>")
+    parts.append("</body></html>")
+    return "".join(parts)
+
+
 def parse_args(argv):
     ap = argparse.ArgumentParser(
         prog="propose.py", description="给新角色生成 5 个调色方案")
@@ -173,13 +236,18 @@ def main(argv=None):
     cands = build(a.colors, mono=a.mono)
     _report(cands, a.colors)
     # 静默无操作比报错更糟：用户跑 --apply 看到退出码 0 加一份完整报告，
-    # 很容易以为已经写回去了。落地时把这两段换成真实逻辑即可。
+    # 很容易以为已经写回去了。--apply 落地时把这段换成真实逻辑即可。
     if a.apply:
         print("提示：--apply 尚未实现，本次没有写入任何文件。",
               file=sys.stderr)
     if a.html:
-        print("提示：--html 尚未实现，本次没有生成预览页。",
-              file=sys.stderr)
+        os.makedirs("build", exist_ok=True)
+        meta = dict(slug=a.slug, zh=a.zh, en=a.en, tone_zh=a.tone_zh,
+                    tone_en=a.tone_en, family=a.family, source=a.source)
+        path = os.path.join("build", f"propose-{a.slug}.html")
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(render_html(cands, a.colors, meta))
+        print(f"预览页：src/{path}")
     return cands, a
 
 

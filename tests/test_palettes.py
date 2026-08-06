@@ -838,3 +838,18 @@ def test_propose_ansi_row_carries_the_real_rgb():
            for m in re.findall(r"\x1b\[48;2;(\d+);(\d+);(\d+)m", propose.ansi_row(
                ["#FFFFFF", "#000000", "#4FA8DE"]))]
     assert got == [(255, 255, 255), (0, 0, 0), (0x4F, 0xA8, 0xDE)], got
+
+
+def test_propose_html_is_selfcontained():
+    import propose
+    cands = propose.build(_PROPOSE_DEMO)
+    meta = dict(slug="test-char", zh="测试", en="Test", tone_zh="霜蓝",
+                tone_en="Frost", family="蓝", source="测试")
+    html = propose.render_html(cands, _PROPOSE_DEMO, meta)
+    assert html.lstrip().startswith("<!DOCTYPE html>")
+    assert "http://" not in html and "https://" not in html, "预览页不许引外部资源"
+    for c in cands:
+        assert c.label in html
+        for x in c.colors:
+            assert x in html
+    assert html.count("linear-gradient") >= len(cands) * 4, "每个方案要有 4 条色标"
