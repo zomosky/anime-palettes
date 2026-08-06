@@ -619,16 +619,28 @@ def test_marks_do_not_leak_into_library():
 
 
 def test_html_ships_marks_off_by_default():
-    """标志物默认关闭。开关按钮不能带 on 类，且 MK 常量必须内嵌进单文件 HTML。"""
+    """标志物默认关闭，且 MK 常量必须是真被替换进去的、内容对得上 marks.MARKS 的数据。
+
+    只查子串 "const MK=" 或者挑 5 个 slug 断言在 html 里出现是不够的：前者只证明
+    那 8 个字符存在，不管后面跟的是不是合法 JSON；后者恒真——slug 本来就在页面的
+    DATA 数据块里，跟标志物有没有正确内嵌毫无关系。变异检验：把 gen_html.py 里
+    __MARKS__ 的替换整个删掉（HTML 里留下字面量 "const MK=__MARKS__;"，页面 JS
+    直接语法错误）或者把载荷换成 "const MK={};"，这两种破坏都会让上面两条旧断言
+    继续全绿，必须解析出 MK 的实际 JSON 内容才挡得住。
+    """
+    import json
     import re
-    html = open(os.path.join(_ROOT, "dist", "anime-palettes.html"), encoding="utf-8").read()
-    assert "const MK=" in html, "标志物数据没内嵌进 HTML"
-    m = re.search(r'<button id="mkbtn"[^>]*>', html)
-    assert m, "找不到标志物开关按钮"
-    assert "class=" not in m.group(0), f"开关默认带了类，应该是关闭态：{m.group(0)}"
     import marks
-    for slug in list(marks.MARKS)[:5]:
-        assert slug in html
+    html = open(os.path.join(_ROOT, "dist", "anime-palettes.html"), encoding="utf-8").read()
+    m = re.search(r'const MK=(\{.*?\});', html)
+    assert m, "标志物数据没内嵌进 HTML（找不到形如 const MK={...}; 的赋值）"
+    mk = json.loads(m.group(1))
+    assert set(mk) == set(marks.MARKS), "HTML 里 MK 的 slug 集合和 marks.MARKS 对不上"
+    for slug, (vb, d) in marks.MARKS.items():
+        assert mk[slug] == [vb, d], f"{slug} 的标志物数据（viewBox/path）没对上"
+    mb = re.search(r'<button id="mkbtn"[^>]*>', html)
+    assert mb, "找不到标志物开关按钮"
+    assert "class=" not in mb.group(0), f"开关默认带了类，应该是关闭态：{mb.group(0)}"
 
 
 # ------------------------------------------------------------ 调优器 profile
