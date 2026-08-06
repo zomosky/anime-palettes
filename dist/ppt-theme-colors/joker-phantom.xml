@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="雨宫莲 怪盗红黑">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="5A2016"/></a:dk2>
+  <a:lt2><a:srgbClr val="FFF2EF"/></a:lt2>
+  <a:accent1><a:srgbClr val="E50011"/></a:accent1>
+  <a:accent2><a:srgbClr val="93001B"/></a:accent2>
+  <a:accent3><a:srgbClr val="46464D"/></a:accent3>
+  <a:accent4><a:srgbClr val="848380"/></a:accent4>
+  <a:accent5><a:srgbClr val="7C5F4F"/></a:accent5>
+  <a:accent6><a:srgbClr val="C1B7A8"/></a:accent6>
+  <a:hlink><a:srgbClr val="A10006"/></a:hlink>
+  <a:folHlink><a:srgbClr val="9E7C74"/></a:folHlink>
+</a:clrScheme>

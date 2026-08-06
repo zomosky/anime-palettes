@@ -24,6 +24,9 @@ PALETTES = [
     dict(slug="chihiro-vermilion-fern", zh="千寻", en="Chihiro", tone_zh="朱绿", tone_en="Vermilion & Fern",
          family="红", source="千与千寻",
          colors=["#C7412F", "#E8886A", "#4E7A4A", "#93AE6E", "#2E3A44", "#E9DDC9"]),
+    dict(slug="dusk-inkvermilion", zh="夕", en="Dusk", tone_zh="墨朱", tone_en="Ink & Vermilion",
+         family="红", source="明日方舟",
+         colors=["#8C2E3A", "#C46A6A", "#3E4A50", "#C4A45A", "#7A9EA8", "#DCD4C4"]),
 
     # ---------------- 橙 / 金 ----------------
     dict(slug="mitsuha-twilight", zh="三叶", en="Mitsuha", tone_zh="暮橙", tone_en="Twilight Orange",
@@ -49,6 +52,9 @@ PALETTES = [
     dict(slug="zelda-pale-gold", zh="塞尔达", en="Zelda", tone_zh="淡金", tone_en="Pale Gold",
          family="黄", source="塞尔达传说",
          colors=["#C4A03A", "#E6D6A2", "#2F5C8A", "#7FA3C4", "#8FA88C", "#F3EFE2"]),
+    dict(slug="nekomata-neon", zh="猫又", en="Nekomata", tone_zh="荧柠黄", tone_en="Neon Lemon",
+         family="黄", source="绝区零",
+         colors=["#E8D42E", "#F0E88C", "#8C7A18", "#E0508C", "#3E3A40", "#D8D4C8"]),
 
     # ---------------- 绿 ----------------
     dict(slug="luigi-grass", zh="路易吉", en="Luigi", tone_zh="草绿", tone_en="Grass Green",
@@ -66,6 +72,9 @@ PALETTES = [
     dict(slug="eren-survey-olive", zh="艾伦", en="Eren", tone_zh="橄榄", tone_en="Survey Olive",
          family="绿", source="进击的巨人",
          colors=["#6E7A3C", "#A8B073", "#43505C", "#8E5A38", "#9E3A2E", "#D8D2BE"]),
+    dict(slug="minori-emerald", zh="花里みのり", en="Minori", tone_zh="翡翠", tone_en="Emerald Jump",
+         family="绿", source="世界计划",
+         colors=["#00BB88", "#F0849E", "#4A7FC4", "#E0B040", "#7A5240", "#DCE8E2"]),
 
     # ---------------- 青 / 薄荷 ----------------
     dict(slug="miku-aqua", zh="初音未来", en="Miku", tone_zh="青碧", tone_en="Aqua Teal",
@@ -109,6 +118,9 @@ PALETTES = [
     dict(slug="cloud-soldier", zh="克劳德", en="Cloud", tone_zh="军蓝", tone_en="Soldier Blue",
          family="蓝", source="最终幻想VII",
          colors=["#2F4A72", "#6E8CB5", "#3FA8D4", "#E0C46A", "#6B5A48", "#E5EAF1"]),
+    dict(slug="ichika-leoneed", zh="星乃一歌", en="Ichika", tone_zh="电光蓝", tone_en="Leo/need Blue",
+         family="蓝", source="世界计划",
+         colors=["#4455DD", "#33AAEE", "#F0C82E", "#EE6666", "#2ECC94", "#D8DCE8"]),
 
     # ---------------- 紫 ----------------
     dict(slug="raiden-electro", zh="雷电将军", en="Raiden", tone_zh="雷紫", tone_en="Electro Violet",
@@ -137,6 +149,9 @@ PALETTES = [
     dict(slug="aerith-rose-sage", zh="爱丽丝", en="Aerith", tone_zh="玫粉鼠尾草", tone_en="Rose & Sage",
          family="粉", source="最终幻想VII",
          colors=["#D96E8C", "#EFA9BC", "#B03A3A", "#4E8C5A", "#6B4A32", "#F1E4E7"]),
+    dict(slug="acheron-magenta", zh="黄泉", en="Acheron", tone_zh="洋红雷", tone_en="Nihility Magenta",
+         family="粉", source="崩坏：星穹铁道",
+         colors=["#B0308C", "#E89AC8", "#3A3448", "#C8C4CC", "#D9B45C", "#8C3A4A"]),
 
     # ---------------- 中性 / 低饱和 ----------------
     dict(slug="noface-ink-gray", zh="无脸男", en="No-Face", tone_zh="墨灰", tone_en="Ink Gray",
@@ -151,6 +166,9 @@ PALETTES = [
     dict(slug="nyanko-fortune", zh="猫咪老师", en="Nyanko-sensei", tone_zh="招财米", tone_en="Fortune Beige",
          family="中性", source="夏目友人帐",
          colors=["#C9B48C", "#E0D4B8", "#8A7654", "#C4453A", "#E0A83A", "#4E4A42"]),
+    dict(slug="tarnished-gilded", zh="褪色者", en="Tarnished", tone_zh="黄金暗夜", tone_en="Gilded Nightfall",
+         family="中性", source="艾尔登法环",
+         colors=["#5A4A34", "#C9A24A", "#E0CFA4", "#8E3A2E", "#8A8478", "#3A3228"]),
 
     # ---------------- 撞色 / 高对比 ----------------
     dict(slug="mario-primary", zh="马力欧", en="Mario", tone_zh="正红蓝", tone_en="Primary Red & Blue",
@@ -162,6 +180,12 @@ PALETTES = [
     dict(slug="rx78-trikolor", zh="RX-78-2", en="RX-78-2", tone_zh="三色旗", tone_en="Trikolor",
          family="撞色", source="机动战士高达",
          colors=["#1B4E9B", "#C8102E", "#E8B800", "#C4C8CC", "#6E727A", "#2E3238"]),
+    dict(slug="inkling-splat", zh="Inkling", en="Inkling", tone_zh="荧墨", tone_en="Splat Neon",
+         family="撞色", source="斯普拉遁",
+         colors=["#F02D7D", "#5FD424", "#FF7A00", "#00B4D8", "#3E3A44", "#DCD8D0"]),
+    dict(slug="joker-phantom", zh="雨宫莲", en="Joker", tone_zh="怪盗红黑", tone_en="Phantom Crimson",
+         family="撞色", source="女神异闻录5",
+         colors=["#E60012", "#8E1420", "#3A3A3E", "#C8C4BE", "#7A5A48", "#E8DED0"]),
 ]
 
 # 每套配色的“签名色”（用于生成连续 colormap）默认取第 1 色；

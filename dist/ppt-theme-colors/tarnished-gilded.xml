@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="褪色者 黄金暗夜">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="38322A"/></a:dk2>
+  <a:lt2><a:srgbClr val="F6F5F3"/></a:lt2>
+  <a:accent1><a:srgbClr val="7A674F"/></a:accent1>
+  <a:accent2><a:srgbClr val="B18C35"/></a:accent2>
+  <a:accent3><a:srgbClr val="C7B68D"/></a:accent3>
+  <a:accent4><a:srgbClr val="842317"/></a:accent4>
+  <a:accent5><a:srgbClr val="948E83"/></a:accent5>
+  <a:accent6><a:srgbClr val="4A4641"/></a:accent6>
+  <a:hlink><a:srgbClr val="55432C"/></a:hlink>
+  <a:folHlink><a:srgbClr val="87837F"/></a:folHlink>
+</a:clrScheme>

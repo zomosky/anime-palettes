@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # 自动生成：科研可用性微调后的配色
 # SOURCE = 生成这份结果时 data.py 的指纹，对不上就说明该重跑 `make tune` 了
-SOURCE = '87f5ac3a2afca66a'
+SOURCE = '37a734a3407c3aed'
 
 TUNED = {'asuka-vermilion': ['#E63B2A', '#FF9C88', '#8D1316', '#DF9730', '#3B4760', '#BFB6B0'],
   'hutao-plum': ['#C74E4D', '#DE9476', '#792C3D', '#49435F', '#D5B326', '#BCB6AF'],
   'ponyo-coral': ['#ED3124', '#FDA083', '#A12044', '#2284B1', '#92BFCA', '#8C867E'],
   'chihiro-vermilion-fern': ['#C6402E', '#FD9E81', '#536950', '#7FA054', '#394855', '#BBB6AD'],
+  'dusk-inkvermilion': ['#8E2736', '#C46A6A', '#566269', '#C9A54A', '#719DA9', '#BCB7AD'],
   'mitsuha-twilight': ['#CB5C21', '#F4A665', '#C75681', '#474B89', '#8093D4', '#BDB5AD'],
   'naruto-orange-indigo': ['#D16409', '#D4A986', '#324D90', '#DCB300', '#7A94C9', '#46464C'],
   'zhongli-amber': ['#B37C00', '#D3B46A', '#895829', '#4A4644', '#6E7F72', '#BBB6AC'],
@@ -14,11 +15,13 @@ TUNED = {'asuka-vermilion': ['#E63B2A', '#FF9C88', '#8D1316', '#DF9730', '#3B476
   'zenitsu-lightning': ['#E8B000', '#948634', '#E25A00', '#A32F1D', '#69563A', '#BEB6A3'],
   'pikachu-lemon': ['#DEB100', '#847700', '#ED493E', '#7D491C', '#444845', '#BCB7A6'],
   'zelda-pale-gold': ['#A18001', '#C7B679', '#2F5C8A', '#7FA3C4', '#6B8469', '#AEACA7'],
+  'nekomata-neon': ['#CFBD00', '#9C9759', '#7D6C03', '#D14C83', '#49454B', '#BCB7A9'],
   'luigi-grass': ['#009530', '#8ACB96', '#005B2D', '#2B54B0', '#DAB32B', '#8F8C82'],
   'zoro-moss-ink': ['#6D8557', '#9CC574', '#2F5025', '#B28E00', '#454747', '#BAB7AC'],
   'tanjiro-ink-ember': ['#426B47', '#7CA377', '#8B2B1C', '#D4703F', '#464746', '#C0B6A7'],
   'totoro-moss-gray': ['#616967', '#718578', '#3B4A45', '#8A7550', '#B8C2B3', '#9D9D99'],
   'eren-survey-olive': ['#6F7E32', '#A7B16C', '#43505C', '#7B6152', '#89271F', '#B9B6AD'],
+  'minori-emerald': ['#009167', '#E1708D', '#4A7FC4', '#BB8E13', '#7A5240', '#B5BAB8'],
   'miku-aqua': ['#35CFC4', '#689893', '#00737D', '#404757', '#D7486A', '#A8ACAB'],
   'venti-mint': ['#089275', '#8FC2B0', '#216156', '#3B5A6E', '#C8B384', '#949795'],
   'giyu-pine': ['#26635B', '#5F9A8E', '#863434', '#C9A227', '#36485F', '#B6B9B8'],
@@ -32,6 +35,7 @@ TUNED = {'asuka-vermilion': ['#E63B2A', '#FF9C88', '#8D1316', '#DF9730', '#3B476
   'link-champion': ['#327EBF', '#9ABAD4', '#D0B560', '#7E5F40', '#354862', '#98958A'],
   'taki-night-indigo': ['#1F467E', '#5B86B2', '#5F6471', '#9DB9E5', '#C46E5A', '#96999C'],
   'cloud-soldier': ['#294771', '#6882A5', '#34C3F9', '#D0B55C', '#6B5A48', '#B6B8BB'],
+  'ichika-leoneed': ['#3C50D7', '#0096D8', '#D9B30D', '#D64F52', '#31CE95', '#B4B7C1'],
   'raiden-electro': ['#886CD4', '#BDA5F0', '#5C3F8E', '#484552', '#A16D8D', '#B6B2BD'],
   'eva01-violet-lime': ['#824CC5', '#A989D6', '#503F64', '#83CA20', '#7F8E4F', '#B9B4C0'],
   'howl-iridescent': ['#DF72A6', '#346595', '#977900', '#77BDE0', '#578B6C', '#C0B7A5'],
@@ -39,10 +43,14 @@ TUNED = {'asuka-vermilion': ['#E63B2A', '#FF9C88', '#8D1316', '#DF9730', '#3B476
   'nezuko-crimson-pink': ['#E93F6E', '#F1A0B9', '#E4703C', '#903159', '#4F4449', '#C8B4A1'],
   'march7-sakura-ice': ['#DF81AA', '#8D7B82', '#78BDDD', '#3E6B9E', '#A64575', '#BAB8B9'],
   'aerith-rose-sage': ['#C95B7C', '#ECA8BA', '#AF212B', '#408E52', '#775D4C', '#9E9698'],
+  'acheron-magenta': ['#C93DA1', '#F09ED0', '#4A435C', '#989699', '#D8B35B', '#8C3A47'],
   'noface-ink-gray': ['#303038', '#4F4F5F', '#7B7B8B', '#B6B6C5', '#959599', '#765D84'],
   '2b-achromatic': ['#303035', '#5A5A67', '#81818D', '#C7C5C2', '#999487', '#83714F'],
   'kakashi-silver-navy': ['#8E98A4', '#727578', '#3B475C', '#516E90', '#B14A3A', '#BFC1C2'],
   'nyanko-fortune': ['#A89263', '#BDB7AA', '#7D7364', '#BD3830', '#E6AD3F', '#4A4640'],
+  'tarnished-gilded': ['#7A674F', '#B18C35', '#C7B68D', '#842317', '#948E83', '#4A4641'],
   'mario-primary': ['#DD5643', '#2F56B3', '#DDB300', '#683D17', '#C8B3A2', '#46464D'],
   'luffy-red-straw': ['#C11B1E', '#D7B34E', '#2B5FA8', '#C8732E', '#51443E', '#A29D96'],
-  'rx78-trikolor': ['#2F5AA9', '#D92A3A', '#E0B100', '#B4B8BB', '#777C86', '#43474D']}
+  'rx78-trikolor': ['#2F5AA9', '#D92A3A', '#E0B100', '#B4B8BB', '#777C86', '#43474D'],
+  'inkling-splat': ['#F32A7E', '#5BD01F', '#C65B00', '#008FAD', '#49454F', '#BBB7B0'],
+  'joker-phantom': ['#E50011', '#93001B', '#46464D', '#848380', '#7C5F4F', '#C1B7A8']}

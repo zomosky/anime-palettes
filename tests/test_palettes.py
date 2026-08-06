@@ -66,8 +66,8 @@ def _hue(h):
 
 # ------------------------------------------------------------ 数据完整性
 def test_palette_count():
-    assert len(ALL) == 43
-    assert len({ap.PALETTES[s]["name_zh"] for s in ALL}) == 43
+    assert len(ALL) == 51
+    assert len({ap.PALETTES[s]["name_zh"] for s in ALL}) == 51
 
 
 # 新增配色的验收线：不能有 C 级，且最小色差要够画多系列图
@@ -83,6 +83,31 @@ def test_new_anime_palettes_meet_the_bar(slug, expect):
     e = ap.PALETTES[slug]
     assert e["cvd_grade"] == expect, f"{slug} 评级是 {e['cvd_grade']}，预期 {expect}"
     assert e["min_de"] >= 10.0, f"{slug} 最小 ΔE00 只有 {e['min_de']}"
+
+
+NEW_GAME_1 = {
+    "ichika-leoneed": "A", "minori-emerald": "B", "inkling-splat": "A",
+    "joker-phantom": "B", "tarnished-gilded": "A", "nekomata-neon": "A",
+    "acheron-magenta": "B", "dusk-inkvermilion": "A",
+}
+
+
+@pytest.mark.parametrize("slug,expect", sorted(NEW_GAME_1.items()))
+def test_new_game_palettes_1_meet_the_bar(slug, expect):
+    e = ap.PALETTES[slug]
+    assert e["cvd_grade"] == expect, f"{slug} 评级是 {e['cvd_grade']}，预期 {expect}"
+    assert e["min_de"] >= 10.0, f"{slug} 最小 ΔE00 只有 {e['min_de']}"
+
+
+def test_warm_dark_signature_exists():
+    """增补前 L*<35 的签名色全部挤在 h 276-291 的蓝紫带，红/橙/绿/青一个都没有。
+
+    dusk-inkvermilion（墨朱，h≈20 L≈33）是全库第一个暖调暗色签名。
+    """
+    from colorlib import lch
+    warm_dark = [s for s in ALL
+                 if (lambda t: t[0] < 35 and (t[2] < 100 or t[2] > 330))(lch(ap.PALETTES[s]["colors"][0]))]
+    assert "dusk-inkvermilion" in warm_dark, f"暖调暗色签名只有 {warm_dark}"
 
 
 def test_tuned_is_in_sync_with_data():
