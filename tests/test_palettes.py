@@ -853,3 +853,55 @@ def test_propose_html_is_selfcontained():
         for x in c.colors:
             assert x in html
     assert html.count("linear-gradient") >= len(cands) * 4, "每个方案要有 4 条色标"
+
+
+def _parse_gradients(html):
+    """从 render_html() 输出里按出现顺序抠出每条 linear-gradient 的 stop 颜色列表。
+    render_html() 对每个方案固定按 seq/flow/div/cyclic 的顺序拼 4 条，
+    所以第 i 个方案对应 grads[4*i : 4*i+4]。"""
+    grads = re.findall(r"linear-gradient\(90deg,([^)]*)\)", html)
+    return [[stop.split()[0] for stop in g.split(",")] for g in grads]
+
+
+def test_propose_html_ramps_carry_real_colors_and_correct_semantics():
+    """`test_propose_html_is_selfcontained` 的 4 条断言全是形状/计数
+    （DOCTYPE 开头、无 http、6 个原始 hex 出现、linear-gradient 数量够）——
+    没有一条解析渐变里的实际 stop 颜色。把 `_grad()` 改成对每个 stop 都吐
+    `#000000`，上面那条测试照样全绿，跟上一轮 `ansi_row()` 全黑那个 bug
+    是同一个模子（见 `test_propose_ansi_row_carries_the_real_rgb`）。
+
+    这里解析出每条渐变的真实 stop 颜色，按 CLAUDE.md「色标语义不能混用」
+    那条验四条色标各自的语义：seq/flow 明度单调、div 中点接近白、
+    cyclic 首尾同色闭环。既能抓「_grad 退化成纯色」，也能抓
+    「_ramps() 里 seq/flow/div/cyclic 顺序被打乱」。"""
+    import propose
+    from colorlib import lch
+    cands = propose.build(_PROPOSE_DEMO)
+    meta = dict(slug="test-char", zh="测试", en="Test", tone_zh="霜蓝",
+                tone_en="Frost", family="蓝", source="测试")
+    html = propose.render_html(cands, _PROPOSE_DEMO, meta)
+    grads = _parse_gradients(html)
+    assert len(grads) == len(cands) * 4
+    for i, c in enumerate(cands):
+        seq, flow, div, cyclic = grads[i * 4:i * 4 + 4]
+        for name, ramp in (("seq", seq), ("flow", flow), ("div", div), ("cyclic", cyclic)):
+            assert len(set(ramp)) > 1, f"{c.key} 方案的 {name} 色标退化成单一颜色（比如全黑）"
+
+        Ls_seq = [lch(h)[0] for h in seq]
+        assert all(a >= b - 1e-6 for a, b in zip(Ls_seq, Ls_seq[1:])), \
+            f"{c.key} 方案的 seq 色标明度不单调：{[round(x, 1) for x in Ls_seq]}"
+
+        Ls_flow = [lch(h)[0] for h in flow]
+        assert all(a >= b - 1e-6 for a, b in zip(Ls_flow, Ls_flow[1:])), \
+            f"{c.key} 方案的 flow 色标明度不单调：{[round(x, 1) for x in Ls_flow]}"
+
+        Ls_div = [lch(h)[0] for h in div]
+        Cs_div = [lch(h)[1] for h in div]
+        mid = len(div) // 2
+        assert Ls_div[mid] > max(Ls_div[0], Ls_div[-1]) + 15, (
+            f"{c.key} 方案的 div 色标中点不比两端亮很多，不像发散色标：首 "
+            f"{Ls_div[0]:.1f} 中 {Ls_div[mid]:.1f} 尾 {Ls_div[-1]:.1f}")
+        assert Cs_div[mid] < 10, f"{c.key} 方案的 div 色标中点彩度 {Cs_div[mid]:.1f} 不够接近白"
+
+        assert cyclic[0] == cyclic[-1], \
+            f"{c.key} 方案的 cyclic 色标首尾不同色（{cyclic[0]} vs {cyclic[-1]}），没有闭环"

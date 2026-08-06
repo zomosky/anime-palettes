@@ -6,7 +6,7 @@ import math
 from colorlib import (hex2lab, lab2hex, delta_e00, contrast,
                       sequential, diverging, lch,
                       flow, cyclic, uniformize, ramp_stats,
-                      cvd_min, safe_set, grade)
+                      cvd_min, safe_set, grade, pick_diverging_pair)
 from data import (PALETTES, MONO, DIVERGING_OVERRIDE, SIGNATURE_OVERRIDE,
                   source_fingerprint)
 from tuned import TUNED, SOURCE
@@ -57,36 +57,14 @@ def order_light(cs):
 
 
 def pick_diverging(cs, slug):
-    """自动选发散色标两端：彩度足够 & 色相相距最远的一对。
-    若整套配色色相跨度过小（单色系），则把签名色相旋转 165° 派生出另一端。"""
+    """自动选发散色标两端，多一层 slug -> 人工 override 的业务规则；
+    色彩学核心（彩度足够 & 色相相距最远，跨度不够时派生对端）住在
+    colorlib.pick_diverging_pair —— propose.py 的预览页共用同一份，
+    不能在两处各写一遍色彩学决策。"""
     if slug in DIVERGING_OVERRIDE:
         i, j = DIVERGING_OVERRIDE[slug]
         return i, j, 'manual'
-    info = [lch(c) for c in cs]           # (L, C, h)
-    def cool(h):
-        return 130 <= h <= 310
-    best = None
-    for i, j in itertools.combinations(range(len(cs)), 2):
-        Ci, Cj = info[i][1], info[j][1]
-        if Ci < 16 or Cj < 16:
-            continue
-        dh = abs((info[i][2] - info[j][2] + 180) % 360 - 180)
-        w = dh + 0.30 * min(Ci, Cj) + (25 if cool(info[i][2]) != cool(info[j][2]) else 0)
-        if best is None or w > best[0]:
-            best = (w, dh, i, j)
-    if best and best[1] >= 80:
-        _, _, i, j = best
-        # 惯例：冷色在低值端，暖色在高值端
-        if cool(info[j][2]) and not cool(info[i][2]):
-            i, j = j, i
-        return i, j, 'auto'
-    # 单色系：派生对端
-    k = max(range(len(cs)), key=lambda t: info[t][1])
-    L, C, h = info[k]
-    other = lab2hex((max(38.0, min(62.0, L)),
-                     max(C, 18) * math.cos(math.radians(h + 165)),
-                     max(C, 18) * math.sin(math.radians(h + 165))))
-    return k, other, 'derived'
+    return pick_diverging_pair(cs)
 
 
 def build_one(p):

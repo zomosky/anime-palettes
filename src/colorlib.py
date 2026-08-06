@@ -335,6 +335,48 @@ def diverging(low, high, n=256, mid_L=96.0):
     return ramp(left + right[1:], n)
 
 
+def pick_diverging_pair(cs):
+    """自动选发散色标两端：彩度足够 & 色相相距最远的一对；
+    整套配色色相跨度过小（单色系）时，从彩度最高的那色旋转 165° 派生对端。
+    冷色（130°-310°）放低值端、暖色放高值端，是发散色标的通用惯例。
+
+    返回 (a, b, mode)：mode='auto' 时 a、b 都是 cs 的下标；
+    mode='derived' 时 a 是下标、b 是派生出的新 hex（不在 cs 里）。
+    这个不对称的返回形状是刻意保留的 —— 调用方（derive.build_one）
+    本来就要把「选中原配色里的第几个」和「凭空派生了一个新颜色」区分开。
+
+    这段是 derive.py:pick_diverging() 的色彩学核心（不含 slug -> 人工
+    override 那层业务规则），搬到这儿是为了让 propose.py 的预览页跟正式
+    产物用同一份选端算法，不能各写一份、迟早走岔。原先 propose.py 里
+    简化成「彩度 >= 16 的原始顺序首尾」，选出来的两端经常同冷暖、
+    根本不发散，这就是要共用这份实现的原因。"""
+    info = [lch(c) for c in cs]           # (L, C, h)
+    def cool(h):
+        return 130 <= h <= 310
+    best = None
+    for i, j in itertools.combinations(range(len(cs)), 2):
+        Ci, Cj = info[i][1], info[j][1]
+        if Ci < 16 or Cj < 16:
+            continue
+        dh = abs((info[i][2] - info[j][2] + 180) % 360 - 180)
+        w = dh + 0.30 * min(Ci, Cj) + (25 if cool(info[i][2]) != cool(info[j][2]) else 0)
+        if best is None or w > best[0]:
+            best = (w, dh, i, j)
+    if best and best[1] >= 80:
+        _, _, i, j = best
+        # 惯例：冷色在低值端，暖色在高值端
+        if cool(info[j][2]) and not cool(info[i][2]):
+            i, j = j, i
+        return i, j, 'auto'
+    # 单色系：派生对端
+    k = max(range(len(cs)), key=lambda t: info[t][1])
+    L, C, h = info[k]
+    other = lab2hex((max(38.0, min(62.0, L)),
+                     max(C, 18) * math.cos(math.radians(h + 165)),
+                     max(C, 18) * math.sin(math.radians(h + 165))))
+    return k, other, 'derived'
+
+
 # ---------- 色盲友好度 ----------
 # 这三个函数原先住在 derive.py，但 derive 的模块级有 tuned/data 指纹校验，
 # 仓库处于「改了 data.py 还没 tune」时 import 就 SystemExit。它们是纯色彩科学、

@@ -11,6 +11,7 @@
 零依赖，只用 stdlib 和同目录的 colorlib / tune。
 """
 import argparse
+import html as html_escape
 import itertools
 import os
 import sys
@@ -124,11 +125,17 @@ def _gray(hexcode):
 
 def _ramps(cs):
     """四条色标，直接用 colorlib 现算，不读 library.json ——
-    这样全新 clone 上没跑过 make derive 也能用这个预览页。"""
-    from colorlib import sequential, flow, diverging, cyclic, uniformize, lch as _lch
+    这样全新 clone 上没跑过 make derive 也能用这个预览页。
+
+    div 的两端用 colorlib.pick_diverging_pair 选（跟 derive.py 生成正式
+    产物时用的是同一份算法：彩度足够 & 色相相距最远的一对，色相跨度不够
+    时派生对端）——不能自己简化一套，简化版曾经选出两个同冷暖的颜色，
+    夹出来的不是发散色标。"""
+    from colorlib import sequential, flow, diverging, cyclic, uniformize, pick_diverging_pair
     sig = cs[0]
-    warm = [c for c in cs if _lch(c)[1] >= 16]
-    lo, hi = (warm[-1], warm[0]) if len(warm) >= 2 else (cs[-1], cs[0])
+    di, dj, _mode = pick_diverging_pair(cs)
+    lo = cs[di] if isinstance(di, int) else di
+    hi = cs[dj] if isinstance(dj, int) else dj
     return [("seq", uniformize(sequential(sig, 64))),
             ("flow", flow(cs, 64)),
             ("div", diverging(lo, hi, 64)),
@@ -142,7 +149,12 @@ def _grad(seq):
 
 
 def render_html(cands, colors, meta):
-    """5 个方案并排 + 每个的 4 条色标。单文件，不引任何外部资源。"""
+    """5 个方案并排 + 每个的 4 条色标。单文件，不引任何外部资源。
+
+    meta 里的字段（zh/en/tone_zh/tone_en/family/source/slug）全部来自用户
+    在命令行敲的 --zh / --source 之类的参数，直接 f-string 拼进 HTML 之前
+    要先转义 —— 角色名或出处里带 &、<、" 之类的字符会产出畸形 HTML。"""
+    meta = {k: html_escape.escape(str(v)) for k, v in meta.items()}
     head = (
         "<!DOCTYPE html>\n<html lang=\"zh-CN\"><head><meta charset=\"utf-8\">"
         "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
