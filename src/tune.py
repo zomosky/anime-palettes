@@ -7,14 +7,38 @@
   · h   最多 ±7°（仅当同一配色内出现无法分离的同色相对时才动用）
 目标：最大化「正常视觉 + 红/绿色盲模拟」下的最小两两 ΔE2000，
       同时惩罚对原色的偏离。坐标下降 + 多次随机重启。
+
+上面这些边界和目标函数的权重都收在 `Profile` 里，默认值即 `DEFAULT`。
+`PROFILES` 另给 5 个取向不同的预设，供 `propose.py` 一次跑出多个候选方案挑选。
 """
 import math
 import random
 import itertools
+from collections import namedtuple
 from colorlib import (hex2lab, lab2hex, delta_e00, simulate_cvd, contrast)
 
 LMIN, LMAX = 30.0, 78.0
 MONO_LMIN, MONO_LMAX = 20.0, 86.0
+
+Profile = namedtuple("Profile", "name label penalty_w cvd_w lmin lmax "
+                                "hue_span chroma_hi chroma_lo spread_w")
+
+# 默认：与参数化之前的写死常量逐位等价。改这里会让 tuned.py 整体变化，
+# CI 的逐字节 diff 会红 —— 要动之前先想清楚。
+DEFAULT = Profile("default", "默认", 0.55, 0.65, LMIN, LMAX, 7.0, 1.20, 0.45, 0.0)
+
+PROFILES = {
+    # 偏离惩罚拉高 3 倍、色相几乎焊死 —— 色值基本不动
+    "A": Profile("faithful", "忠于原作", 1.60, 0.65, LMIN, LMAX, 2.0, 1.20, 0.45, 0.0),
+    # 惩罚压到一半以下、明度窗口放宽 —— 换取最大的两两色差
+    "B": Profile("distinct", "区分度优先", 0.25, 0.65, 26.0, 82.0, 7.0, 1.30, 0.40, 0.0),
+    # 色盲项权重拉到 2.5 倍 —— 冲 grade A
+    "C": Profile("cvdsafe", "色盲友好", 0.55, 1.60, LMIN, LMAX, 7.0, 1.20, 0.45, 0.0),
+    # 加明度间距项 —— 灰度打印下也能靠深浅区分
+    "D": Profile("grayscale", "灰度打印", 0.45, 0.40, 28.0, 80.0, 7.0, 1.20, 0.45, 1.10),
+    # 压彩度上限、抬明度下限 —— 适合大面积填充与背景
+    "E": Profile("soft", "柔和低饱和", 0.55, 0.65, 42.0, 84.0, 7.0, 0.85, 0.40, 0.0),
+}
 
 
 def lab2lch(lab):
@@ -27,7 +51,7 @@ def lch2hex(L, C, h):
     return lab2hex((L, C * math.cos(r), C * math.sin(r)))
 
 
-def _min_pair(hexes, weight_cvd=0.65):
+def _min_pair(hexes, cvd_w=0.65):
     labs = [hex2lab(c) for c in hexes]
     pl = [hex2lab(simulate_cvd(c, 'protan')) for c in hexes]
     dl = [hex2lab(simulate_cvd(c, 'deutan')) for c in hexes]
@@ -36,7 +60,7 @@ def _min_pair(hexes, weight_cvd=0.65):
     for i, j in itertools.combinations(range(n), 2):
         worst_n = min(worst_n, delta_e00(labs[i], labs[j]))
         worst_c = min(worst_c, delta_e00(pl[i], pl[j]), delta_e00(dl[i], dl[j]))
-    return worst_n + weight_cvd * worst_c, worst_n, worst_c
+    return worst_n + cvd_w * worst_c, worst_n, worst_c
 
 
 def _penalty(cur, orig):
@@ -60,32 +84,44 @@ def _edge_penalty(hexes, lmin, lmax):
     return p
 
 
-def score(cur, orig, lmin, lmax):
+def _spread(cur):
+    """明度间距项：6 个 L* 排序后相邻间隔的最小值。越大灰度下越好分。"""
+    Ls = sorted(t[0] for t in cur)
+    return min(b - a for a, b in zip(Ls, Ls[1:]))
+
+
+def score(cur, orig, lmin, lmax, pf=DEFAULT):
     hexes = [lch2hex(*t) for t in cur]
-    s, wn, wc = _min_pair(hexes)
-    return s - 0.55 * _penalty(cur, orig) - _edge_penalty(hexes, lmin, lmax), wn, wc
+    s, wn, wc = _min_pair(hexes, pf.cvd_w)
+    s = s - pf.penalty_w * _penalty(cur, orig) - _edge_penalty(hexes, lmin, lmax)
+    # 默认 profile 的 spread_w 是 0，这里必须整段跳过：`s + 0.0 * x` 在浮点下
+    # 不保证等于 s，一旦无条件相加，58 套的调优结果就可能整体位移。
+    if pf.spread_w:
+        s += pf.spread_w * _spread(cur)
+    return s, wn, wc
 
 
-def tune(colors, mono=False, seed=7, iters=340):
+def tune(colors, mono=False, seed=7, iters=340, profile=None):
+    pf = profile or DEFAULT
     rng = random.Random(seed)
-    lmin, lmax = (MONO_LMIN, MONO_LMAX) if mono else (LMIN, LMAX)
+    lmin, lmax = (MONO_LMIN, MONO_LMAX) if mono else (pf.lmin, pf.lmax)
     orig = [lab2lch(hex2lab(c)) for c in colors]
 
     def clamp(t, o):
         L, C, h = t
         L = max(lmin, min(lmax, L))
-        cmax = max(o[1] * 1.20, 6.0)
-        cmin = min(o[1] * 0.45, o[1])
+        cmax = max(o[1] * pf.chroma_hi, 6.0)
+        cmin = min(o[1] * pf.chroma_lo, o[1])
         C = max(cmin, min(cmax, C))
         dh = (h - o[2] + 180) % 360 - 180
-        dh = max(-7.0, min(7.0, dh))
+        dh = max(-pf.hue_span, min(pf.hue_span, dh))
         return (L, C, (o[2] + dh) % 360)
 
     best = None
     for restart in range(6):
         cur = [clamp((L + rng.uniform(-6, 6) if restart else L, C, h), o)
                for (L, C, h), o in zip(orig, orig)]
-        cs = score(cur, orig, lmin, lmax)[0]
+        cs = score(cur, orig, lmin, lmax, pf)[0]
         step = 6.0
         for it in range(iters):
             i = rng.randrange(len(cur))
@@ -100,7 +136,7 @@ def tune(colors, mono=False, seed=7, iters=340):
             cand = clamp(cand, orig[i])
             trial = list(cur)
             trial[i] = cand
-            ts = score(trial, orig, lmin, lmax)[0]
+            ts = score(trial, orig, lmin, lmax, pf)[0]
             if ts > cs:
                 cur, cs = trial, ts
             step = max(1.2, step * 0.995)

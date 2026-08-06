@@ -629,3 +629,63 @@ def test_html_ships_marks_off_by_default():
     import marks
     for slug in list(marks.MARKS)[:5]:
         assert slug in html
+
+
+# ------------------------------------------------------------ 调优器 profile
+# 抽样而不是全跑：单套调优约 1.1s，58 套要 65s，CI 三个 Python 版本就是 3 分钟。
+# 全量校验放在 Task 8 的手工步骤和 CI 的 tuned.py 逐字节 diff 里，这里只挡住常见破坏。
+# 抽样覆盖：MONO 两套、单色相与多色相、高彩度与低彩度、6 色差异大与小。
+_PROFILE_SAMPLE = ["2b-achromatic", "noface-ink-gray", "miku-aqua",
+                   "ponyo-coral", "totoro-moss-gray", "eva01-violet-lime"]
+
+
+@pytest.mark.parametrize("slug", _PROFILE_SAMPLE)
+def test_default_profile_reproduces_tuned_py(slug):
+    """propose.py 要用不同权重跑 tune，所以把常量参数化了。
+
+    默认 profile 必须与参数化之前逐位等价 —— 否则现有 58 套的 tuned.py 会变，
+    CI 那道逐字节 diff 直接红，而且全部产物都要跟着重生成。
+    """
+    import data
+    import tune
+    import tuned
+    p = next(x for x in data.PALETTES if x["slug"] == slug)
+    got, _, _ = tune.tune(p["colors"], mono=slug in data.MONO)
+    assert got == tuned.TUNED[slug], (
+        f"{slug} 的默认 profile 输出与 tuned.py 不一致\n"
+        f"  tuned.py: {tuned.TUNED[slug]}\n"
+        f"  重算:     {got}"
+    )
+
+
+def test_profiles_are_five_and_named():
+    import tune
+    assert sorted(tune.PROFILES) == ["A", "B", "C", "D", "E"]
+    for k, pf in tune.PROFILES.items():
+        assert pf.label, f"profile {k} 没有中文标签"
+
+
+@pytest.mark.parametrize("key", ["A", "B", "C", "D", "E"])
+def test_every_profile_produces_six_valid_hexes(key):
+    import tune
+    cols = ["#4FA8DE", "#9CD2F0", "#2A6BA5", "#1F2430", "#B9C4D0", "#EAF2F8"]
+    out, wn, wc = tune.tune(cols, profile=tune.PROFILES[key])
+    assert len(out) == 6 and len(set(out)) == 6
+    for c in out:
+        assert len(c) == 7 and c[0] == "#"
+        int(c[1:], 16)
+    assert wn > 0 and wc > 0
+
+
+def test_profile_a_stays_closer_to_source_than_profile_b():
+    """A 是「忠于原作」、B 是「区分度优先」。A 的平均偏移必须比 B 小，
+    否则这两个方案给用户的选择就是假的。"""
+    import tune
+    from colorlib import delta_e00, hex2lab
+    cols = ["#4FA8DE", "#9CD2F0", "#2A6BA5", "#1F2430", "#B9C4D0", "#EAF2F8"]
+
+    def drift(key):
+        out, _, _ = tune.tune(cols, profile=tune.PROFILES[key])
+        return sum(delta_e00(hex2lab(a), hex2lab(b)) for a, b in zip(cols, out)) / 6
+
+    assert drift("A") < drift("B")
