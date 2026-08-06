@@ -2,8 +2,11 @@
 """给自己喜欢的角色加一套配色：输入 6 个原始色，输出 5 个调色方案供挑选。
 
     python src/propose.py --slug my-char --zh 角色名 --en Name \
-        --tone-zh 霜蓝 --tone-en Frost --family 蓝 --source 出处 \
-        --colors "#4FA8DE,#9CD2F0,#2A6BA5,#1F2430,#B9C4D0,#EAF2F8"
+        --tone-zh 霜蓝 --tone-en "Frost Blue" --family 蓝 --source 出处 \
+        --colors "#4FA8DE,#7BC6E8,#2A6BA5,#C86A7A,#D8B25C,#5E6B7A"
+
+6 个色都要落在 L* ∈ [30, 78]（--mono 放宽到 [20, 86]），越界的会被拽进窗口，
+上面这组示例就是照这个窗口挑的。取色的坑见 skills/anime-palettes/references/add-palette.md。
 
 五个方案的差别在 tune 的目标函数取向，不在色相 —— 角色的辨识度色相始终锁着。
 挑好之后 `--apply B` 写回 data.py 与 tuned.py，再跑 `make all && make skill`。
@@ -213,15 +216,25 @@ def apply(meta, raw_colors, tuned_colors):
     """把新配色写回 data.py 与 tuned.py。
 
     tune() 逐套独立，别的 slug 的调优结果不受影响，所以这里只并入新条目
-    再重算指纹 —— 单套约 1s，不用重跑 65s 全库。
+    再重算指纹 —— 单套不到 1s，不用重跑几十秒的全库。
     """
+    # render_record 是拿双引号拼字符串字面量的，元数据里再带一个双引号就会把
+    # data.py 写成语法错误。这个校验必须在任何写操作之前 —— 写坏之后才 SyntaxError
+    # 虽然响亮，但用户得先 `git checkout src/data.py` 才能继续。
+    bad = sorted(k for k, v in meta.items() if '"' in str(v))
+    if bad:
+        raise SystemExit(f"字段 {bad} 里含英文双引号，会写坏 data.py。"
+                         "请改用中文引号“”或去掉。")
+
     data_path = os.path.join(_HERE, "data.py")
-    text = open(data_path, encoding="utf-8").read()
+    with open(data_path, encoding="utf-8") as f:
+        text = f.read()
     anchor = "\n]\n\n# 每套配色的“签名色”"
     if anchor not in text:
         raise SystemExit("data.py 的结构变了，找不到 PALETTES 列表的结尾，请手动添加记录")
     text = text.replace(anchor, "\n" + render_record(meta, raw_colors) + anchor, 1)
-    open(data_path, "w", encoding="utf-8").write(text)
+    with open(data_path, "w", encoding="utf-8") as f:
+        f.write(text)
 
     # 指纹必须用「刚写完的」data.py 重算，所以这里要把已经 import 过的旧模块
     # 踢掉重新 import —— 少了这几行，SOURCE 还是旧值，derive.py 会直接报错退出。
@@ -302,13 +315,17 @@ def main(argv=None):
                     tone_en=a.tone_en, family=a.family, source=a.source)
         apply(meta, a.colors, list(chosen.colors))
     if a.html:
-        os.makedirs("build", exist_ok=True)
+        # build 目录锚在 src/ 上而不是 cwd 上：propose.py 的用法是从仓库根
+        # `python src/propose.py`，用相对路径的话页面会掉进根目录的 build/，
+        # 而下面那行提示又写着 src/build/ —— 用户按提示去开会扑空。
+        outdir = os.path.join(_HERE, "build")
+        os.makedirs(outdir, exist_ok=True)
         meta = dict(slug=a.slug, zh=a.zh, en=a.en, tone_zh=a.tone_zh,
                     tone_en=a.tone_en, family=a.family, source=a.source)
-        path = os.path.join("build", f"propose-{a.slug}.html")
+        path = os.path.join(outdir, f"propose-{a.slug}.html")
         with open(path, "w", encoding="utf-8") as f:
             f.write(render_html(cands, a.colors, meta))
-        print(f"预览页：src/{path}")
+        print(f"预览页：{os.path.relpath(path, os.getcwd())}")
     return cands, a
 
 

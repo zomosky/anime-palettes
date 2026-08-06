@@ -1050,3 +1050,80 @@ def test_propose_apply_via_main_writes_the_named_profile(tmp_path, monkeypatch, 
         assert rec["colors"] == _PROPOSE_DEMO
     finally:
         _drop_isolated_modules()
+
+
+def test_propose_apply_refuses_double_quotes_in_meta(tmp_path, monkeypatch):
+    """元数据里含英文双引号会写出语法错误的 data.py —— 必须在动文件之前就拦住。
+
+    `--zh 'A"B'` 渲染出来是 `zh="A"B"`，下一行 `import data` 立刻 SyntaxError。
+    那是响亮失败不是静默失败，但 data.py 已经被改脏了，所以校验要前置。"""
+    _copy_editable_sources(tmp_path)
+    data_path = os.path.join(str(tmp_path), "data.py")
+    with open(data_path, encoding="utf-8") as f:
+        before = f.read()
+    _isolate_modules(tmp_path, monkeypatch)
+    try:
+        import propose as fresh
+        bad = dict(_PROPOSE_META, slug="zzz-quote", zh='测试"引号')
+        with pytest.raises(SystemExit) as e:
+            fresh.apply(bad, _PROPOSE_DEMO, list(_PROPOSE_DEMO))
+        assert "双引号" in str(e.value), f"报错信息没点明原因：{e.value!r}"
+        with open(data_path, encoding="utf-8") as f:
+            assert f.read() == before, "校验不通过却已经改了 data.py"
+    finally:
+        _drop_isolated_modules()
+
+
+def test_propose_html_lands_where_the_message_says(tmp_path, monkeypatch, capsys):
+    """--html 的落点必须锚在 src/ 上，且提示里印的路径要真能打开。
+
+    用相对 "build/" 的话，从仓库根跑 `python src/propose.py --html` 会把页面
+    写进根目录的 build/，提示却写着 src/build/ —— 用户按提示去开会扑空。"""
+    _copy_editable_sources(tmp_path)
+    _isolate_modules(tmp_path, monkeypatch)
+    try:
+        import propose as fresh
+        # cwd 换到 tmp_path 的上一级，模拟「从别的目录跑 src/propose.py」
+        monkeypatch.chdir(str(tmp_path.parent))
+        fresh.main(["--slug", "zzz-html", "--zh", "测试", "--en", "Test",
+                    "--tone-zh", "霜蓝", "--tone-en", "Frost Blue",
+                    "--family", "蓝", "--source", "测试作品",
+                    "--colors", ",".join(_PROPOSE_DEMO), "--html"])
+        line = [x for x in capsys.readouterr().out.splitlines() if x.startswith("预览页：")]
+        assert line, "没打印预览页路径"
+        shown = line[0].split("：", 1)[1]
+        assert os.path.exists(shown), f"提示里的路径打不开：{shown}"
+        assert os.path.samefile(shown, os.path.join(str(tmp_path), "build",
+                                                    "propose-zzz-html.html"))
+    finally:
+        _drop_isolated_modules()
+
+
+def test_skill_documents_how_to_add_a_palette():
+    ref = os.path.join(_ROOT, "skills", "anime-palettes", "references", "add-palette.md")
+    assert os.path.exists(ref), "缺 references/add-palette.md"
+    with open(ref, encoding="utf-8") as f:
+        body = f.read()
+    for must in ("propose.py", "--apply", "make tune", "make skill", "[30, 78]"):
+        assert must in body, f"add-palette.md 没写到 {must!r}"
+    with open(os.path.join(_ROOT, "skills", "anime-palettes", "SKILL.md"),
+              encoding="utf-8") as f:
+        skill = f.read()
+    assert "add-palette.md" in skill, "SKILL.md 没有指向 add-palette.md"
+
+
+def test_skill_package_matches_directory():
+    """.skill 是 zip 增量更新的，删过文件之后不重打包会留旧条目 —— CI 会因此红。"""
+    import zipfile
+    pkg = os.path.join(_ROOT, "skills", "anime-palettes.skill")
+    root = os.path.join(_ROOT, "skills", "anime-palettes")
+    with zipfile.ZipFile(pkg) as z:
+        names = {n for n in z.namelist() if not n.endswith("/")}
+    on_disk = set()
+    for dirpath, _, files in os.walk(root):
+        for fn in files:
+            if fn == ".DS_Store":
+                continue
+            rel = os.path.relpath(os.path.join(dirpath, fn), os.path.dirname(root))
+            on_disk.add(rel)
+    assert names == on_disk, f"包内多出：{names - on_disk}；包内缺少：{on_disk - names}"

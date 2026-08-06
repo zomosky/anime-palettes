@@ -220,8 +220,21 @@ ap.scatter_guide("ganyu")    # 散点四种策略对照
 
 ---
 
+## 自己加一套配色
+
+库里没有你要的角色，可以自己加。`python src/propose.py` 输入 6 个取色，
+一次给出 5 个调色方案（忠于原作 / 区分度优先 / 色盲友好 / 灰度打印 / 柔和低饱和），
+每个都附 minΔE₀₀、色盲 ΔE、评级、安全子集和相对原色的偏移量，挑一个 `--apply` 就写回库里。
+
+取色时最容易踩的坑是明度：6 主色必须落在 `L* ∈ [30, 78]`，越界的会被硬拽回来
+（纯黑纯白尤其糟，会变成发绿的灰）。完整流程、两个坑的实测数据、体检数据怎么读：
+`references/add-palette.md`
+
+---
+
 ## 参考文件
 
 - `references/palettes.md` —— 58 套速查表：HEX、色盲等级、安全色数、按需求定位
 - `references/recipes.md` —— matplotlib / seaborn / plotly / ggplot / Origin / PPT / CSS 的具体写法
 - `references/api.md` —— 完整 API 与数据字段
+- `references/add-palette.md` —— 自己加一套配色：取色约束、5 个方案怎么选、落地与回滚
