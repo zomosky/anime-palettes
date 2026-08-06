@@ -83,6 +83,36 @@ def test_tuned_is_in_sync_with_data():
     )
 
 
+def test_family_is_valid():
+    """family 是检索标签，拼错或用了没定义的标签会让 HTML 的筛选按钮筛不到东西。"""
+    import data
+    for p in data.PALETTES:
+        assert p["family"] in data.FAMILY_ORDER, \
+            f"{p['slug']} 的 family {p['family']!r} 不在 FAMILY_ORDER 里"
+
+
+def test_slug_is_unique():
+    import data
+    slugs = [p["slug"] for p in data.PALETTES]
+    dup = {s for s in slugs if slugs.count(s) > 1}
+    assert not dup, f"slug 重复：{dup}"
+
+
+def test_purple_family_signature_is_actually_purple():
+    """「紫」这个标签的签名色必须真落在紫区（LCh 色相 285-335）。
+
+    howl-iridescent 的 #C4548C 是 h=350 的粉红，一度被归在紫 —— 检索「紫」的人
+    会拿到一套粉配色。这里守住这条线。
+    """
+    from colorlib import lch
+    for slug in ALL:
+        e = ap.PALETTES[slug]
+        if e["family"] != "紫":
+            continue
+        h = lch(e["colors"][0])[2]
+        assert 285 <= h <= 335, f"{slug} 归在紫，但签名色 {e['colors'][0]} 的 h={h:.1f}"
+
+
 @pytest.mark.parametrize("slug", ALL)
 def test_structure(slug):
     e = ap.PALETTES[slug]

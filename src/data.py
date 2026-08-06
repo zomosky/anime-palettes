@@ -105,8 +105,11 @@ PALETTES = [
     dict(slug="eva01-violet-lime", zh="初号机", en="EVA-01", tone_zh="紫萤", tone_en="Violet & Lime",
          family="紫", source="新世纪福音战士",
          colors=["#6B3FA0", "#A182CC", "#3A2260", "#8CC63F", "#CFE38A", "#E8E2F0"]),
+    # 归在「粉」：签名色 #C4548C 的 LCh 色相是 350°，落在粉区而非紫区（285-335）。
+    # 物理位置仍留在「紫」分组里，是为了不打乱 PALETTES 列表顺序——
+    # 顺序参与 source_fingerprint()，挪动会要求重跑 make tune（这里不需要）。
     dict(slug="howl-iridescent", zh="哈尔", en="Howl", tone_zh="金蓝虹", tone_en="Iridescent Gold",
-         family="紫", source="哈尔的移动城堡",
+         family="粉", source="哈尔的移动城堡",
          colors=["#C4548C", "#3E6E9E", "#D9B44A", "#7FB7D4", "#5A8C6E", "#EFE7D6"]),
 
     # ---------------- 粉 ----------------

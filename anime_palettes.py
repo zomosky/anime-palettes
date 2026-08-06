@@ -861,7 +861,7 @@ PALETTES = {
     "tone_en": 'Iridescent Gold',
     "name_zh": '哈尔 · 金蓝虹',
     "name_en": 'Howl · Iridescent Gold',
-    "family": '紫',
+    "family": '粉',
     "source": '哈尔的移动城堡',
     "kind": 'cat',
     "colors": ['#DF72A6', '#C0B7A5', '#977900', '#578B6C', '#77BDE0', '#346595'],
