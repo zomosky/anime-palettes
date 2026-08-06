@@ -3,8 +3,8 @@
 并给出色盲友好度评级与安全子集长度。"""
 import itertools
 import math
-from colorlib import (hex2lab, lab2hex, delta_e00, simulate_cvd, contrast,
-                      sequential, diverging, lch, lab2rgb, hex2rgb,
+from colorlib import (hex2lab, lab2hex, delta_e00, contrast,
+                      sequential, diverging, lch,
                       flow, cyclic, uniformize, ramp_stats,
                       cvd_min, safe_set, grade)
 from data import (PALETTES, MONO, DIVERGING_OVERRIDE, SIGNATURE_OVERRIDE,

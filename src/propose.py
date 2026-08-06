@@ -41,14 +41,19 @@ def _gray_gap(hexes):
     return min(b - a for a, b in zip(Ls, Ls[1:]))
 
 
+def _cvd_de(hexes):
+    """红/绿色盲模拟下的最小两两 ΔE00，取两种色盲里更差的那个。"""
+    return min(_min_pairwise(hexes, lambda c: simulate_cvd(c, 'protan')),
+               _min_pairwise(hexes, lambda c: simulate_cvd(c, 'deutan')))
+
+
 def build(colors, mono=False):
     """跑 5 个 profile，返回按 A-E 排好的候选列表。"""
     out = []
     for key in ("A", "B", "C", "D", "E"):
         pf = tunemod.PROFILES[key]
         hexes, _, _ = tunemod.tune(colors, mono=mono, profile=pf)
-        cvd = min(_min_pairwise(hexes, lambda c: simulate_cvd(c, 'protan')),
-                  _min_pairwise(hexes, lambda c: simulate_cvd(c, 'deutan')))
+        cvd = _cvd_de(hexes)
         drift = sum(delta_e00(hex2lab(a), hex2lab(b))
                     for a, b in zip(colors, hexes)) / len(colors)
         out.append(Candidate(
@@ -108,7 +113,7 @@ def _report(cands, colors):
         print("   " + " ".join(c.colors))
         print()
     print("偏移 = 相对原始色的平均 ΔE00，越小越忠于原作。")
-    print("挑好之后：python src/propose.py ...（同样参数）--apply <方案字母>")
+    print("挑好之后用 --apply <方案字母> 写回 data.py 与 tuned.py（该选项尚未实现）。")
 
 
 def _gray(hexcode):
@@ -167,6 +172,14 @@ def main(argv=None):
                   f"tune 会把它拽回来，保真度会下降。", file=sys.stderr)
     cands = build(a.colors, mono=a.mono)
     _report(cands, a.colors)
+    # 静默无操作比报错更糟：用户跑 --apply 看到退出码 0 加一份完整报告，
+    # 很容易以为已经写回去了。落地时把这两段换成真实逻辑即可。
+    if a.apply:
+        print("提示：--apply 尚未实现，本次没有写入任何文件。",
+              file=sys.stderr)
+    if a.html:
+        print("提示：--html 尚未实现，本次没有生成预览页。",
+              file=sys.stderr)
     return cands, a
 
 

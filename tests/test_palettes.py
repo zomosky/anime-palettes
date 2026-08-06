@@ -720,33 +720,90 @@ def test_propose_builds_five_candidates():
         assert c.min_de > 0 and c.cvd_de > 0 and c.drift >= 0
 
 
-def test_propose_grayscale_profile_spreads_lightness():
-    """D 是灰度打印方案，它的最小明度间隔必须比忠于原作的 A 更大，
-    否则这个方案名不副实。"""
+# C / D / E 三个 profile「名副其实」这件事，不能拿单独一套配色做单点比较。
+# 理由是 tune() 对 profile 参数的敏感是**跳变式**的（坐标下降 + 随机重启，
+# 见上面 _PROFILE_SAMPLE 那段变异检验：参数只推 0.01~0.1 就有 6~53/58 套整体
+# 跳到另一个局部最优）。单点比较会被无关的小改动翻过去，红的原因和改动者的意图
+# 毫无关系。加容差也没用 —— 这不是浮点误差，是目标函数地形。
+#
+# 全库 58 套实测（每套跑 A/C/D/E 四个 profile）：
+#   C 的色盲 ΔE 高于 A ：56/58，反例 eren-survey-olive(-0.80)、noface-ink-gray(-0.20)
+#   D 的明度间隔大于 A ：58/58，最薄 giyu-pine(+1.50)
+#   E 的平均彩度低于 A ：58/58，最薄 2b-achromatic(-1.08)
+# 所以 C 写成聚合断言（它确实只是统计性质），D / E 写成「这组全部成立」
+# （它们是全库无例外的性质，逐套断言不脆弱，而且比原来只测一套更强）。
+#
+# 这 6 套是按 data.PALETTES 的顺序每隔 10 套取一个（`PALETTES[::10][:6]`），
+# 不是挑 margin 好看的。
+_PROPOSE_SET = ["asuka-vermilion", "pikachu-lemon", "miku-aqua",
+                "ganyu-glacier", "yinlin-violetgold", "tarnished-gilded"]
+
+
+@pytest.fixture(scope="module")
+def profile_candidates():
+    """这 6 套各跑一遍 propose.build()（约 11s），下面三条语义测试共用。"""
+    import data
     import propose
-    by = {c.key: c for c in propose.build(_PROPOSE_DEMO)}
-    assert by["D"].gray_gap > by["A"].gray_gap
+    out = {}
+    for slug in _PROPOSE_SET:
+        p = next(x for x in data.PALETTES if x["slug"] == slug)
+        out[slug] = {c.key: c for c in propose.build(p["colors"], mono=slug in data.MONO)}
+    return out
 
 
-def test_propose_cvd_profile_is_friendlier_than_faithful():
-    """C 是色盲友好方案，它在红/绿色盲下的最小 ΔE00 必须高于忠于原作的 A，
-    否则 cvd_w 那 2.5 倍权重就是白写的（被手滑改回去也没人拦）。"""
-    import propose
-    by = {c.key: c for c in propose.build(_PROPOSE_DEMO)}
-    assert by["C"].cvd_de > by["A"].cvd_de
-
-
-def test_propose_soft_profile_is_less_saturated():
-    """E 是柔和低饱和方案，6 色平均彩度必须低于忠于原作的 A，
-    否则 chroma_hi 那个 0.85 上限被改掉也不会有测试红。"""
-    import propose
+def _mean_chroma(cand):
     from colorlib import lch
-    by = {c.key: c for c in propose.build(_PROPOSE_DEMO)}
+    return sum(lch(x)[1] for x in cand.colors) / len(cand.colors)
 
-    def mean_c(cand):
-        return sum(lch(x)[1] for x in cand.colors) / len(cand.colors)
 
-    assert mean_c(by["E"]) < mean_c(by["A"])
+def test_propose_cvd_profile_actually_weights_cvd(profile_candidates):
+    """精确钉住 cvd_w：C 与默认 profile 只差这一个参数（1.60 vs 0.65），
+    所以「C 的色盲 ΔE 平均高于默认调优」把这个权重单独隔离了出来 ——
+    把 cvd_w 改回 0.65，C 就等同于默认 profile，这个均值会**精确变成 0.00**。
+    实测健康时 +1.93。默认 profile 的输出就是 tuned.py 里存的色值，直接读。
+    （对比之下「C 比 A 好」不是好的检测器：把 cvd_w 改回去之后，全库仍有
+      47/58 套的 C 比 A 强 —— 因为 A 还额外压着 penalty_w=1.60、hue_span=2.0。）
+    """
+    import propose
+    import tuned
+    gains = [by["C"].cvd_de - round(propose._cvd_de(tuned.TUNED[slug]), 1)
+             for slug, by in profile_candidates.items()]
+    mean = sum(gains) / len(gains)
+    assert mean > 0.5, (
+        f"C 相对默认 profile 的色盲 ΔE 平均增益只有 {mean:+.2f}（健康时 +1.93，"
+        f"cvd_w 被改回 0.65 时精确为 0.00），逐套 {[round(g, 1) for g in gains]}")
+
+
+def test_propose_cvd_profile_is_friendlier_than_faithful(profile_candidates):
+    """用户可见的那句话：C 通常比「忠于原作」的 A 更耐色盲。
+    这只是统计性质（全库 56/58，两个反例见上面注释），所以断言写成
+    「6 套里至少 5 套」。实测健康 6/6，cvd_w 被改回 0.65 时掉到 3/6。"""
+    ok = [s for s, by in profile_candidates.items() if by["C"].cvd_de > by["A"].cvd_de]
+    assert len(ok) >= 5, (
+        "6 套里只有 %d 套的 C 比 A 更耐色盲：%s"
+        % (len(ok), {s: (by["C"].cvd_de, by["A"].cvd_de)
+                     for s, by in profile_candidates.items()}))
+
+
+def test_propose_grayscale_profile_spreads_lightness(profile_candidates):
+    """D 是灰度打印方案，最小明度间隔必须比忠于原作的 A 更大，否则名不副实。
+    全库 58/58 成立（最薄 +1.50），所以要求这 6 套无一例外。
+    把 spread_w 归零后本组最薄变成 -4.30，会红。"""
+    bad = {s: (by["D"].gray_gap, by["A"].gray_gap)
+           for s, by in profile_candidates.items()
+           if by["D"].gray_gap <= by["A"].gray_gap}
+    assert not bad, f"这些配色的 D 没比 A 拉开明度（D, A）：{bad}"
+
+
+def test_propose_soft_profile_is_less_saturated(profile_candidates):
+    """E 是柔和低饱和方案，6 色平均彩度必须低于忠于原作的 A，
+    否则 chroma_hi 那个 0.85 上限被改掉也不会有测试红。
+    全库 58/58 成立（最薄 -1.08），所以要求这 6 套无一例外。
+    把 chroma_hi 改回 1.20 后本组最薄变成 +2.75（方向反了），会红。"""
+    bad = {s: (round(_mean_chroma(by["E"]), 2), round(_mean_chroma(by["A"]), 2))
+           for s, by in profile_candidates.items()
+           if _mean_chroma(by["E"]) >= _mean_chroma(by["A"])}
+    assert not bad, f"这些配色的 E 没比 A 更低饱和（E, A）：{bad}"
 
 
 def test_propose_rejects_bad_input():
