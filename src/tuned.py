@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 自动生成：科研可用性微调后的配色
 # SOURCE = 生成这份结果时 data.py 的指纹，对不上就说明该重跑 `make tune` 了
-SOURCE = 'cdc5b37c54051d71'
+SOURCE = '87f5ac3a2afca66a'
 
 TUNED = {'asuka-vermilion': ['#E63B2A', '#FF9C88', '#8D1316', '#DF9730', '#3B4760', '#BFB6B0'],
   'hutao-plum': ['#C74E4D', '#DE9476', '#792C3D', '#49435F', '#D5B326', '#BCB6AF'],
@@ -18,9 +18,13 @@ TUNED = {'asuka-vermilion': ['#E63B2A', '#FF9C88', '#8D1316', '#DF9730', '#3B476
   'zoro-moss-ink': ['#6D8557', '#9CC574', '#2F5025', '#B28E00', '#454747', '#BAB7AC'],
   'tanjiro-ink-ember': ['#426B47', '#7CA377', '#8B2B1C', '#D4703F', '#464746', '#C0B6A7'],
   'totoro-moss-gray': ['#616967', '#718578', '#3B4A45', '#8A7550', '#B8C2B3', '#9D9D99'],
+  'eren-survey-olive': ['#6F7E32', '#A7B16C', '#43505C', '#7B6152', '#89271F', '#B9B6AD'],
   'miku-aqua': ['#35CFC4', '#689893', '#00737D', '#404757', '#D7486A', '#A8ACAB'],
   'venti-mint': ['#089275', '#8FC2B0', '#216156', '#3B5A6E', '#C8B384', '#949795'],
   'giyu-pine': ['#26635B', '#5F9A8E', '#863434', '#C9A227', '#36485F', '#B6B9B8'],
+  'haku-river': ['#57C6D2', '#558C8E', '#006272', '#C4483A', '#434A45', '#A1ADA7'],
+  'muichiro-mist': ['#1F8C9C', '#8CC0C8', '#2D5965', '#999ACA', '#6E8C68', '#BAB6A8'],
+  'rem-peacock': ['#46C3E0', '#748F95', '#256980', '#45464D', '#6479C2', '#B9B7B1'],
   'gojo-sky': ['#1394CE', '#85BEDC', '#296AA4', '#424754', '#7F8995', '#B3B6B9'],
   'rei-pale-blue': ['#82BFDC', '#7F949F', '#3D7CA0', '#C5394A', '#E8873A', '#B5B8B9'],
   'ayaka-frost': ['#73BDFD', '#6C889E', '#2B5C8C', '#A497C6', '#C8657D', '#B5B7B9'],
@@ -31,11 +35,14 @@ TUNED = {'asuka-vermilion': ['#E63B2A', '#FF9C88', '#8D1316', '#DF9730', '#3B476
   'raiden-electro': ['#886CD4', '#BDA5F0', '#5C3F8E', '#484552', '#A16D8D', '#B6B2BD'],
   'eva01-violet-lime': ['#824CC5', '#A989D6', '#503F64', '#83CA20', '#7F8E4F', '#B9B4C0'],
   'howl-iridescent': ['#DF72A6', '#346595', '#977900', '#77BDE0', '#578B6C', '#C0B7A5'],
+  'violet-evergarden': ['#916F95', '#DBA1E7', '#633373', '#D7B258', '#3684D7', '#BBB6AE'],
   'nezuko-crimson-pink': ['#E93F6E', '#F1A0B9', '#E4703C', '#903159', '#4F4449', '#C8B4A1'],
   'march7-sakura-ice': ['#DF81AA', '#8D7B82', '#78BDDD', '#3E6B9E', '#A64575', '#BAB8B9'],
   'aerith-rose-sage': ['#C95B7C', '#ECA8BA', '#AF212B', '#408E52', '#775D4C', '#9E9698'],
   'noface-ink-gray': ['#303038', '#4F4F5F', '#7B7B8B', '#B6B6C5', '#959599', '#765D84'],
   '2b-achromatic': ['#303035', '#5A5A67', '#81818D', '#C7C5C2', '#999487', '#83714F'],
   'kakashi-silver-navy': ['#8E98A4', '#727578', '#3B475C', '#516E90', '#B14A3A', '#BFC1C2'],
+  'nyanko-fortune': ['#A89263', '#BDB7AA', '#7D7364', '#BD3830', '#E6AD3F', '#4A4640'],
   'mario-primary': ['#DD5643', '#2F56B3', '#DDB300', '#683D17', '#C8B3A2', '#46464D'],
-  'luffy-red-straw': ['#C11B1E', '#D7B34E', '#2B5FA8', '#C8732E', '#51443E', '#A29D96']}
+  'luffy-red-straw': ['#C11B1E', '#D7B34E', '#2B5FA8', '#C8732E', '#51443E', '#A29D96'],
+  'rx78-trikolor': ['#2F5AA9', '#D92A3A', '#E0B100', '#B4B8BB', '#777C86', '#43474D']}

@@ -63,6 +63,9 @@ PALETTES = [
     dict(slug="totoro-moss-gray", zh="龙猫", en="Totoro", tone_zh="苔灰", tone_en="Moss Gray",
          family="绿", source="龙猫",
          colors=["#5F6E6A", "#96A79C", "#3B4A45", "#8A7550", "#C0C8BC", "#E7E7DC"]),
+    dict(slug="eren-survey-olive", zh="艾伦", en="Eren", tone_zh="橄榄", tone_en="Survey Olive",
+         family="绿", source="进击的巨人",
+         colors=["#6E7A3C", "#A8B073", "#43505C", "#8E5A38", "#9E3A2E", "#D8D2BE"]),
 
     # ---------------- 青 / 薄荷 ----------------
     dict(slug="miku-aqua", zh="初音未来", en="Miku", tone_zh="青碧", tone_en="Aqua Teal",
@@ -74,6 +77,15 @@ PALETTES = [
     dict(slug="giyu-pine", zh="富冈义勇", en="Giyu", tone_zh="松青", tone_en="Pine Teal",
          family="青", source="鬼灭之刃",
          colors=["#2E6B63", "#7FB0A5", "#8C3A3A", "#C9A227", "#243447", "#DCE4E0"]),
+    dict(slug="haku-river", zh="白龙", en="Haku", tone_zh="湖水", tone_en="River Jade",
+         family="青", source="千与千寻",
+         colors=["#6EC4CC", "#A8DEE0", "#2E6B78", "#C4483A", "#4A5A50", "#E0E8E4"]),
+    dict(slug="muichiro-mist", zh="时透无一郎", en="Muichiro", tone_zh="雾青", tone_en="Mist Teal",
+         family="青", source="鬼灭之刃",
+         colors=["#4FA8B8", "#A0D4DC", "#2E5A66", "#8C8CB4", "#6E8C68", "#DCD8CC"]),
+    dict(slug="rem-peacock", zh="蕾姆", en="Rem", tone_zh="孔雀", tone_en="Peacock Blue",
+         family="青", source="Re:从零开始的异世界生活",
+         colors=["#4FB0C8", "#A4DCE8", "#2E6B80", "#3E4250", "#5A6BA8", "#E4E2DC"]),
 
     # ---------------- 蓝 ----------------
     dict(slug="gojo-sky", zh="五条悟", en="Gojo", tone_zh="晴空蓝", tone_en="Six-Eyes Sky",
@@ -111,6 +123,9 @@ PALETTES = [
     dict(slug="howl-iridescent", zh="哈尔", en="Howl", tone_zh="金蓝虹", tone_en="Iridescent Gold",
          family="粉", source="哈尔的移动城堡",
          colors=["#C4548C", "#3E6E9E", "#D9B44A", "#7FB7D4", "#5A8C6E", "#EFE7D6"]),
+    dict(slug="violet-evergarden", zh="薇尔莉特", en="Violet", tone_zh="紫罗兰", tone_en="Violet Bloom",
+         family="紫", source="紫罗兰永恒花园",
+         colors=["#9B4FA8", "#C48CD0", "#5E2E6E", "#D9B45C", "#4A7FC4", "#E8E0D4"]),
 
     # ---------------- 粉 ----------------
     dict(slug="nezuko-crimson-pink", zh="祢豆子", en="Nezuko", tone_zh="绯粉", tone_en="Crimson Pink",
@@ -133,6 +148,9 @@ PALETTES = [
     dict(slug="kakashi-silver-navy", zh="卡卡西", en="Kakashi", tone_zh="银藏", tone_en="Silver & Navy",
          family="中性", source="火影忍者",
          colors=["#8E96A0", "#C0C7CE", "#2E3A4E", "#4E6B8C", "#B04A3A", "#E6E9EC"]),
+    dict(slug="nyanko-fortune", zh="猫咪老师", en="Nyanko-sensei", tone_zh="招财米", tone_en="Fortune Beige",
+         family="中性", source="夏目友人帐",
+         colors=["#C9B48C", "#E0D4B8", "#8A7654", "#C4453A", "#E0A83A", "#4E4A42"]),
 
     # ---------------- 撞色 / 高对比 ----------------
     dict(slug="mario-primary", zh="马力欧", en="Mario", tone_zh="正红蓝", tone_en="Primary Red & Blue",
@@ -141,6 +159,9 @@ PALETTES = [
     dict(slug="luffy-red-straw", zh="路飞", en="Luffy", tone_zh="赤麦", tone_en="Red & Straw",
          family="撞色", source="海贼王",
          colors=["#D6302B", "#E8C46A", "#2B5FA8", "#F09A4E", "#3A2E28", "#F0E6D4"]),
+    dict(slug="rx78-trikolor", zh="RX-78-2", en="RX-78-2", tone_zh="三色旗", tone_en="Trikolor",
+         family="撞色", source="机动战士高达",
+         colors=["#1B4E9B", "#C8102E", "#E8B800", "#C4C8CC", "#6E727A", "#2E3238"]),
 ]
 
 # 每套配色的“签名色”（用于生成连续 colormap）默认取第 1 色；

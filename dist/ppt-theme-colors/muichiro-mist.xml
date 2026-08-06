@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="时透无一郎 雾青">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="1D363B"/></a:dk2>
+  <a:lt2><a:srgbClr val="F1F6F7"/></a:lt2>
+  <a:accent1><a:srgbClr val="1F8C9C"/></a:accent1>
+  <a:accent2><a:srgbClr val="8CC0C8"/></a:accent2>
+  <a:accent3><a:srgbClr val="2D5965"/></a:accent3>
+  <a:accent4><a:srgbClr val="999ACA"/></a:accent4>
+  <a:accent5><a:srgbClr val="6E8C68"/></a:accent5>
+  <a:accent6><a:srgbClr val="BAB6A8"/></a:accent6>
+  <a:hlink><a:srgbClr val="006471"/></a:hlink>
+  <a:folHlink><a:srgbClr val="7A8688"/></a:folHlink>
+</a:clrScheme>

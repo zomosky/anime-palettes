@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="猫咪老师 招财米">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="393224"/></a:dk2>
+  <a:lt2><a:srgbClr val="F7F5F2"/></a:lt2>
+  <a:accent1><a:srgbClr val="A89263"/></a:accent1>
+  <a:accent2><a:srgbClr val="BDB7AA"/></a:accent2>
+  <a:accent3><a:srgbClr val="7D7364"/></a:accent3>
+  <a:accent4><a:srgbClr val="BD3830"/></a:accent4>
+  <a:accent5><a:srgbClr val="E6AD3F"/></a:accent5>
+  <a:accent6><a:srgbClr val="4A4640"/></a:accent6>
+  <a:hlink><a:srgbClr val="806C3E"/></a:hlink>
+  <a:folHlink><a:srgbClr val="87837C"/></a:folHlink>
+</a:clrScheme>

@@ -66,8 +66,23 @@ def _hue(h):
 
 # ------------------------------------------------------------ 数据完整性
 def test_palette_count():
-    assert len(ALL) == 36
-    assert len({ap.PALETTES[s]["name_zh"] for s in ALL}) == 36
+    assert len(ALL) == 43
+    assert len({ap.PALETTES[s]["name_zh"] for s in ALL}) == 43
+
+
+# 新增配色的验收线：不能有 C 级，且最小色差要够画多系列图
+NEW_ANIME = {
+    "eren-survey-olive": "B", "haku-river": "B", "muichiro-mist": "B",
+    "rem-peacock": "A", "violet-evergarden": "B", "nyanko-fortune": "A",
+    "rx78-trikolor": "A",
+}
+
+
+@pytest.mark.parametrize("slug,expect", sorted(NEW_ANIME.items()))
+def test_new_anime_palettes_meet_the_bar(slug, expect):
+    e = ap.PALETTES[slug]
+    assert e["cvd_grade"] == expect, f"{slug} 评级是 {e['cvd_grade']}，预期 {expect}"
+    assert e["min_de"] >= 10.0, f"{slug} 最小 ΔE00 只有 {e['min_de']}"
 
 
 def test_tuned_is_in_sync_with_data():
@@ -206,7 +221,21 @@ def test_cvd_grade_consistent(slug):
     e = ap.PALETTES[slug]
     assert e["cvd_grade"] in "ABC"
     m = min(e["cvd"]["protan"], e["cvd"]["deutan"])
-    assert e["cvd_grade"] == ("A" if m >= 13 else "B" if m >= 9 else "C")
+    # e["cvd"] 展示时四舍五入到 1 位小数，真实值（derive.grade() 用来定级的那个）
+    # 可能比展示值低至多 0.05——卡在阈值 0.05 以内时评级可能落在相邻一档，
+    # 容差按展示精度收紧，而不是拿四舍五入后的数字硬掰阈值。
+    eps = 0.05
+    if m >= 13 + eps:
+        expect = {"A"}
+    elif m >= 13 - eps:
+        expect = {"A", "B"}
+    elif m >= 9 + eps:
+        expect = {"B"}
+    elif m >= 9 - eps:
+        expect = {"B", "C"}
+    else:
+        expect = {"C"}
+    assert e["cvd_grade"] in expect, f"{slug}: min(protan,deutan)={m}, 评级={e['cvd_grade']}"
     assert 1 <= len(e["safe_set"]) <= 6
     assert e["safe_set"] == sorted(set(e["safe_set"]))
 
@@ -242,7 +271,7 @@ def test_helpers():
         assert len(ap.to_hex_block(slug).splitlines()) == 6
         assert ap.ramp_info(slug, "flow")["monotonic"] is True
     assert len(ap.find("原神")) == 6
-    assert set(ap.find("鬼灭之刃")) == {"giyu-pine", "nezuko-crimson-pink",
+    assert set(ap.find("鬼灭之刃")) == {"giyu-pine", "muichiro-mist", "nezuko-crimson-pink",
                                         "tanjiro-ink-ember", "zenitsu-lightning"}
 
 

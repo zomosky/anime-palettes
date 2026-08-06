@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="薇尔莉特 紫罗兰">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="392F3B"/></a:dk2>
+  <a:lt2><a:srgbClr val="F7F4F7"/></a:lt2>
+  <a:accent1><a:srgbClr val="916F95"/></a:accent1>
+  <a:accent2><a:srgbClr val="DBA1E7"/></a:accent2>
+  <a:accent3><a:srgbClr val="633373"/></a:accent3>
+  <a:accent4><a:srgbClr val="D7B258"/></a:accent4>
+  <a:accent5><a:srgbClr val="3684D7"/></a:accent5>
+  <a:accent6><a:srgbClr val="BBB6AE"/></a:accent6>
+  <a:hlink><a:srgbClr val="6B4A6F"/></a:hlink>
+  <a:folHlink><a:srgbClr val="888288"/></a:folHlink>
+</a:clrScheme>

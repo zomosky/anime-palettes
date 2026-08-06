@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="蕾姆 孔雀">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="17373F"/></a:dk2>
+  <a:lt2><a:srgbClr val="F0F6F8"/></a:lt2>
+  <a:accent1><a:srgbClr val="46C3E0"/></a:accent1>
+  <a:accent2><a:srgbClr val="748F95"/></a:accent2>
+  <a:accent3><a:srgbClr val="256980"/></a:accent3>
+  <a:accent4><a:srgbClr val="45464D"/></a:accent4>
+  <a:accent5><a:srgbClr val="6479C2"/></a:accent5>
+  <a:accent6><a:srgbClr val="B9B7B1"/></a:accent6>
+  <a:hlink><a:srgbClr val="009AB5"/></a:hlink>
+  <a:folHlink><a:srgbClr val="79868A"/></a:folHlink>
+</a:clrScheme>
