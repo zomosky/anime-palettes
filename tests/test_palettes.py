@@ -7,6 +7,7 @@
 import itertools
 import math
 import os
+import re
 import sys
 
 import pytest
@@ -453,6 +454,159 @@ def test_mark_is_wellformed():
         assert d.lstrip()[0] in "Mm", f"{slug} 的 path 不是以 M/m 开头：{d[:12]!r}"
         bad = set(d) - _MARK_CMDS - _MARK_NUMS
         assert not bad, f"{slug} 的 path 含非法字符：{sorted(bad)}"
+
+
+_PATH_TOKEN = re.compile(r"[MmLlHhVvCcSsQqTtAaZz]|[-+]?(?:\d*\.\d+|\d+\.?\d*)(?:[eE][-+]?\d+)?")
+
+
+def _arc_points(p0, rx, ry, rot, large, sweep, p1, n):
+    """SVG 圆弧的端点参数化 -> 圆心参数化（规范 F.6.5），再按角度采样。"""
+    (x0, y0), (x1, y1) = p0, p1
+    rx, ry = abs(rx), abs(ry)
+    if rx == 0 or ry == 0 or (x0, y0) == (x1, y1):
+        return [p1]
+    phi = math.radians(rot)
+    cs, sn = math.cos(phi), math.sin(phi)
+    dx, dy = (x0 - x1) / 2.0, (y0 - y1) / 2.0
+    xp, yp = cs * dx + sn * dy, -sn * dx + cs * dy
+    lam = xp * xp / (rx * rx) + yp * yp / (ry * ry)
+    if lam > 1:                       # 半径不够大时按规范等比放大
+        rx, ry = rx * math.sqrt(lam), ry * math.sqrt(lam)
+    num = rx * rx * ry * ry - rx * rx * yp * yp - ry * ry * xp * xp
+    den = rx * rx * yp * yp + ry * ry * xp * xp
+    co = math.sqrt(max(num, 0.0) / den) * (-1 if large == sweep else 1)
+    cxp, cyp = co * rx * yp / ry, -co * ry * xp / rx
+    cx = cs * cxp - sn * cyp + (x0 + x1) / 2.0
+    cy = sn * cxp + cs * cyp + (y0 + y1) / 2.0
+    t0 = math.atan2((yp - cyp) / ry, (xp - cxp) / rx)
+    t1 = math.atan2((-yp - cyp) / ry, (-xp - cxp) / rx)
+    dt = t1 - t0
+    if not sweep and dt > 0:
+        dt -= 2 * math.pi
+    elif sweep and dt < 0:
+        dt += 2 * math.pi
+    steps = max(int(n * abs(dt) / (2 * math.pi)) + 4, 6)
+    out = []
+    for k in range(1, steps + 1):
+        t = t0 + dt * k / steps
+        out.append((cs * rx * math.cos(t) - sn * ry * math.sin(t) + cx,
+                    sn * rx * math.cos(t) + cs * ry * math.sin(t) + cy))
+    return out
+
+
+def _path_points(d, n=24):
+    """把一条 path 采样成点集：直线取端点，贝塞尔与圆弧各取若干点。
+
+    纯 Python，不引第三方依赖 —— 本项目核心零依赖，测试也守这条。
+    采样点都落在曲线上，所以算出来的包围盒是真实包围盒的内逼近；
+    n=24 时两者差距在 1e-3 量级，远小于下面阈值留的余量。
+    """
+    toks = [t if t in "MmLlHhVvCcSsQqTtAaZz" else float(t)
+            for t in _PATH_TOKEN.findall(d)]
+    pts, cur, sub = [], (0.0, 0.0), (0.0, 0.0)
+    ctrl_c = ctrl_q = None
+    cmd, i = None, 0
+    while i < len(toks):
+        if isinstance(toks[i], str):
+            cmd = toks[i]
+            i += 1
+            if cmd in "Zz":
+                cur = sub
+                pts.append(cur)
+                ctrl_c = ctrl_q = None
+            continue
+        assert cmd, "path 不是以命令开头"
+        rel, c = cmd.islower(), cmd.upper()
+        x, y = cur
+
+        def a(k):                      # 取 k 个参数
+            return toks[i:i + k]
+
+        if c in "ML":
+            p = (a(2)[0] + (x if rel else 0), a(2)[1] + (y if rel else 0))
+            i += 2
+            if c == "M":
+                sub = p
+                cmd = "l" if rel else "L"
+            pts.append(p)
+            cur, ctrl_c, ctrl_q = p, None, None
+        elif c in "HV":
+            v = a(1)[0]
+            i += 1
+            p = ((v + (x if rel else 0), y) if c == "H" else (x, v + (y if rel else 0)))
+            pts.append(p)
+            cur, ctrl_c, ctrl_q = p, None, None
+        elif c in "CS":
+            if c == "C":
+                q = a(6)
+                i += 6
+                p1 = (q[0] + (x if rel else 0), q[1] + (y if rel else 0))
+                p2 = (q[2] + (x if rel else 0), q[3] + (y if rel else 0))
+                p3 = (q[4] + (x if rel else 0), q[5] + (y if rel else 0))
+            else:
+                q = a(4)
+                i += 4
+                p1 = (2 * x - ctrl_c[0], 2 * y - ctrl_c[1]) if ctrl_c else (x, y)
+                p2 = (q[0] + (x if rel else 0), q[1] + (y if rel else 0))
+                p3 = (q[2] + (x if rel else 0), q[3] + (y if rel else 0))
+            for k in range(1, n + 1):
+                t, u = k / float(n), 1 - k / float(n)
+                pts.append((u ** 3 * x + 3 * u * u * t * p1[0] + 3 * u * t * t * p2[0] + t ** 3 * p3[0],
+                            u ** 3 * y + 3 * u * u * t * p1[1] + 3 * u * t * t * p2[1] + t ** 3 * p3[1]))
+            cur, ctrl_c, ctrl_q = p3, p2, None
+        elif c in "QT":
+            if c == "Q":
+                q = a(4)
+                i += 4
+                p1 = (q[0] + (x if rel else 0), q[1] + (y if rel else 0))
+                p2 = (q[2] + (x if rel else 0), q[3] + (y if rel else 0))
+            else:
+                q = a(2)
+                i += 2
+                p1 = (2 * x - ctrl_q[0], 2 * y - ctrl_q[1]) if ctrl_q else (x, y)
+                p2 = (q[0] + (x if rel else 0), q[1] + (y if rel else 0))
+            for k in range(1, n + 1):
+                t, u = k / float(n), 1 - k / float(n)
+                pts.append((u * u * x + 2 * u * t * p1[0] + t * t * p2[0],
+                            u * u * y + 2 * u * t * p1[1] + t * t * p2[1]))
+            cur, ctrl_c, ctrl_q = p2, None, p1
+        elif c == "A":
+            q = a(7)
+            i += 7
+            p = (q[5] + (x if rel else 0), q[6] + (y if rel else 0))
+            pts.extend(_arc_points(cur, q[0], q[1], q[2], int(q[3]), int(q[4]), p, n))
+            cur, ctrl_c, ctrl_q = p, None, None
+        else:
+            raise AssertionError("没处理的命令 %r" % cmd)
+    return pts
+
+
+def test_mark_stays_inside_the_viewbox():
+    """标志物不能超出 24x24，也不能贴到边上 —— 44px 渲染时要留出净空。
+
+    同样不要 @parametrize：收集阶段就 import marks 的话，marks.py 一旦缺失
+    整个测试模块都收集不起来，理由和 test_mark_is_wellformed 一样。
+
+    阈值 [1.5, 22.5] 的来历：画法约定是「主体占 20x20、留约 2 单位边距」，但末梢
+    （笔尖、柄头、垂穗）允许略微探出这条线。全库实测极值是 x ∈ [2.10, 21.90]、
+    y ∈ [1.90, 22.19]：上顶到 1.90 的是 nyanko-fortune 的顶环，下探到 22.19 的是
+    hollowknight-pale 的柄尾圆头，brief 给的 miku / totoro / zenitsu 三个样板也都
+    正好压在 22.00。可见 2 单位是目标不是硬线，再留 0.5 单位缓冲就落到 1.5 / 22.5。
+    这个值折算到 44px 渲染约 2.75px 净空，卡片里不会贴边；同时又足够紧 ——
+    真把图形画飞（比如把 24 当成 20 用、或者坐标整体偏移）会立刻红。
+    """
+    import marks
+    lo, hi = 1.5, 22.5
+    for slug, (vb, d) in sorted(marks.MARKS.items()):
+        x0, y0, w, h = [float(v) for v in vb.split()]
+        assert (x0, y0, w, h) == (0, 0, 24, 24), "%s 的 viewBox 不是 0 0 24 24" % slug
+        pts = _path_points(d)
+        assert pts, "%s 采样不出任何点" % slug
+        xs, ys = [p[0] for p in pts], [p[1] for p in pts]
+        box = (min(xs), min(ys), max(xs), max(ys))
+        assert lo <= box[0] and lo <= box[1] and box[2] <= hi and box[3] <= hi, (
+            "%s 的包围盒 %s 超出 [%s, %s]，44px 下会贴边或出框"
+            % (slug, tuple(round(v, 2) for v in box), lo, hi))
 
 
 def test_marks_do_not_leak_into_library():
