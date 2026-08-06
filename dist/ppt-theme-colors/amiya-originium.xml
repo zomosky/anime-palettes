@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="阿米娅 源石紫">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="352E4F"/></a:dk2>
+  <a:lt2><a:srgbClr val="F6F4FB"/></a:lt2>
+  <a:accent1><a:srgbClr val="6053C0"/></a:accent1>
+  <a:accent2><a:srgbClr val="9B91D1"/></a:accent2>
+  <a:accent3><a:srgbClr val="4A4167"/></a:accent3>
+  <a:accent4><a:srgbClr val="D4B048"/></a:accent4>
+  <a:accent5><a:srgbClr val="6F798A"/></a:accent5>
+  <a:accent6><a:srgbClr val="B8B6C0"/></a:accent6>
+  <a:hlink><a:srgbClr val="323099"/></a:hlink>
+  <a:folHlink><a:srgbClr val="868193"/></a:folHlink>
+</a:clrScheme>

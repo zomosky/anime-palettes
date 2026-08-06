@@ -55,6 +55,9 @@ PALETTES = [
     dict(slug="nekomata-neon", zh="猫又", en="Nekomata", tone_zh="荧柠黄", tone_en="Neon Lemon",
          family="黄", source="绝区零",
          colors=["#E8D42E", "#F0E88C", "#8C7A18", "#E0508C", "#3E3A40", "#D8D4C8"]),
+    dict(slug="robin-goldfeather", zh="知更鸟", en="Robin", tone_zh="金羽", tone_en="Gold Feather",
+         family="黄", source="崩坏：星穹铁道",
+         colors=["#D9B45A", "#EBD8A4", "#8E6E28", "#4A5A8C", "#C46E8C", "#DCD8CC"]),
 
     # ---------------- 绿 ----------------
     dict(slug="luigi-grass", zh="路易吉", en="Luigi", tone_zh="草绿", tone_en="Grass Green",
@@ -95,6 +98,9 @@ PALETTES = [
     dict(slug="rem-peacock", zh="蕾姆", en="Rem", tone_zh="孔雀", tone_en="Peacock Blue",
          family="青", source="Re:从零开始的异世界生活",
          colors=["#4FB0C8", "#A4DCE8", "#2E6B80", "#3E4250", "#5A6BA8", "#E4E2DC"]),
+    dict(slug="jiyan-windteal", zh="忌炎", en="Jiyan", tone_zh="风主青", tone_en="Windborne Teal",
+         family="青", source="鸣潮",
+         colors=["#2E8C8C", "#7FC0BC", "#1E5A5E", "#C4A45A", "#5A5A66", "#DCE0DC"]),
 
     # ---------------- 蓝 ----------------
     dict(slug="gojo-sky", zh="五条悟", en="Gojo", tone_zh="晴空蓝", tone_en="Six-Eyes Sky",
@@ -121,6 +127,9 @@ PALETTES = [
     dict(slug="ichika-leoneed", zh="星乃一歌", en="Ichika", tone_zh="电光蓝", tone_en="Leo/need Blue",
          family="蓝", source="世界计划",
          colors=["#4455DD", "#33AAEE", "#F0C82E", "#EE6666", "#2ECC94", "#D8DCE8"]),
+    dict(slug="saber-knightblue", zh="阿尔托莉雅", en="Artoria", tone_zh="骑士蓝金", tone_en="Knight Blue",
+         family="蓝", source="Fate/Grand Order",
+         colors=["#3E5FA8", "#8CA4D0", "#26386E", "#D4B45A", "#C8CCD4", "#4A4E56"]),
 
     # ---------------- 紫 ----------------
     dict(slug="raiden-electro", zh="雷电将军", en="Raiden", tone_zh="雷紫", tone_en="Electro Violet",
@@ -138,6 +147,12 @@ PALETTES = [
     dict(slug="violet-evergarden", zh="薇尔莉特", en="Violet", tone_zh="紫罗兰", tone_en="Violet Bloom",
          family="紫", source="紫罗兰永恒花园",
          colors=["#9B4FA8", "#C48CD0", "#5E2E6E", "#D9B45C", "#4A7FC4", "#E8E0D4"]),
+    dict(slug="yinlin-violetgold", zh="吟霖", en="Yinlin", tone_zh="紫金雷", tone_en="Violet Gold",
+         family="紫", source="鸣潮",
+         colors=["#7A4A9E", "#B08CC8", "#4A2A64", "#D4B45A", "#3E4A6E", "#E0DCE4"]),
+    dict(slug="amiya-originium", zh="阿米娅", en="Amiya", tone_zh="源石紫", tone_en="Originium Violet",
+         family="紫", source="明日方舟",
+         colors=["#5A4FA8", "#9A90D0", "#342C6E", "#D4B048", "#5E7A9E", "#DEDCE6"]),
 
     # ---------------- 粉 ----------------
     dict(slug="nezuko-crimson-pink", zh="祢豆子", en="Nezuko", tone_zh="绯粉", tone_en="Crimson Pink",
@@ -169,6 +184,12 @@ PALETTES = [
     dict(slug="tarnished-gilded", zh="褪色者", en="Tarnished", tone_zh="黄金暗夜", tone_en="Gilded Nightfall",
          family="中性", source="艾尔登法环",
          colors=["#5A4A34", "#C9A24A", "#E0CFA4", "#8E3A2E", "#8A8478", "#3A3228"]),
+    dict(slug="texas-inkgray", zh="德克萨斯", en="Texas", tone_zh="冷墨灰", tone_en="Cold Ink Gray",
+         family="中性", source="明日方舟",
+         colors=["#3E4A5E", "#8A94A4", "#2A3240", "#C4C8CE", "#7A5A4A", "#5A6E8C"]),
+    dict(slug="hollowknight-pale", zh="小骑士", en="The Knight", tone_zh="骨白深渊", tone_en="Pale Abyss",
+         family="中性", source="空洞骑士",
+         colors=["#C8C4B4", "#E4E0D2", "#8A8878", "#3A404E", "#3E8CA8", "#7A5F4A"]),
 
     # ---------------- 撞色 / 高对比 ----------------
     dict(slug="mario-primary", zh="马力欧", en="Mario", tone_zh="正红蓝", tone_en="Primary Red & Blue",

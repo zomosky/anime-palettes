@@ -66,8 +66,8 @@ def _hue(h):
 
 # ------------------------------------------------------------ 数据完整性
 def test_palette_count():
-    assert len(ALL) == 51
-    assert len({ap.PALETTES[s]["name_zh"] for s in ALL}) == 51
+    assert len(ALL) == 58
+    assert len({ap.PALETTES[s]["name_zh"] for s in ALL}) == 58
 
 
 # 新增配色的验收线：不能有 C 级，且最小色差要够画多系列图
@@ -97,6 +97,40 @@ def test_new_game_palettes_1_meet_the_bar(slug, expect):
     e = ap.PALETTES[slug]
     assert e["cvd_grade"] == expect, f"{slug} 评级是 {e['cvd_grade']}，预期 {expect}"
     assert e["min_de"] >= 10.0, f"{slug} 最小 ΔE00 只有 {e['min_de']}"
+
+
+NEW_GAME_2 = {
+    "yinlin-violetgold": "A", "jiyan-windteal": "B", "amiya-originium": "A",
+    "texas-inkgray": "B", "robin-goldfeather": "A", "saber-knightblue": "A",
+    "hollowknight-pale": "B",
+}
+
+
+@pytest.mark.parametrize("slug,expect", sorted(NEW_GAME_2.items()))
+def test_new_game_palettes_2_meet_the_bar(slug, expect):
+    e = ap.PALETTES[slug]
+    assert e["cvd_grade"] == expect, f"{slug} 评级是 {e['cvd_grade']}，预期 {expect}"
+    assert e["min_de"] >= 10.0, f"{slug} 最小 ΔE00 只有 {e['min_de']}"
+
+
+def test_hue_coverage_has_no_big_hole():
+    """58 套签名色沿色相环铺开后，最大空洞不得超过 25°。
+
+    增补前最大空洞是 h 188->239 的 51°（miku 的青碧之后直接跳到 rei 的粉蓝），
+    多系列图想在青蓝区找主色时无处可选。增补后实测 19°。
+    """
+    from colorlib import lch
+    hs = sorted(lch(ap.PALETTES[s]["colors"][0])[2] for s in ALL)
+    gaps = [b - a for a, b in zip(hs, hs[1:])] + [hs[0] + 360 - hs[-1]]
+    assert max(gaps) <= 25.0, f"最大色相空洞 {max(gaps):.0f}°"
+
+
+def test_no_c_grade_among_new_palettes():
+    """新增的 22 套一个 C 级都不该有 —— C 级意味着 6 色在红/绿色盲下并团，
+    只能退回安全子集。老库里有 3 套 C 是角色本身同色系，新增的没有这个包袱。"""
+    new = set(NEW_ANIME) | set(NEW_GAME_1) | set(NEW_GAME_2)
+    bad = {s for s in new if ap.PALETTES[s]["cvd_grade"] == "C"}
+    assert not bad, f"新增配色里有 C 级：{bad}"
 
 
 def test_warm_dark_signature_exists():

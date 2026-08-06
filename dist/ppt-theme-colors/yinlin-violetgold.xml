@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:clrScheme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="吟霖 紫金雷">
+  <a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1>
+  <a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1>
+  <a:dk2><a:srgbClr val="3D2B4A"/></a:dk2>
+  <a:lt2><a:srgbClr val="F8F3FA"/></a:lt2>
+  <a:accent1><a:srgbClr val="8E53BB"/></a:accent1>
+  <a:accent2><a:srgbClr val="AF8DC5"/></a:accent2>
+  <a:accent3><a:srgbClr val="543E64"/></a:accent3>
+  <a:accent4><a:srgbClr val="D4B45A"/></a:accent4>
+  <a:accent5><a:srgbClr val="6E7283"/></a:accent5>
+  <a:accent6><a:srgbClr val="B9B5BD"/></a:accent6>
+  <a:hlink><a:srgbClr val="662D94"/></a:hlink>
+  <a:folHlink><a:srgbClr val="8A8090"/></a:folHlink>
+</a:clrScheme>
