@@ -616,3 +616,16 @@ def test_marks_do_not_leak_into_library():
     lib = json.load(open(os.path.join(_ROOT, "src", "library.json")))
     for e in lib:
         assert "mark" not in e and "path" not in e, f"{e['slug']} 的库记录里混进了标志物字段"
+
+
+def test_html_ships_marks_off_by_default():
+    """标志物默认关闭。开关按钮不能带 on 类，且 MK 常量必须内嵌进单文件 HTML。"""
+    import re
+    html = open(os.path.join(_ROOT, "dist", "anime-palettes.html"), encoding="utf-8").read()
+    assert "const MK=" in html, "标志物数据没内嵌进 HTML"
+    m = re.search(r'<button id="mkbtn"[^>]*>', html)
+    assert m, "找不到标志物开关按钮"
+    assert "class=" not in m.group(0), f"开关默认带了类，应该是关闭态：{m.group(0)}"
+    import marks
+    for slug in list(marks.MARKS)[:5]:
+        assert slug in html

@@ -5,6 +5,7 @@ import json
 
 os.makedirs('build', exist_ok=True)
 lib = json.load(open('library.json'))
+from marks import MARKS
 
 def thin(seq, k=17):
     return [seq[round(i * 255 / (k - 1))] for i in range(k)]
@@ -78,6 +79,8 @@ input[type=search]:focus{border-color:var(--dim)}
 .cname .tone{color:var(--dim);font-weight:500}
 .cmeta{font-size:11.5px;color:var(--dim);margin-top:3px}
 .badges{display:flex;gap:5px;flex-shrink:0;align-items:center}
+.mark{width:44px;height:44px;flex-shrink:0;display:block}
+.chead .right{display:flex;align-items:center;gap:8px}
 .badge{font-size:10.5px;padding:2.5px 7px;border-radius:999px;border:1px solid var(--line);
   color:var(--dim);white-space:nowrap}
 .gA{background:#1f7a4d;color:#fff;border-color:transparent}
@@ -187,6 +190,7 @@ kbd{border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:11p
    <div class="seg" id="view">
     <button data-w="main" class="on">主色</button><button data-w="trip">含深浅</button>
    </div>
+   <div class="seg" id="mark"><button id="mkbtn" title="显示每套配色的标志物图形">标志物</button></div>
    <div class="seg" id="theme"><button id="tbtn">深色界面</button></div>
   </div>
  </div>
@@ -217,8 +221,9 @@ kbd{border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:11p
 </div>
 <script>
 const DATA = __DATA__;
+const MK=__MARKS__;
 const FAMS = ["红","橙","黄","绿","青","蓝","紫","粉","中性","撞色"];
-let state = {q:"", fam:"", grade:"", cvd:"none", view:"main", order:"smooth"};
+let state = {q:"", fam:"", grade:"", cvd:"none", view:"main", order:"smooth", mark:false};
 const ORDER_LABEL={smooth:"平滑",distinct:"区分度优先",hue:"色相环",light:"明度浅→深"};
 const ord = (p,key) => p.ord[state.order].map(i=>p[key][i]);
 
@@ -344,9 +349,12 @@ function card(p){
        <div class="cname">${p.zh} <span class="tone">· ${p.tone}</span></div>
        <div class="cmeta">${p.en} · ${p.toneEn} &nbsp;|&nbsp; ${p.src}</div>
      </div>
+     <div class="right">
+     ${state.mark && MK[p.slug] ? `<svg class="mark" viewBox="${MK[p.slug][0]}" aria-hidden="true"><path d="${MK[p.slug][1]}" fill="${sim(p.c[0])}"/></svg>` : ``}
      <div class="badges">
        <span class="badge">${p.fam}</span>
        <span class="badge g${p.grade}" title="色盲友好度：A 全可分 / B 大部分 / C 建议取子集">色盲 ${p.grade}</span>
+     </div>
      </div>
    </div>
    ${sw}
@@ -609,6 +617,11 @@ document.getElementById('grid').addEventListener('click',e=>{
     copy(txt, '已复制 '+p.zh+' · '+btn.textContent);
   }
 });
+document.getElementById('mkbtn').addEventListener('click',e=>{
+  state.mark=!state.mark;
+  e.target.classList.toggle('on',state.mark);
+  render();
+});
 document.getElementById('tbtn').addEventListener('click',()=>{
   const h=document.documentElement;
   const dark=h.getAttribute('data-theme')==='dark';
@@ -622,5 +635,6 @@ render();
 """
 
 out = HTML.replace('__DATA__', json.dumps(DATA, ensure_ascii=False, separators=(',', ':')))
+out = out.replace('__MARKS__', json.dumps(MARKS, ensure_ascii=False, separators=(',', ':')))
 open('build/anime-palettes.html', 'w', encoding='utf-8').write(out)
 print('wrote build/anime-palettes.html  %.0f KB' % (len(out.encode()) / 1024))
