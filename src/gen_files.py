@@ -287,7 +287,7 @@ for e in lib:
     items += [(f"{e['en']} bg {e['bg']}", e['bg']), (f"{e['en']} ink {e['ink']}", e['ink'])]
     groups_all.append((f"{e['zh']} {e['tone_zh']} / {e['en']}", items))
     write_ase(f"{OUT}/ase/{e['slug']}.ase", [(None, items)])
-write_ase(f'{OUT}/ase/_ALL-36-anime-palettes.ase', groups_all)
+write_ase(f'{OUT}/ase/_ALL-{len(lib)}-anime-palettes.ase', groups_all)
 print('ase ok', len(groups_all) + 1, 'files')
 
 # ----------------------------------------------------------------- GIMP .gpl

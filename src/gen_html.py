@@ -27,11 +27,11 @@ HTML = r"""<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>动漫 / 游戏角色配色库 · 36 套</title>
-<meta name="description" content="36 套取自动漫与游戏角色的配色，为科研配图与 PPT 做过色彩学调优：色相锁定、ΔE2000 区分度优化、色盲评级、四条连续色标。点色块复制 HEX，点色标条取 Python/R/MATLAB 代码。">
+<title>动漫 / 游戏角色配色库 · 58 套</title>
+<meta name="description" content="58 套取自动漫与游戏角色的配色，为科研配图与 PPT 做过色彩学调优：色相锁定、ΔE2000 区分度优化、色盲评级、四条连续色标。点色块复制 HEX，点色标条取 Python/R/MATLAB 代码。">
 <meta name="theme-color" content="#f6f6f4">
 <meta property="og:type" content="website">
-<meta property="og:title" content="动漫 / 游戏角色配色库 · 36 套">
+<meta property="og:title" content="动漫 / 游戏角色配色库 · 58 套">
 <meta property="og:description" content="每套 6 主色 + 深浅变体 + 4 条连续色标 + 色环，标注色盲友好度。面向科研配图与 PPT。">
 <meta property="og:url" content="https://zomosky.github.io/anime-palettes/">
 <meta name="twitter:card" content="summary_large_image">
@@ -158,7 +158,7 @@ kbd{border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:11p
    <div>
     <h1>动漫 / 游戏角色配色库<a class="gh" href="https://github.com/zomosky/anime-palettes"
        target="_blank" rel="noopener" title="项目主页：Python 模块 / Excel / PPT 取色板 / 色板文件">项目主页 ↗</a></h1>
-    <div class="sub">36 套 · 每套 6 主色 + 深/浅变体 + 连续与发散色标 · 面向 PPT 与科研配图 ·
+    <div class="sub">58 套 · 每套 6 主色 + 深/浅变体 + 连续与发散色标 · 面向 PPT 与科研配图 ·
       点击色块复制 HEX，点击底部色标条取 colormap 代码 · 右上「排序」可切换 4 种排列</div>
    </div>
   </div>

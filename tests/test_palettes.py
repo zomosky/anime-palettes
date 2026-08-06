@@ -127,7 +127,7 @@ def test_hue_coverage_has_no_big_hole():
 
 def test_no_c_grade_among_new_palettes():
     """新增的 22 套一个 C 级都不该有 —— C 级意味着 6 色在红/绿色盲下并团，
-    只能退回安全子集。老库里有 3 套 C 是角色本身同色系，新增的没有这个包袱。"""
+    只能退回安全子集。老库里有 5 套 C 是角色本身同色系，新增的没有这个包袱。"""
     new = set(NEW_ANIME) | set(NEW_GAME_1) | set(NEW_GAME_2)
     bad = {s for s in new if ap.PALETTES[s]["cvd_grade"] == "C"}
     assert not bad, f"新增配色里有 C 级：{bad}"

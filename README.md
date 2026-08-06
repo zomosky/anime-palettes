@@ -2,7 +2,7 @@
 
 # 动漫 / 游戏角色配色库
 
-**36 套取自动漫与游戏角色的配色，为科研配图与 PPT 做过色彩学调优**
+**58 套取自动漫与游戏角色的配色，为科研配图与 PPT 做过色彩学调优**
 
 [![在线打开色卡库](https://img.shields.io/badge/🎨_在线打开色卡库-立即使用-2E7D6B?style=for-the-badge)](https://zomosky.github.io/anime-palettes/)
 
@@ -21,7 +21,7 @@
 交付形式：交互色卡库 HTML · Python 模块 · Excel · PPT 取色板与主题色 · Adobe `.ase` · GIMP `.gpl` · Origin 清单
 
 <a href="https://zomosky.github.io/anime-palettes/">
-  <img src="docs/images/配色总览.png" width="900" alt="36 套配色总览 —— 点击在线打开">
+  <img src="docs/images/配色总览.png" width="900" alt="58 套配色总览 —— 点击在线打开">
 </a>
 
 <sub>👆 点图直接打开在线色卡库</sub>
@@ -35,7 +35,7 @@
 给图表配色时常见的两难：调色板网站上的配色好看但没有语义、区分度也没人验证过；
 科研标准配色（viridis、ColorBrewer）安全但千篇一律。
 
-这个库从 36 个动漫 / 游戏角色的视觉印象取色，然后**用色彩学手段把它们改造得能真的用在图表上**：
+这个库从 58 个动漫 / 游戏角色的视觉印象取色，然后**用色彩学手段把它们改造得能真的用在图表上**：
 锁死每个颜色的色相角保住角色辨识度，只在 CIELAB 里调明度和彩度，
 用坐标下降最大化「正常视觉 + 红/绿色盲模拟」下的最小 ΔE2000，
 再约束白底对比度。每套配色的区分度、色盲友好度、色标的明度单调性与感知均匀度都有实测数值，
@@ -145,20 +145,20 @@ anime-palettes code ganyu --ramp flow --lang r > ganyu_flow.R
 
 ---
 
-## 收录的 36 套
+## 收录的 58 套
 
 | 色系 | 配色 |
 |---|---|
-| **红** | 明日香·朱赤　胡桃·绯梅　波妞·珊瑚　千寻·朱绿 |
+| **红** | 明日香·朱赤　胡桃·绯梅　波妞·珊瑚　千寻·朱绿　夕·墨朱 |
 | **橙** | 三叶·暮橙　鸣人·橙靛　钟离·琥珀岩金　娜乌西卡·天青金 |
-| **黄** | 我妻善逸·雷明黄　皮卡丘·柠黄　塞尔达·淡金 |
-| **绿** | 路易吉·草绿　索隆·苔墨　灶门炭治郎·墨绿炭赤　龙猫·苔灰 |
-| **青** | 初音未来·青碧　温迪·风薄荷　富冈义勇·松青 |
-| **蓝** | 五条悟·晴空蓝　绫波丽·苍白蓝　神里绫华·霜蓝　甘雨·冰蓝　林克·苍蓝　泷·夜靛　克劳德·军蓝 |
-| **紫** | 雷电将军·雷紫　初号机·紫萤　哈尔·金蓝虹 |
-| **粉** | 祢豆子·绯粉　三月七·樱冰　爱丽丝·玫粉鼠尾草 |
-| **中性** | 无脸男·墨灰　2B·素墨　卡卡西·银藏 |
-| **撞色** | 马力欧·正红蓝　路飞·赤麦 |
+| **黄** | 我妻善逸·雷明黄　皮卡丘·柠黄　塞尔达·淡金　猫又·荧柠黄　知更鸟·金羽 |
+| **绿** | 路易吉·草绿　索隆·苔墨　灶门炭治郎·墨绿炭赤　龙猫·苔灰　艾伦·橄榄　花里みのり·翡翠 |
+| **青** | 初音未来·青碧　温迪·风薄荷　富冈义勇·松青　白龙·湖水　时透无一郎·雾青　蕾姆·孔雀　忌炎·风主青 |
+| **蓝** | 五条悟·晴空蓝　绫波丽·苍白蓝　神里绫华·霜蓝　甘雨·冰蓝　林克·苍蓝　泷·夜靛　克劳德·军蓝　星乃一歌·电光蓝　阿尔托莉雅·骑士蓝金 |
+| **紫** | 雷电将军·雷紫　初号机·紫萤　薇尔莉特·紫罗兰　吟霖·紫金雷　阿米娅·源石紫 |
+| **粉** | 哈尔·金蓝虹　祢豆子·绯粉　三月七·樱冰　爱丽丝·玫粉鼠尾草　黄泉·洋红雷 |
+| **中性** | 无脸男·墨灰　2B·素墨　卡卡西·银藏　猫咪老师·招财米　褪色者·黄金暗夜　德克萨斯·冷墨灰　小骑士·骨白深渊 |
+| **撞色** | 马力欧·正红蓝　路飞·赤麦　RX-78-2·三色旗　Inkling·荧墨　雨宫莲·怪盗红黑 |
 
 ---
 
@@ -208,8 +208,8 @@ anime-palettes code ganyu --ramp flow --lang r > ganyu_flow.R
 
 | 等级 | 数量 | 含义 | 用法 |
 |---|---|---|---|
-| **A** | 18 | 红/绿色盲模拟下 6 色两两 ΔE2000 ≥ 13 | 整套随便用，多系列图首选 |
-| **B** | 13 | 大部分可分 | 4 个系列以内，或按安全子集取 |
+| **A** | 30 | 红/绿色盲模拟下 6 色两两 ΔE2000 ≥ 13 | 整套随便用，多系列图首选 |
+| **B** | 23 | 大部分可分 | 4 个系列以内，或按安全子集取 |
 | **C** | 5 | 角色本身就是同色系 | 多系列时只用 `ap.safe()` 给出的子集 |
 
 色卡库里可以直接切到红/绿/蓝色盲和灰度模拟，色块右上角有小圆点的就是会撞的那几个。
@@ -270,7 +270,7 @@ cp -r anime-palettes/skills/anime-palettes ~/.claude/skills/
 Skill 里教给 agent 的东西：
 
 - **先判断颜色在表达「哪一类」还是「多少」** —— 这是所有配色决策的分叉点
-- 按色盲要求 → 色系 → 具体角色三步筛选，附 36 套速查表和按需求定位的对照
+- 按色盲要求 → 色系 → 具体角色三步筛选，附 58 套速查表和按需求定位的对照
 - 各工具的具体写法（matplotlib / seaborn / plotly / ggplot / MATLAB / Origin / PPT / CSS / D3）
 - **怎么把配色嵌进现有的规划和设计**：在方案里落一条「配色锁」（slug + order +
   类别绑定 + 中性色），一个交付物只用一套，跨图表复用同一套类别→颜色映射
@@ -285,7 +285,7 @@ Skill 里教给 agent 的东西：
 anime_palettes.py          可直接 import 的模块（零依赖，matplotlib 懒加载）
 dist/                      全部交付物
   anime-palettes.html        单文件交互色卡库
-  anime-palettes-picker.pptx PPT 取色板（37 页，含原生图表示例）
+  anime-palettes-picker.pptx PPT 取色板（59 页，含原生图表示例）
   anime_palettes.xlsx        六表：色卡总览 / 逐色明细 / 深浅延伸 / 排序方案 / 色标采样 / 使用说明
   anime_palettes.{csv,json}  纯数据（json 含 256 级色标，供二次开发）
   ase/ gpl/                  Adobe 与 GIMP 色板
@@ -316,7 +316,7 @@ make all      # 派生 + 生成全部交付物 + 跑测试
 
 ## English
 
-36 colour palettes derived from anime and game characters, engineered for scientific figures and slide decks.
+58 colour palettes derived from anime and game characters, engineered for scientific figures and slide decks.
 Each palette ships 6 categorical colours, light/dark variants, four continuous colormaps
 (single-hue sequential, **multi-hue `flow` with strictly monotonic lightness** for scatter plots,
 diverging, and cyclic), neutral tokens, and four preset orderings.

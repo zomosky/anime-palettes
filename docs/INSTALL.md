@@ -381,7 +381,7 @@ d3.scaleSequential(t => d3.interpolateRgbBasis(miku.flow)(t));
 `python anime_palettes.py <命令>`。
 
 ```bash
-anime-palettes ls                          # 全部 36 套，终端里直接显示色块
+anime-palettes ls                          # 全部 58 套，终端里直接显示色块
 anime-palettes ls --family 蓝 --grade A     # 按色系 / 色盲等级筛
 anime-palettes show 胡桃                    # 单套全貌：深浅变体、中性色、四种排序、四条色标
 anime-palettes show miku --order distinct

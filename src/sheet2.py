@@ -24,7 +24,7 @@ for ax,e in zip(axes,lib):
     ax.text(-2.5,.5,e['name_en'],fontsize=6.5,va='center',color='#777')
     ax.text(15.35,.5,e['cvd_grade'],fontsize=7,va='center',ha='right',
             color=GC[e['cvd_grade']],fontweight='bold')
-fig.suptitle('动漫 / 游戏角色配色库 · 36 套 —— 主色 6 / 连续色标 / 发散色标',fontsize=13,y=0.998)
+fig.suptitle('动漫 / 游戏角色配色库 · 58 套 —— 主色 6 / 连续色标 / 发散色标',fontsize=13,y=0.998)
 plt.tight_layout(rect=[0,0,1,0.995])
 plt.savefig('build/配色总览.png',dpi=140,facecolor='white',bbox_inches='tight')
 print('ok')

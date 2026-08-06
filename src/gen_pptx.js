@@ -1,4 +1,4 @@
-// 生成 PPT 取色板：1 张封面 + 36 张配色页（含原生图表示例，可直接取色器吸色）
+// 生成 PPT 取色板：1 张封面 + 58 张配色页（含原生图表示例，可直接取色器吸色）
 const fs = require('fs');
 const PptxGenJS = require('pptxgenjs');
 
@@ -28,7 +28,7 @@ s.addText('动漫 / 游戏角色配色库', {
   x: M, y: 1.5, w: W - 2 * M, h: 0.85, fontSize: 40, bold: true,
   color: '1D1D21', fontFace: CN,
 });
-s.addText('36 套 · 每套 6 主色 + 深/浅变体 · 面向 PPT 与科研配图', {
+s.addText('58 套 · 每套 6 主色 + 深/浅变体 · 面向 PPT 与科研配图', {
   x: M, y: 2.35, w: W - 2 * M, h: 0.5, fontSize: 17, color: '6C6C76', fontFace: CN,
 });
 s.addText([

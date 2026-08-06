@@ -11,7 +11,7 @@
     {
       "name": "anime-palettes",
       "displayName": "动漫/游戏角色配色库",
-      "description": "教 Claude 用 anime-palettes 配色库给图表、幻灯片和文档定配色，并把配色决策显式写进方案。36 套做过 ΔE2000 区分度与色盲优化的配色，每套含 6 主色、深浅变体、seq/flow/div/cyclic 四条连续色标。",
+      "description": "教 Claude 用 anime-palettes 配色库给图表、幻灯片和文档定配色，并把配色决策显式写进方案。58 套做过 ΔE2000 区分度与色盲优化的配色，每套含 6 主色、深浅变体、seq/flow/div/cyclic 四条连续色标。",
       "version": "1.0.0",
       "author": { "name": "zomosky", "url": "https://github.com/zomosky" },
       "homepage": "https://zomosky.github.io/anime-palettes/",

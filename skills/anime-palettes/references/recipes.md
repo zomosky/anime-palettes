@@ -148,7 +148,7 @@ cs = [0.333 0.525 0.796; 0.608 0.729 0.875];  % 分类色，从 hex 转
 
 ## Origin
 
-`dist/origin-hex/` 下三个目录：`平滑/`、`区分度/`（各 36 个 txt，逐行 HEX）、
+`dist/origin-hex/` 下三个目录：`平滑/`、`区分度/`（各 58 个 txt，逐行 HEX）、
 `flow色标/`（16 级取样，用来做自定义色阶）。
 打开对应 txt，全选复制，粘进 Origin 的自定义颜色列表 / Color Palette 编辑器。
 
@@ -197,5 +197,5 @@ const heat  = d3.scaleSequential(t => d3.interpolateRgbBasis(e.flow)(t));
 
 ## Adobe / GIMP
 
-- AI / PS / ID：`色板 → 打开色板库 → 其他库`，选 `dist/ase/_ALL-36-anime-palettes.ase`（36 个分组），或单套的 `dist/ase/<slug>.ase`
+- AI / PS / ID：`色板 → 打开色板库 → 其他库`，选 `dist/ase/_ALL-58-anime-palettes.ase`（58 个分组），或单套的 `dist/ase/<slug>.ase`
 - GIMP / Inkscape / Krita：把 `dist/gpl/<slug>.gpl` 放进各自的 palettes 目录

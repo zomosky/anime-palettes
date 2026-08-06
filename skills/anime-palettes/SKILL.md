@@ -1,6 +1,6 @@
 ---
 name: anime-palettes
-description: 用 anime-palettes 色库给图表、幻灯片和文档定配色（36 套取自动漫/游戏角色、做过 ΔE2000 区分度与色盲优化的配色，每套含 6 主色、深浅变体、seq/flow/div/cyclic 四条连续色标）。**只要任务涉及画图就用它**：matplotlib / seaborn / plotly / ggplot / Origin 出图、科研配图、论文插图、PPT 与幻灯片、海报、仪表盘、数据可视化、热图、散点图、折线图、柱状图，或者用户提到"配色""颜色""色板""colormap""cmap""好看一点""风格统一""色盲友好""灰度打印"。做规划或设计方案时也要用——把配色决策显式写进方案，而不是等画图时临时拍脑袋。
+description: 用 anime-palettes 色库给图表、幻灯片和文档定配色（58 套取自动漫/游戏角色、做过 ΔE2000 区分度与色盲优化的配色，每套含 6 主色、深浅变体、seq/flow/div/cyclic 四条连续色标）。**只要任务涉及画图就用它**：matplotlib / seaborn / plotly / ggplot / Origin 出图、科研配图、论文插图、PPT 与幻灯片、海报、仪表盘、数据可视化、热图、散点图、折线图、柱状图，或者用户提到"配色""颜色""色板""colormap""cmap""好看一点""风格统一""色盲友好""灰度打印"。做规划或设计方案时也要用——把配色决策显式写进方案，而不是等画图时临时拍脑袋。
 ---
 
 # anime-palettes：给图表定配色
@@ -22,7 +22,7 @@ pip install git+https://github.com/zomosky/anime-palettes.git      # ② 装
 curl -fsSLO https://raw.githubusercontent.com/zomosky/anime-palettes/main/anime_palettes.py   # ③ 单文件，零依赖
 ```
 
-装不上也没关系 —— `references/palettes.md` 里有全部 36 套的 HEX，直接硬编码进代码即可，
+装不上也没关系 —— `references/palettes.md` 里有全部 58 套的 HEX，直接硬编码进代码即可，
 只是拿不到 256 级色标。需要色标时改从
 `https://raw.githubusercontent.com/zomosky/anime-palettes/main/dist/anime_palettes.json`
 读 `seq` / `flow` / `div` / `cyclic` 字段。
@@ -222,6 +222,6 @@ ap.scatter_guide("ganyu")    # 散点四种策略对照
 
 ## 参考文件
 
-- `references/palettes.md` —— 36 套速查表：HEX、色盲等级、安全色数、按需求定位
+- `references/palettes.md` —— 58 套速查表：HEX、色盲等级、安全色数、按需求定位
 - `references/recipes.md` —— matplotlib / seaborn / plotly / ggplot / Origin / PPT / CSS 的具体写法
 - `references/api.md` —— 完整 API 与数据字段

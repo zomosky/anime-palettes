@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""从 library.json 重新生成 skill 的 36 套速查表（保证 HEX 永远和库一致）。
+"""从 library.json 重新生成 skill 的 58 套速查表（保证 HEX 永远和库一致）。
 由 `make skill` 调用；也可以 `python -c "exec(open('src/gen_skill_table.py').read())"`。"""
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -24,7 +24,7 @@ rows = sorted(
      for s, e in ap.PALETTES.items()),
     key=lambda r: (ap.FAMILIES.index(r[0]), r[1]))
 
-out = ["# 36 套配色速查", "",
+out = ["# 58 套配色速查", "",
        "给 agent 挑配色用。**HEX 按「区分度优先」顺序列出**（画多系列图直接从左往右取）；",
        "要平滑色带就用 `ap.colors(slug)` 的默认顺序。", "",
        "`安全` 列 = 红/绿色盲下仍两两可分的颜色个数（满分 6）。",

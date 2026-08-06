@@ -54,7 +54,7 @@ HEAD = '''# -*- coding: utf-8 -*-
 
     ap.preview("miku")             # 六联示意图
     ap.wheel("miku")               # 色环：看这套色的色相/彩度分布
-    ap.wheel_all()                 # 36 套一起看
+    ap.wheel_all()                 # 58 套一起看
     ap.scatter_guide("miku")       # 散点图四种配色策略的对照
 
 四种排序（order 参数，各函数通用）：
@@ -688,7 +688,7 @@ def main(argv=None):
     import json as _json
     p = argparse.ArgumentParser(
         prog="anime-palettes",
-        description="动漫 / 游戏角色配色库 —— 36 套，面向科研配图与 PPT",
+        description="动漫 / 游戏角色配色库 —— 58 套，面向科研配图与 PPT",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""示例:
   anime-palettes ls --family 蓝 --grade A
