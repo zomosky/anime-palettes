@@ -905,3 +905,148 @@ def test_propose_html_ramps_carry_real_colors_and_correct_semantics():
 
         assert cyclic[0] == cyclic[-1], \
             f"{c.key} 方案的 cyclic 色标首尾不同色（{cyclic[0]} vs {cyclic[-1]}），没有闭环"
+
+
+def _copy_editable_sources(dest):
+    """把 --apply 会读写的那几个手写源文件拷到临时目录。
+
+    apply() 是就地改写 data.py / tuned.py 的，测试必须跑在副本上，
+    绝不能碰真仓库。"""
+    import shutil
+    src_dir = os.path.join(_ROOT, "src")
+    for name in ("data.py", "tuned.py", "colorlib.py", "tune.py", "propose.py"):
+        shutil.copy(os.path.join(src_dir, name), os.path.join(str(dest), name))
+
+
+def _isolate_modules(tmp_path, monkeypatch):
+    """让 import data / tuned / propose 落到 tmp_path 的副本上。
+
+    monkeypatch 只还原 sys.path 和 cwd，不还原 sys.modules；副本里的 data
+    带着测试新加的 slug，漏掉清理会污染同一次 pytest 里后面的用例。
+    调用方负责在 finally 里再 pop 一次。"""
+    monkeypatch.syspath_prepend(str(tmp_path))
+    monkeypatch.chdir(str(tmp_path))
+    for m in ("data", "tuned", "propose", "tune", "colorlib"):
+        sys.modules.pop(m, None)
+
+
+def _drop_isolated_modules():
+    for m in ("data", "tuned", "propose", "tune", "colorlib"):
+        sys.modules.pop(m, None)
+
+
+_PROPOSE_META = dict(slug="zzz-test", zh="测试", en="Test", tone_zh="霜蓝",
+                     tone_en="Frost Blue", family="蓝", source="测试作品")
+
+
+def test_propose_render_record_is_valid_python():
+    import propose
+    src = propose.render_record(_PROPOSE_META, _PROPOSE_DEMO)
+    ns = {}
+    exec("PALETTES = [\n" + src + "\n]", ns)
+    rec = ns["PALETTES"][0]
+    assert rec["slug"] == "zzz-test"
+    assert rec["family"] == "蓝"
+    assert rec["colors"] == _PROPOSE_DEMO
+    # 元数据要一条不落地写进去，不能只对 slug/family 两个字段
+    for k, v in _PROPOSE_META.items():
+        assert rec[k] == v, f"{k} 没有写进记录：期望 {v!r}，实际 {rec.get(k)!r}"
+    assert src.startswith("    dict("), "缩进要和 data.py 里现有记录一致"
+
+
+def test_propose_apply_writes_importable_files(tmp_path, monkeypatch):
+    """--apply 会就地改写手写源文件。在临时副本上验证写完还能 import、
+    指纹对得上、且没动到别的 slug。"""
+    _copy_editable_sources(tmp_path)
+    _isolate_modules(tmp_path, monkeypatch)
+    try:
+        import propose as fresh
+        import tuned as old_tuned
+        before = dict(old_tuned.TUNED)
+        # 真实调用链里 parse_args() 会先 import data 做 family/slug 校验，
+        # 所以 apply() 跑的时候 data 一定已经在 sys.modules 里了。测试必须
+        # 复现这一点：否则 apply() 里那句 sys.modules.pop("data") 删掉也照样
+        # 绿（第一次 import 自然读的就是新文件），而真跑 CLI 时指纹会是旧的。
+        import data as _stale        # noqa: F841
+        assert "data" in sys.modules
+
+        cand = fresh.build(_PROPOSE_DEMO)[0]
+        fresh.apply(_PROPOSE_META, _PROPOSE_DEMO, list(cand.colors))
+
+        for m in ("data", "tuned"):
+            sys.modules.pop(m, None)
+        import data as d2
+        import tuned as t2
+        assert t2.SOURCE == d2.source_fingerprint(), "写完之后指纹对不上"
+        assert t2.TUNED["zzz-test"] == list(cand.colors)
+        assert {p["slug"] for p in d2.PALETTES} >= set(before) | {"zzz-test"}
+        for k, v in before.items():
+            assert t2.TUNED[k] == v, f"{k} 的调优结果被误改了"
+
+        # 值断言：写进 data.py 的必须是用户敲的原始色和完整元数据，
+        # 不是「文件被改过」就算数（前两轮的教训：形状断言全绿但内容是黑的）
+        rec = next(p for p in d2.PALETTES if p["slug"] == "zzz-test")
+        assert rec["colors"] == _PROPOSE_DEMO, "data.py 里存的应是原始色，不是调优后的色"
+        for k, v in _PROPOSE_META.items():
+            assert rec[k] == v, f"data.py 里 {k} 写错了：{rec.get(k)!r}"
+        # tuned.py 里存的则是调优后的色，两者必须不同名不同物
+        assert t2.TUNED["zzz-test"] != _PROPOSE_DEMO, "tuned.py 里存的应是调优后的色"
+        # 既有条目连顺序都不该变，新 slug 追加在末尾 —— git diff 才只有一行新增
+        assert list(t2.TUNED)[:len(before)] == list(before), "既有 slug 的顺序被打乱了"
+        assert list(t2.TUNED)[-1] == "zzz-test"
+        assert len(t2.TUNED) == len(before) + 1
+    finally:
+        _drop_isolated_modules()
+
+
+def test_propose_apply_refuses_when_anchor_is_missing(tmp_path, monkeypatch):
+    """data.py 结构变了导致找不到插入锚点时，必须明确报错退出。
+
+    静默无操作比报错更糟：用户会以为已经写回去了，接着 make all 又什么都没变。"""
+    _copy_editable_sources(tmp_path)
+    data_path = os.path.join(str(tmp_path), "data.py")
+    with open(data_path, encoding="utf-8") as f:
+        broken = f.read().replace("# 每套配色的“签名色”", "# ANCHOR GONE")
+    with open(data_path, "w", encoding="utf-8") as f:
+        f.write(broken)
+    _isolate_modules(tmp_path, monkeypatch)
+    try:
+        import propose as fresh
+        with pytest.raises(SystemExit):
+            fresh.apply(_PROPOSE_META, _PROPOSE_DEMO, list(_PROPOSE_DEMO))
+        # 报错之后不许留下半截写入
+        with open(data_path, encoding="utf-8") as f:
+            assert "zzz-test" not in f.read(), "锚点没找到却还是改了 data.py"
+    finally:
+        _drop_isolated_modules()
+
+
+def test_propose_apply_via_main_writes_the_named_profile(tmp_path, monkeypatch, capsys):
+    """走完整的 `--apply B` 命令行链路，验证写进去的是 B 方案的色值。
+
+    直接调 apply() 的那条测试绕开了 parse_args 和字母→候选的映射，
+    抓不到「--apply B 却写了 A 的色」这类接线错误。"""
+    _copy_editable_sources(tmp_path)
+    _isolate_modules(tmp_path, monkeypatch)
+    try:
+        import propose as fresh
+        cands = {c.key: list(c.colors) for c in fresh.build(_PROPOSE_DEMO)}
+        assert cands["A"] != cands["B"], "A/B 两个 profile 结果相同，这条测试就失去意义了"
+
+        fresh.main(["--slug", "zzz-main", "--zh", "测试", "--en", "Test",
+                    "--tone-zh", "霜蓝", "--tone-en", "Frost Blue",
+                    "--family", "蓝", "--source", "测试作品",
+                    "--colors", ",".join(_PROPOSE_DEMO), "--apply", "B"])
+        assert "已写入" in capsys.readouterr().out
+
+        for m in ("data", "tuned"):
+            sys.modules.pop(m, None)
+        import data as d2
+        import tuned as t2
+        assert t2.SOURCE == d2.source_fingerprint(), "走 main() 之后指纹对不上"
+        assert t2.TUNED["zzz-main"] == cands["B"], "--apply B 写进去的不是 B 方案"
+        assert t2.TUNED["zzz-main"] != cands["A"]
+        rec = next(p for p in d2.PALETTES if p["slug"] == "zzz-main")
+        assert rec["colors"] == _PROPOSE_DEMO
+    finally:
+        _drop_isolated_modules()

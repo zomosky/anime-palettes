@@ -18,7 +18,8 @@ import sys
 import unicodedata
 from collections import namedtuple
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+_HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _HERE)
 
 # 只依赖 colorlib，刻意不 import derive —— derive 的模块级有指纹校验，
 # 仓库处于「改了 data.py 还没 tune」时会 SystemExit，而那正是最需要 propose 的时候。
@@ -114,7 +115,7 @@ def _report(cands, colors):
         print("   " + " ".join(c.colors))
         print()
     print("偏移 = 相对原始色的平均 ΔE00，越小越忠于原作。")
-    print("挑好之后用 --apply <方案字母> 写回 data.py 与 tuned.py（该选项尚未实现）。")
+    print("挑好之后用 --apply <方案字母> 写回 data.py 与 tuned.py。")
 
 
 def _gray(hexcode):
@@ -197,6 +198,53 @@ def render_html(cands, colors, meta):
     return "".join(parts)
 
 
+def render_record(meta, colors):
+    """一条 data.py 记录的源码文本，缩进与现有记录一致（4 空格 + 续行 9 空格）。"""
+    cols = ", ".join(f'"{c}"' for c in colors)
+    return (
+        f'    dict(slug="{meta["slug"]}", zh="{meta["zh"]}", en="{meta["en"]}", '
+        f'tone_zh="{meta["tone_zh"]}", tone_en="{meta["tone_en"]}",\n'
+        f'         family="{meta["family"]}", source="{meta["source"]}",\n'
+        f'         colors=[{cols}]),'
+    )
+
+
+def apply(meta, raw_colors, tuned_colors):
+    """把新配色写回 data.py 与 tuned.py。
+
+    tune() 逐套独立，别的 slug 的调优结果不受影响，所以这里只并入新条目
+    再重算指纹 —— 单套约 1s，不用重跑 65s 全库。
+    """
+    data_path = os.path.join(_HERE, "data.py")
+    text = open(data_path, encoding="utf-8").read()
+    anchor = "\n]\n\n# 每套配色的“签名色”"
+    if anchor not in text:
+        raise SystemExit("data.py 的结构变了，找不到 PALETTES 列表的结尾，请手动添加记录")
+    text = text.replace(anchor, "\n" + render_record(meta, raw_colors) + anchor, 1)
+    open(data_path, "w", encoding="utf-8").write(text)
+
+    # 指纹必须用「刚写完的」data.py 重算，所以这里要把已经 import 过的旧模块
+    # 踢掉重新 import —— 少了这几行，SOURCE 还是旧值，derive.py 会直接报错退出。
+    for m in ("data", "tuned"):
+        sys.modules.pop(m, None)
+    import data as _data
+    import tuned as _tuned
+
+    merged = dict(_tuned.TUNED)
+    merged[meta["slug"]] = list(tuned_colors)
+    tuned_path = os.path.join(_HERE, "tuned.py")
+    with open(tuned_path, "w", encoding="utf-8") as f:
+        f.write("# -*- coding: utf-8 -*-\n# 自动生成：科研可用性微调后的配色\n")
+        f.write("# SOURCE = 生成这份结果时 data.py 的指纹，对不上就说明该重跑 `make tune` 了\n")
+        f.write("SOURCE = %r\n\nTUNED = " % _data.source_fingerprint())
+        f.write(repr(merged).replace("], ", "],\n  "))
+        f.write("\n")
+
+    print(f"已写入 src/data.py 与 src/tuned.py（{meta['slug']}）")
+    print("接下来跑：make all && make skill")
+    print("对结果不满意的话：git checkout src/data.py src/tuned.py")
+
+
 def parse_args(argv):
     ap = argparse.ArgumentParser(
         prog="propose.py", description="给新角色生成 5 个调色方案")
@@ -247,11 +295,12 @@ def main(argv=None):
                   f"tune 会把它拽回来，保真度会下降。", file=sys.stderr)
     cands = build(a.colors, mono=a.mono)
     _report(cands, a.colors)
-    # 静默无操作比报错更糟：用户跑 --apply 看到退出码 0 加一份完整报告，
-    # 很容易以为已经写回去了。--apply 落地时把这段换成真实逻辑即可。
     if a.apply:
-        print("提示：--apply 尚未实现，本次没有写入任何文件。",
-              file=sys.stderr)
+        key = a.apply.upper()
+        chosen = next(c for c in cands if c.key == key)
+        meta = dict(slug=a.slug, zh=a.zh, en=a.en, tone_zh=a.tone_zh,
+                    tone_en=a.tone_en, family=a.family, source=a.source)
+        apply(meta, a.colors, list(chosen.colors))
     if a.html:
         os.makedirs("build", exist_ok=True)
         meta = dict(slug=a.slug, zh=a.zh, en=a.en, tone_zh=a.tone_zh,
