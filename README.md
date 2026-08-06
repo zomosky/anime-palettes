@@ -106,7 +106,7 @@ ax.scatter(x, y, c=v, s=42, edgecolor="white", linewidth=.35,
 三条路，都不碰 Python 环境：
 
 ```bash
-# ① 单文件模块（~130 KB，核心 API 零依赖，配色数据就在里面）
+# ① 单文件模块（~190 KB，核心 API 零依赖，配色数据就在里面）
 curl -fsSLO https://raw.githubusercontent.com/zomosky/anime-palettes/main/anime_palettes.py
 
 # ② PEP 723 单文件脚本 —— 依赖写在脚本注释里，uv 自动建环境
@@ -297,7 +297,7 @@ docs/INSTALL.md            安装矩阵：pip / uv / conda / 离线 / 其他语�
 docs/USAGE.md              详细使用说明
 examples/quickstart.py     可直接跑的例子
 examples/uv_single_file.py PEP 723 单文件脚本，uv run 一句话搞定
-tests/test_palettes.py     365 项自检，含 CIEDE2000 实现的标准数据验证
+tests/test_palettes.py     628 项自检，含 CIEDE2000 实现的标准数据验证
 ```
 
 ## 自己改 / 重新生成

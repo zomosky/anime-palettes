@@ -314,7 +314,7 @@ pip install ./v1.0.0.zip
   git clone --depth 1 https://github.com/zomosky/anime-palettes.git
   pip install ./anime-palettes
   ```
-- **只取单文件**：`anime_palettes.py` 只有 ~130 KB，从 raw 或任意 GitHub 加速前缀取都很快
+- **只取单文件**：`anime_palettes.py` 只有 ~190 KB，从 raw 或任意 GitHub 加速前缀取都很快
 - **走代理**：`pip install --proxy http://127.0.0.1:7890 git+https://...`，
   或者给 git 设 `git config --global http.proxy http://127.0.0.1:7890`
 - **PyPI 镜像救不了 git+ 依赖**（镜像只镜像 PyPI 上的包），但能加速 matplotlib / numpy 这些：
